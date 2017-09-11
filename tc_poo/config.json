@@ -1,0 +1,40 @@
+{
+    "baseURL": "/",
+    "relativeURLs": true,
+    "uglyurls": true,
+    
+    "languageCode": "fr-fr",
+    "title": "POO",
+
+    "theme": "informatique_hugo_theme",
+    
+    "params": {
+        "description": "Cours de Programmation Orientée Objet",
+        "copyright": "2017",
+        "social": {
+            "github": "https://github.com/ecmInfo"
+        }        
+    },
+    "taxinomies": {
+        "category": "categories",
+        "tag": "tags"        
+    },
+    "menu": {
+        "global": [
+            {
+                "name": "Catégories",
+                "url": "/categories.html"
+            }, 
+            {
+                "name": "Tags",
+                "url": "/tags.html"
+            }
+        ],
+        "footer": [
+            {
+                "name": "About",
+                "url": "/page/about.html"
+            }
+        ]
+    }
+}
