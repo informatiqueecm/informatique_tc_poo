@@ -20,16 +20,6 @@
         "tag": "tags"        
     },
     "menu": {
-        "global": [
-            {
-                "name": "Catégories",
-                "url": "/categories.html"
-            }, 
-            {
-                "name": "Tags",
-                "url": "/tags.html"
-            }
-        ],
         "footer": [
             {
                 "name": "About",
