@@ -3,7 +3,72 @@ title = "1 - Classes et objets, corrigé"
 weight = 1
 +++
 
+
+## Éléments de cours :
+
+  - la [doc python](https://docs.python.org/3/tutorial/classes.html) sur les classes : les étudiants sont censés tout connaître sauf la partie sur l'héritage et les itérateurs
+  - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html)
+  - la [PEP8](https://www.python.org/dev/peps/pep-0008)
+
+Quelques concepts utiles et importants en python : 
+
+  - les arguments par défaut (https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
+  - la visibilité des variables :
+
+    - Class.attribute masqué par self.attribute si existe
+    - notion de namespaces
+
+  - attributs des objets/classes :
+
+    - __init__ pour le constructeur dans lequel on met les attributs sous la forme self.attribute
+    - les attributs de classes s'écrivent comme des méthodes
+
+  - méthodes spéciales et attributs spéciaux :
+
+    - qui commencent par _ : non public
+    - qui commencent par __ : privé
+    - qui commencent et finissent par __ : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__)
+
+
 ## TD
+### Un dé
+
+Diagramme UML du dé classique :
+
+![dice](/img/dice_init.png)
+
+Les tests sont en dessous dans la correction du TP.
+
+Diagramme UML du dé pipé :
+
+![dice_proba](/img/dice_proba.png)
+
+On ajoute juste un attribut pour la distribution de proba sous forme de liste de proba de chaque face.
+Pour le `roll`, on peut utiliser le `numpy.random.choice(liste_de_valeurs, p=liste_de_probas)`.
+
+Pour les namespaces :
+Les namespaces possibles sont :
+
+  - le namespace global
+  - la classe, ici `Dice`. Contient tout ce qui est définit dans la classe comme les méthodes ou les constantes.
+  - l'objet : ici un objet dice de la classe `Dice`. Contient tout ce qui est défini pour l'objet en particulier (par exemple dans le __init__ quand l'objet est appelé self)
+  - les méthodes : ce qui n'existe que de l'exécution de la méthode à la fin de son exécution
+
+Pour les exemples :
+
+  - `from dice import Dice` : cherche un fichier "dice.py" dans le répertoire courant. L'exécute avec son propre namespace/ Prend ensuite le nom `Dice` dans `dice.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Dice` qui est définit dans le namespace de dice.py
+  - `dice = Dice()` : `Dice` est dans le namespace global grâce à la ligne précédente. On crée l'objet en utilisant le `__init__` dans le namespace `Dice`, ce qui ajoute l'attribut `_position` dans le namespace de l'objet.
+  - `print(dice._position)` : dans le namespace de l'objet
+  - `dice.roll()` : python cherche le nom `roll`. Il regarde d'abord dans l'objet. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `roll` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
+  - `print(dice.get_position())` : pareil qu'au dessus. `get_position` est défini dans la classe.
+  - `print(dice.NUMBER_FACES)` : comme avant, python recherche d'abord dans l'objet, ça n'y est pas. Il regarde donc dans le namespace de la classe.
+
+
+Et le GreenCarpet :
+
+![green_carpet](/img/greenCarpet.png)
+
+Le code est en dessous dans la correction du TP.
 
 
 ## TP
