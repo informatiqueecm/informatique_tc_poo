@@ -6,7 +6,7 @@ weight = 1
 
 ## Introduction
 
-Dans ce TP, nous allons appliquer les notions de base vues lors du TD1 :
+Dans cette séance nous allons voir les notions de :
 
   - classe
   - objet
@@ -14,12 +14,20 @@ Dans ce TP, nous allons appliquer les notions de base vues lors du TD1 :
   - méthode  
   - attribut de classe
 
-{{<note>}}
-Tout ce que vous allez implémenter dans tous les TP doit être testé par des tests unitaires. Vous trouverez un tuto pour mettre en place un environnement de tests avec    PyCharm sur le site des tutos (https://informatique.centrale-marseille.fr/tutos/post/python-tests.html).
-Chaque fois que vous voulez ajouter une nouvelle fonctionnalité, il faudra la tester grâce à un test unitaire. Faites le au fur et à mesure : une nouvelle fonctionnalité, un test (ou plusieurs si besoin), une nouvelle fonctionnalité, un test, etc.
-{{</note>}}
 
-Vous trouverez des rappels utiles de python sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) si la syntaxe vous pose problème.
+## Les bases
+
+> [Le sujet](/ressources/TD_1_impression.pdf)
+
+
+## Test Driven Development
+
+Tout ce que vous allez implémenter dans tous les TP doit être testé par des tests unitaires. On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
+
+  - se rappeler les [bases de python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html)
+  - utiliser [Pycharm](https://informatique.centrale-marseille.fr/tutos/post/utilisation-pycharm-bases.html)
+  - faire de la [programmation par les tests](https://informatique.centrale-marseille.fr/tutos/post/python-tests.html)
+
 
 ## Dice
 ### Un dé tout simple

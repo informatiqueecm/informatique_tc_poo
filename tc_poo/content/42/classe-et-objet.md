@@ -4,11 +4,16 @@ weight = 1
 +++
 
 
+
+
 ## Éléments de cours :
 
   - la [doc python](https://docs.python.org/3/tutorial/classes.html) sur les classes : les étudiants sont censés tout connaître sauf la partie sur l'héritage et les itérateurs
+  - [Sam & Max](http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/
+) : l'objet d'un point de vue python. Sans philosophie, suste vue comme un moyen d'écrire du code. J'aime. 
   - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html)
   - la [PEP8](https://www.python.org/dev/peps/pep-0008)
+  
 
 Quelques concepts utiles et importants en python : 
 
@@ -31,6 +36,11 @@ Quelques concepts utiles et importants en python :
 
 
 ## TD
+
+> [Les sources tex du sujet](/ressources/TD_1.tex)
+
+> [version pdf du sujet (2 pages par feuilles)](/ressources/TD_1_impression.pdf)
+
 ### Un dé
 
 Diagramme UML du dé classique :
