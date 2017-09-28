@@ -10,28 +10,27 @@ weight = 1
 
 
 {{<note>}}
-Le but de cette séance est de montrer les concepts fondamentale de classe et d'objet.
+Le but de cette séance est de montrer les concepts fondamentaux de classe et d'objet.
 {{</note>}}
 
 ### Python général
 
-  - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html). Ils sont sencé connaitre tout ça (vu en prépa).
+  - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html). Ils sont censés connaître tout ça (vu en prépa).
   - la [PEP8](https://www.python.org/dev/peps/pep-0008)
 
 
-### classes et objets
+### Classes et objets
 
-  - le [tuto python sur les classes](https://docs.python.org/3/tutorial/classes.html) sur les classes. On est là pour leur montrer tout ce qu'il y a dedans, à part (peut-être) la partie sur l'héritage et les itérateurs
-  - [Sam & Max](http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/
-) : l'objet d'un point de vue python. Sans philosophie, suste vue comme un moyen d'écrire du code. J'aime. 
+  - le [tuto python sur les classes](https://docs.python.org/3/tutorial/classes.html). On est là pour leur montrer tout ce qu'il y a dedans, à part (peut-être) la partie sur l'héritage et les itérateurs
+  - [Sam & Max](http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/) : l'objet d'un point de vue python. Sans philosophie, juste vue comme un moyen d'écrire du code. J'aime. 
   
 
 ### Quelques concepts utiles et importants en python 
 
-  - les [arguments par défaut] (https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
+  - les [arguments par défaut](https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
   - les [namespaces](https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces)
     - l'ordre d'évaluation détermine la [visibilité des variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en python et se règle en sachant quel namespace est utilisé
-    - `Class.attribute` masqué par `self.attributeù` si existe car le namespace de l'objet est vu avant celui de la classe.
+    - `Class.attribute` masqué par `self.attribute` si existe car le namespace de l'objet est vu avant celui de la classe.
 
   - attributs des objets/classes :
 
@@ -73,7 +72,7 @@ Les namespaces possibles sont :
   - les méthodes : ce qui n'existe que de l'exécution de la méthode à la fin de son exécution
 
 
-Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui va être utilisé, python va du [local au global(http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html). S'il n'y a pas d'encapsulation (comme une fonction dans une fonction), cela donne :
+Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui va être utilisé, python va du [local au global](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html). S'il n'y a pas d'encapsulation (comme une fonction dans une fonction), cela donne :
 
   1. fonction (inclut les méthodes)
   2. objet

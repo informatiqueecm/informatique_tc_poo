@@ -25,7 +25,7 @@ Dans cette séance nous allons voir les notions :
 Tout ce que vous allez implémenter dans tous les TP doit être vérifié par des tests unitaires. 
 
 {{<note>}}
-Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie algorithme par exemple, vous êtes sencé : (i) connaitre pycharm, (ii) programmer en python, (iii) utiliser le développement par les tests. Si vous avez répondu OUI aux trois questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
+Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie Algorithmes par exemple, vous êtes censés : (i) connaître PyCharm, (ii) programmer en python, (iii) utiliser le développement par les tests. Si vous avez répondu OUI aux trois questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
 {{</note>}}
 
 On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
