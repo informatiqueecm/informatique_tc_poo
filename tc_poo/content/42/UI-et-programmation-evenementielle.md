@@ -121,13 +121,13 @@ class Modèle {
     +int get_valeur()
     + set_valeur(int)
 }
-class Controlleur {
+class Contrôleur {
   + ajoute_1()
 }
 
 Vue <|-up- Modèle: Mise à jour
-Controlleur  <|-up-|> Vue
-Controlleur  <|-up-|> Modèle
+Contrôleur  <|-up-|> Vue
+Contrôleur  <|-up-|> Modèle
 
 @enduml
 {{</highlight>}}
