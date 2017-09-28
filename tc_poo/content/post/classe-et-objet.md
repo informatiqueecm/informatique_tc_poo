@@ -6,23 +6,29 @@ weight = 1
 
 ## Introduction
 
-Dans cette séance nous allons voir les notions de :
+Dans cette séance nous allons voir les notions :
 
-  - classe
-  - objet
-  - attribut
-  - méthode  
-  - attribut de classe
+  - de classe
+  - d'objets
+  - d'attributs
+  - de méthode  
+  - d'attribut de classe
 
 
 ## Les bases
 
-> [Le sujet](/ressources/TD_1_impression.pdf)
+> [Le sujet de td](/ressources/TD_1_impression.pdf)
 
 
 ## Test Driven Development
 
-Tout ce que vous allez implémenter dans tous les TP doit être testé par des tests unitaires. On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
+Tout ce que vous allez implémenter dans tous les TP doit être vérifié par des tests unitaires. 
+
+{{<note>}}
+Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie algorithme par exemple, vous êtes sencé : (i) connaitre pycharm, (ii) programmer en python, (iii) utiliser le développement par les tests. Si vous avez répondu OUI aux trois questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
+{{</note>}}
+
+On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
 
   - se rappeler les [bases de python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html)
   - utiliser [Pycharm](https://informatique.centrale-marseille.fr/tutos/post/utilisation-pycharm-bases.html)

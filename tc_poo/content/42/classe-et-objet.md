@@ -6,40 +6,49 @@ weight = 1
 
 
 
-## Éléments de cours :
+## Éléments de cours
 
-  - la [doc python](https://docs.python.org/3/tutorial/classes.html) sur les classes : les étudiants sont censés tout connaître sauf la partie sur l'héritage et les itérateurs
+
+{{<note>}}
+Le but de cette séance est de montrer les concepts fondamentale de classe et d'objet.
+{{</note>}}
+
+### Python général
+
+  - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html). Ils sont sencé connaitre tout ça (vu en prépa).
+  - la [PEP8](https://www.python.org/dev/peps/pep-0008)
+
+
+### classes et objets
+
+  - le [tuto python sur les classes](https://docs.python.org/3/tutorial/classes.html) sur les classes. On est là pour leur montrer tout ce qu'il y a dedans, à part (peut-être) la partie sur l'héritage et les itérateurs
   - [Sam & Max](http://sametmax.com/le-guide-ultime-et-definitif-sur-la-programmation-orientee-objet-en-python-a-lusage-des-debutants-qui-sont-rassures-par-les-textes-detailles-qui-prennent-le-temps-de-tout-expliquer-partie-1/
 ) : l'objet d'un point de vue python. Sans philosophie, suste vue comme un moyen d'écrire du code. J'aime. 
-  - le [tuto python](https://informatique.centrale-marseille.fr/tutos/post/python-bases.html) et le [tuto officiel](https://docs.python.org/3/tutorial/index.html)
-  - la [PEP8](https://www.python.org/dev/peps/pep-0008)
   
 
-Quelques concepts utiles et importants en python : 
+### Quelques concepts utiles et importants en python 
 
-  - les arguments par défaut (https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
-  - la visibilité des variables :
-
-    - Class.attribute masqué par self.attribute si existe
-    - notion de namespaces
+  - les [arguments par défaut] (https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
+  - les [namespaces](https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces)
+    - l'ordre d'évaluation détermine la [visibilité des variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en python et se règle en sachant quel namespace est utilisé
+    - `Class.attribute` masqué par `self.attributeù` si existe car le namespace de l'objet est vu avant celui de la classe.
 
   - attributs des objets/classes :
 
-    - __init__ pour le constructeur dans lequel on met les attributs sous la forme self.attribute
+    - `__init__` pour le constructeur dans lequel on met les attributs sous la forme self.attribute
     - les attributs de classes s'écrivent comme des méthodes
 
   - méthodes spéciales et attributs spéciaux :
-
-    - qui commencent par _ : non public
-    - qui commencent par __ : privé
-    - qui commencent et finissent par __ : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__)
+    - qui commencent par `_` : non public (c'est en fait une convention)
+    - qui commencent par `__` : privé (non disponible pour les descendants)
+    - qui commencent et finissent par `__` : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisés dans des cas précis et documentés.
 
 
 ## TD
 
 > [Les sources tex du sujet](/ressources/TD_1.tex)
 
-> [version pdf du sujet (2 pages par feuilles)](/ressources/TD_1_impression.pdf)
+> [version pdf du sujet (2 pages par feuille)](/ressources/TD_1_impression.pdf)
 
 ### Un dé
 
@@ -56,13 +65,23 @@ Diagramme UML du dé pipé :
 On ajoute juste un attribut pour la distribution de proba sous forme de liste de proba de chaque face.
 Pour le `roll`, on peut utiliser le `numpy.random.choice(liste_de_valeurs, p=liste_de_probas)`.
 
-Pour les namespaces :
 Les namespaces possibles sont :
 
   - le namespace global
   - la classe, ici `Dice`. Contient tout ce qui est définit dans la classe comme les méthodes ou les constantes.
   - l'objet : ici un objet dice de la classe `Dice`. Contient tout ce qui est défini pour l'objet en particulier (par exemple dans le __init__ quand l'objet est appelé self)
   - les méthodes : ce qui n'existe que de l'exécution de la méthode à la fin de son exécution
+
+
+Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui va être utilisé, python va du [local au global(http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html). S'il n'y a pas d'encapsulation (comme une fonction dans une fonction), cela donne :
+
+  1. fonction (inclut les méthodes)
+  2. objet
+  3. classe
+  5. global
+  5. built-in (les mots du langage python comme `list` ou encore `range`)
+
+S'il y a encapsulation, on suit la règle [LEGB](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html#3-legb---local-enclosed-global-built-in)
 
 Pour les exemples :
 
