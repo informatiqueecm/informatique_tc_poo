@@ -72,7 +72,7 @@ Les namespaces possibles sont :
   - les méthodes : ce qui n'existe que de l'exécution de la méthode à la fin de son exécution
 
 
-Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui va être utilisé, python va du [local au global](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html). S'il n'y a pas d'encapsulation (comme une fonction dans une fonction), cela donne :
+Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui va être utilisé, python va du [local au global](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html). S'il n'y a pas d'inclusion (comme une fonction dans une fonction), cela donne :
 
   1. fonction (inclut les méthodes)
   2. objet
@@ -80,7 +80,7 @@ Plusieurs namespaces peuvent cohabiter en même temps, pour connaître celui qui
   5. global
   5. built-in (les mots du langage python comme `list` ou encore `range`)
 
-S'il y a encapsulation, on suit la règle [LEGB](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html#3-legb---local-enclosed-global-built-in)
+S'il y a inclusion de namespaces, on suit la règle [LEGB](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html#3-legb---local-enclosed-global-built-in)
 
 Pour les exemples :
 
