@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage[pdftex,a4paper,bookmarks]{hyperref}
+\usepackage{fullpage}
+
+
+\usepackage{url}
+\usepackage{listings}
+
+\begin{document}
+
+
+    \begin{center}
+      \begin{tabular}{c}
+      \hline
+    \\
+        {\bf \textsf {\Large Programmation orientée objet}}\\
+    \\
+        {\bf \textsf {\Large TD 3 : Héritage}}\\
+    \\
+        \hline
+      \end{tabular}
+    \end{center}
+    \vspace{15mm}
+
+\section{Héritage et composition}
+\subsection{Un point}
+On veut créer une classe \texttt{Point} représentant un point en deux dimensions qui pourra calculer sa distance à un autre point. Proposer une modélisation UML de cette classe.\\
+
+\subsection{Un polygone}
+En utilisant cette classe \texttt{Point}, proposer une modélisation UML d'une classe \texttt{Polygon} qui doit être capable de :
+\begin{itemize}
+	\item créer un polygone vide
+	\item ajouter un point au polygone
+	\item calculer son aire
+	\item calculer son périmètre.
+\end{itemize}
+Quel lien y a-t-il entre la classe \texttt{Point} et la classe \texttt{Polygon}
+
+\subsection{Un polygone régulier}
+On souhaite créer une version plus spécifique d'un polygone : un polygone régulier qu'on pourra créer à partir de son centre, son rayon et son nombre de sommets. On ne pourra plus par contre ajouter de points dans le polygone. Proposer une modélisation UML de cette classe. Quel est son lien avec la classe \texttt{Polygon}.
+
+\section{L'héritage dans la vraie vie}
+En pratique, on utilise le plus souvent l'héritage pour réutiliser des classes complexes et déjà définies dans des librairies. Par exemple, on peut utiliser des librairies d'UI pour définir facilement notre propre fenêtre qu'on pourra ainsi utiliser sans avoir à redéfinir chaque fois les paramètres qui seront toujours les mêmes dans notre programme. Proposer le code d'une classe \texttt{MaFenetre} héritant de \texttt{gui} de la librairie \texttt{appJar} que nous avons utilisée dans le TP précédent qui :
+\begin{itemize}
+	\item a un fond orange (on pourra utiliser la méthode \texttt{setBg(color)} de \texttt{appJar})
+	\item a un titre "Notre programme" (avec \texttt{setTitle(title)})
+	\item est de taille 800x800 (\texttt{setGeometry(height, width)})
+\end{itemize}
+
+\section{Design pattern composite}
+On va utiliser ici le design pattern \emph{composite} qui permet d'utiliser un ensemble d'objets comme on utiliserait un objet simple.
+
+\subsection{Expression arithmétique}
+On suppose que l'on a deux opérations : + et *. En représentant chaque opération par un noeud, proposer une structure en arbre pour représenter l'expression : $2*(3*x+y+z)+t$.
+
+\subsection{Composite}
+Le design pattern composite comprend plusieurs modèles de classes :
+\begin{itemize}
+	\item la \emph{feuille} : l'objet de base,
+	\item les \emph{composites} qui représentent les composants qui ont des enfants et qui permettent la manipulation de ces enfants,
+	\item le \emph{composant} qui est l'abstraction de tous les composants (incluant les composites et les feuilles).
+\end{itemize}
+On souhaite pouvoir faire des opérations de dés et faire par exemple \texttt{3 * d6 + d6} en écrivant \texttt{d6.mult(3).add(d6)}. Proposer une modélisation UML permettant de faire de telles opérations et utilisant le design pattern composite.
+
+\end{document}
+
