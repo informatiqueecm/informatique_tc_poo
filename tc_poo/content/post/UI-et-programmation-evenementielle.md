@@ -6,7 +6,7 @@ weight = 2
 
 ## Introduction
 
-Cette séance es consacrée à la programmation évènementielle et son appication à la création d'UI en utilisant le design pattern MVC.
+Cette séance est consacrée à la programmation évènementielle et son application à la création d'UI en utilisant le design pattern MVC.
 
 ## Les bases
 
@@ -18,7 +18,7 @@ Cette séance es consacrée à la programmation évènementielle et son appicati
 
 Vous allez utiliser ce que nous avons fait en TD pour créer une UI permettant de jouer aux cartes.
 
-Les images des cartes sont placées dans le fichier zip [`resources.zip`](/ressources/resources.zip) dézipez le pour pouvoir les utiliser.
+Les images des cartes sont placées dans le fichier zip [`resources.zip`](/ressources/resources.zip) dézippez le pour pouvoir les utiliser.
 
 
 
@@ -72,8 +72,8 @@ def test_image():
 
 ### Choix d'une carte
 
-Le code suivant crée une carte selon ce qui est sélectionné dans les *option boxs*.
-Exécutez le code et comprenez comment tout ceci fonctionne. Assurez vous que vous avez bien dézipé le fichier `resources.zip` pour que python trouve bien les différentes images.
+Le code suivant crée une carte selon ce qui est sélectionné dans les *option boxes*.
+Exécutez le code et comprenez comment tout ceci fonctionne. Assurez vous que vous avez bien dézippé le fichier `resources.zip` pour que python trouve bien les différentes images.
 
 
 
@@ -105,7 +105,7 @@ Exécutez le code et comprenez comment tout ceci fonctionne. Assurez vous que vo
 
 ## Création d'un deck
 
-Un deck est un tas de cartes. Nous allons créer petit à petit cette classe en lui  ajoutant des fonctionnalités. Vous allez ici expérimenter votre première vrai expérience de [TDD](https://fr.wikipedia.org/wiki/Test_driven_development). C
+Un deck est un tas de cartes. Nous allons créer petit à petit cette classe en lui ajoutant des fonctionnalités. Vous allez ici expérimenter votre première vraie expérience de [TDD](https://fr.wikipedia.org/wiki/Test_driven_development). 
 
 ### Préparation
 
@@ -148,7 +148,7 @@ On va maintenant ajouter petit à petit les tests qui vont nous permettre d'ajou
 
 Un deck est un conteneur. Il doit être vide à la création et on doit pouvoir lui ajouter des cartes. 
 
-On commence par un test vérifiant que l'on a créé une une méthode `__len__` permettant d'utiliser la commande `len()` de python : 
+On commence par un test vérifiant que l'on a créé une méthode `__len__` permettant d'utiliser la commande `len()` de python : 
 
 {{<highlight python>}}
 def test_deck_empty_at_creation():
@@ -170,7 +170,7 @@ def test_add_card():
 
 Puis on écrit le code correspondant. On ne sait cependant pas si la bonne carte a été ajoutée. On va régler ce problème avec la fonctionnalité suivante.
 
-### ajout/suppression de la carte du dessus
+### Ajout/suppression de la carte du dessus
 
 Un deck doit être une LIFO. Pour être sur que ceci soit ok, on va ajouter une méthode permettant de rendre la carte du dessus 
 
@@ -207,10 +207,10 @@ def test_remove_from_empty_deck():
     assert deck.remove() is None
 {{</highlight >}}
 
-Faite le code correspondant.
+Faites le code correspondant.
 
 
-Puis que l'on récupère bien les carte dans l'ordre  : 
+Puis que l'on récupère bien les cartes dans l'ordre  : 
 
 {{<highlight python>}}
 def test_remove():
@@ -227,21 +227,20 @@ def test_remove():
 ## UI
 
 
-On vous demande d'utiliser l'UI précédente pour créer :
+On vous demande d'utiliser l'UI précédente pour avoir :
 
-- deux deck côte à côte :
-    - les deux decks sont initialement vide
-    - cliquer sur un bouton ajoute une carte (que l'on choisit) au premier deck
+- deux decks côte à côte initialement vides
+- un bouton qui ajoute une carte (que l'on choisit grâce à deux menus déroulants) au premier deck
 - un bouton permettant de passer une carte du premier au second deck. 
 
 
-Vous pouvez une fois ceci réalisé ajouter deux chaines de caractères permettant de savoir le nombre de cartes dans chaque deck.    
+Vous pouvez une fois ceci réalisé ajouter deux chaînes de caractères permettant de savoir le nombre de cartes dans chaque deck.    
 
 
 
 ## Comparaisons de cartes
 
-En utilisant les méthode de comparaison vues à [la toute fin du TP1]({{< ref "post/classe-et-objet.md#pour-aller-plus-loin" >}}), codez les méthodes permettant de faire passer les tests suivant : 
+En utilisant les méthodes de comparaison vues à [la toute fin du TP1]({{< ref "post/classe-et-objet.md#pour-aller-plus-loin" >}}), codez les méthodes permettant de faire passer les tests suivants : 
 
 {{<highlight python>}}
 def test_card_equality():
@@ -263,4 +262,4 @@ def test_card_larger_than():
 {{</highlight >}}    
 
 
-On pourra ensuite ajouter entre les 2 deck un champe permettant de savoir si la carte du deck de gauche est égale, inférieure ou supérieure à la carte du deck de droite.
+On pourra ensuite ajouter entre les 2 decks un champ permettant de savoir si la carte du deck de gauche est égale, inférieure ou supérieure à la carte du deck de droite.

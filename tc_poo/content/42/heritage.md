@@ -236,36 +236,30 @@ int((d1 + d2).roll())
 
 ## TP
 
-### Une fenêtre personnalisée
+### L'interface du dé
 
-C'est exactement ce qu'on a vu en TD. Juste pour leur montrer en vrai cette idée de réutiliser les classes compliquées qu'on peut trouver dans des librairies.
-
-### Les entrées utilisateur
-
-On veut ici montrer rapidement comment récupérer des choses données par l'utilisateur et plus particulièrement leur expliquer qu'il faut toujours vérifier que ce que l'utilisateur entre correspond à ce qu'on attendait pour éviter l'apocalypse. Le code final qu'on les aide à mettre en place ressemblerait à :
+On met juste les deux lignes qui vont bien dans la fonction `press_roll` :
 
 {{<highlight python>}}
+
 from appJar import gui
+from dice import Dice
 
-app = gui("TP3")
+app = gui()
+app.setGeometry(500, 200)
 
+def press_roll(button):
+    dice.roll()
+    app.setLabel("dice", str(dice.get_position()))
 
-def get_integer(button):
-    try:
-        user_int = int(app.getEntry("user_entry"))
-    except ValueError:
-        app.errorBox("Vous êtes vilain", "On vous avait demandé un entier")
-        user_int = -1
-    print(user_int)
-
-app.addLabel("user_int", "Enter an integer:", 0, 0)
-app.addEntry("user_entry", 0, 1)
-app.addButton("OK", get_integer, 0, 3)
+dice = Dice()
+app.addLabel("position", "Position : ", 0, 0)
+app.addLabel("dice", str(dice.get_position()), 0, 1)
+app.addButton("Roll", press_roll, 0, 2)
 
 app.go()
-{{</highlight>}}
 
-Ils n'ont jamais vu de `try`, `except` donc il faut bien leur [expliquer](https://docs.python.org/2/tutorial/errors.html).
+{{</highlight>}}
 
 ### StatDice
 
@@ -286,14 +280,81 @@ class StatDice(Dice):
         self.memory[new_position] += 1
 
     def stats(self):
-        n_roll = sum(self.memory[value] for value in self.memory)
+        n_roll = sum(self.memory.values())
         return {value: self.memory[value] / n_roll for value in self.memory}
+
+    def mean(self):
+        n_roll = sum(self.memory.values())
+        return sum(value * self.memory[value] for value in self.memory) / n_roll
 
 {{</highlight>}}
 
-### L'interface avec les dés qui comptent
+### Afficher les stats
 
-Vous trouverez un exemple de code dessous. Il y a peu de chances que des étudiant·e·s arrivent à le faire entièrement mais sait-on jamais. Avec les validationEntry, on peut colorer les cases en vert ou rouge selon que l'entrée convient ou pas, ce qui permet d'éviter d'envoyer des pop-ups tout le temps et de bien pointer où est le problème. On pourrait ajouter une somme des probas déjà entrées pour ne pas avoir besoin de compter soi-même. Les [events](http://appjar.info/pythonEvents/) permettent de le faire en liant une fonction aux champs de texte qui sera appelée dès que l'utilisateur modifie le champ.
+On leur fait ensuite ajouter des choses sur l'interface en s'inspirant du code donné avant, pour un résultat qui ressemble à :
+
+{{<highlight python>}}
+
+from appJar import gui
+from stats_dice import StatDice
+
+app = gui()
+app.setGeometry(500, 200)
+
+def press_roll(button):
+    n_roll = 0
+    if button == "Roll":
+        n_roll = 1
+    elif button == "Roll 10 times":
+        n_roll = 10
+    elif button == "Roll 100 times":
+        n_roll = 100
+    for i in range(n_roll):
+        dice.roll()
+    app.setLabel("dice", str(dice.get_position()))
+    app.setLabel("dice_mean", str(dice.mean()))
+
+dice = StatDice()
+app.addLabel("position", "Position : ", 0, 0)
+app.addLabel("dice", str(dice.get_position()), 0, 1)
+app.addButton("Roll", press_roll, 0, 2)
+app.addButton("Roll 10 times", press_roll, 0, 3)
+app.addButton("Roll 100 times", press_roll, 0, 4)
+app.addLabel("mean", "Mean : ", 1, 0)
+app.addLabel("dice_mean", "0", 1, 1)
+
+app.go()
+
+{{</highlight>}}
+
+Pour info, le bouton transmis en paramètre des fonctions qu'on associe à un bouton est tout simplement la chaîne de caractères le représentant, donc ce qui est écrit dedans.
+
+### Les entrées utilisateur
+
+On veut ici montrer rapidement comment récupérer des choses données par l'utilisateur et plus particulièrement leur expliquer qu'il faut toujours vérifier que ce que l'utilisateur entre correspond à ce qu'on attendait pour éviter l'apocalypse. Le bout de code final correspondant juste à la lecture du champ ressemblerait à :
+
+{{<highlight python>}}
+
+def get_integer(button):
+    try:
+        user_int = int(app.getEntry("user_entry"))
+    except ValueError:
+        app.errorBox("Vous êtes vilain", "On vous avait demandé un entier")
+        user_int = -1
+    print(user_int)
+
+app.addLabel("user_int", "Enter an integer:", 0, 0)
+app.addEntry("user_entry", 0, 1)
+app.addButton("OK", get_integer, 0, 3)
+
+{{</highlight>}}
+
+Ils n'ont jamais vu de `try`, `except` donc il faut bien leur [expliquer](https://docs.python.org/2/tutorial/errors.html).
+
+
+### L'interface plus complète
+
+Vous trouverez un exemple de code dessous. Il y a peu de chances que des étudiant·e·s arrivent à le faire entièrement mais sait-on jamais. Avec les validationEntry, on peut colorer les cases en vert ou rouge selon que l'entrée convient ou pas, ce qui permet d'éviter d'envoyer des pop-ups tout le temps et de bien pointer où est le problème. Par contre, la version de appJar des machines de l'école n'est peut-être pas suffisamment récente pour faire ça. On pourrait ajouter une somme des probas déjà entrées pour ne pas avoir besoin de compter soi-même. Les [events](http://appjar.info/pythonEvents/) permettent de le faire en liant une fonction aux champs de texte qui sera appelée dès que l'utilisateur modifie le champ.
 
 {{<highlight python>}}
 
