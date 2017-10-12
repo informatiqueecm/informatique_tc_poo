@@ -387,6 +387,8 @@ On a été obligé de tester des attributs privé dans test `test_creation` (la 
 
 On a fabriquer une méthode `update_ui` qui est appelée à chaque fois que l'UI change. Ceci permet de ne mettre qu'à un endroit toute les modification possibles.
 
+On a également lié la même méthode à deux boutons différent : `on_click_move_card`. La différence se fait à l'appel, le paramètre de la méthode étant le label (qui sert également d'identifiant) du bouton.
+
 {{<highlight python >}}
 from appJar import gui
 
