@@ -10,9 +10,9 @@ Le but de cette séance est montrer la méthode de programmation évènementiell
 
 ## Éléments de cours
 
-On insistera encore une fois sur les namespaces et sur les fonctions qui sont des objets comme les autres. Ceci nous permettra de facilement montrer comme configurer les actions d'une UI.
+On insistera encore une fois sur les namespaces et sur les fonctions qui sont des objets comme les autres. Ceci nous permettra de facilement montrer comment configurer les actions d'une UI.
 
-Pour les UI, on insistera que l'interface, c'est aussi (voir plus) important que le reste du code puisque c'est par là que seront utilisés vos programmes : donc tout doit être justifié.
+Pour les UI, on insistera que l'interface, c'est aussi (voire plus) important que le reste du code puisque c'est par là que seront utilisés vos programmes : donc tout doit être justifié.
 
 ## Ressources 
 
@@ -26,7 +26,7 @@ Pour les UI, on insistera que l'interface, c'est aussi (voir plus) important que
 
 ### UI/UX
 
-Je ne saurait trop conseiller la lecture de [Don't make me think](https://www.sensible.com/dmmt.html), qi est à la bibliothèque pour une introduction en douceur aux UI.
+Je ne saurais trop conseiller la lecture de [Don't make me think](https://www.sensible.com/dmmt.html), qi est à la bibliothèque pour une introduction en douceur aux UI.
 
 
 ## TD
@@ -316,7 +316,7 @@ class Deck:
 
 ### test_card.py
 
-On a été obligé de tester des attributs privé dans test `test_creation` (la variable [motorhead](https://www.youtube.com/watch?v=aSsqavYIgNc)). On ime pas trop faire ça, normalement, on ne préfère tester que les fonctionnalités. Ce test est un état intermédiaire. Une fois le test du `==` réalisé (voir pour aller plus loin) on pourra supprimer ce test.
+On a été obligé de tester des attributs privés dans test `test_creation` (la variable [motorhead](https://www.youtube.com/watch?v=aSsqavYIgNc)). On n'aime pas trop faire ça, normalement, on préfère ne tester que les fonctionnalités. Ce test est un état intermédiaire. Une fois le test du `==` réalisé (voir "pour aller plus loin"), on pourra supprimer ce test.
 
 
 {{<highlight python >}}
@@ -385,9 +385,9 @@ On a été obligé de tester des attributs privé dans test `test_creation` (la 
 
 ### main.py
 
-On a fabriquer une méthode `update_ui` qui est appelée à chaque fois que l'UI change. Ceci permet de ne mettre qu'à un endroit toute les modification possibles.
+On a fabriqué une méthode `update_ui` qui est appelée à chaque fois que l'UI change. Ceci permet de ne mettre qu'à un endroit toutes les modifications possibles.
 
-On a également lié la même méthode à deux boutons différent : `on_click_move_card`. La différence se fait à l'appel, le paramètre de la méthode étant le label (qui sert également d'identifiant) du bouton.
+On a également lié la même méthode à deux boutons différents : `on_click_move_card`. La différence se fait à l'appel, le paramètre de la méthode étant le label (qui sert également d'identifiant) du bouton.
 
 {{<highlight python >}}
 from appJar import gui
