@@ -3,16 +3,30 @@ title = "2 - UI et programmation évènementielle"
 weight = 2
 +++
 
+{{<note>}}
+Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorque l'on construit une UI.
+{{</note>}}
+
 
 ## Éléments de cours
 
-<note>
-Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorque l'on construit une UI.
-</note>
+On insistera encore une fois sur les namespaces et sur les fonctions qui sont des objets comme les autres. Ceci nous permettra de facilement montrer comme configurer les actions d'une UI.
+
+Pour les UI, on insistera que l'interface, c'est aussi (voir plus) important que le reste du code puisque c'est par là que seront utilisés vos programmes : donc tout doit être justifié.
+
+## Ressources 
 
  - http://appjar.info
+ 
+### MVC 
+ 
  - https://fr.wikipedia.org/wiki/Programmation_événementielle
  - http://sametmax.com/quest-de-que-mvc-et-a-quoi-ca-sert/ 
+
+
+### UI/UX
+
+Je ne saurait trop conseiller la lecture de [Don't make me think](https://www.sensible.com/dmmt.html), qi est à la bibliothèque pour une introduction en douceur aux UI.
 
 
 ## TD
@@ -215,3 +229,330 @@ En rendant le texte éditable, il faut interdire de taper autre chose que des en
 {{< /highlight >}}
 
 On a mis le bouton {{< menu_code >}}-1{{< /menu_code >}} à gauche pour que l'on comprenne mieux la relation entre les différentes partie de l'UI.
+
+
+### Les dés
+
+Une façon de faire le code ci-après. L'UML est quasi-identique au précédent. J'ai ajouté la bonne pratique de mettre les noms des boutons en constante et un moyen de dimensioner la fenêtre.
+
+
+{{<highlight python >}}
+    from appJar import gui
+    from dice import Dice
+
+
+    dice = Dice()
+    DICE_LABEL = "dice value"
+
+
+    def on_click(button):
+        dice.roll()
+
+        app.setLabel(DICE_LABEL, dice.get_value())
+
+    app = gui()
+    app.setGeometry(400, 200)
+    
+    app.addLabel(DICE_LABEL, dice.get_value(), 0, 0)
+    app.addButton("roll", on_click, 0, 1)
+
+
+    app.go()
+{{</highlight >}}    
+
+
+## TP
+
+
+
+### card.py
+
+On a mis les deux classes dans le même fichier. On aurait tout aussi bien pu mettre une classe par fichier comme en Java. Comme le fichier reste petit en taille, on a considéré que c'est encore OK de ne garder qu'un unique fichier.
+
+{{<highlight python >}}
+class Card:
+    SPADES = "spade"
+    HEARTS = "heart"
+    CLUBS = "club"
+    DIAMONDS = "diamond"
+
+    def __init__(self, value, color):
+        self._value = value
+        self._color = color
+
+    def __str__(self):
+        return "Card(" + str(self._value) + ", " + str(self._color) + ")"
+
+    def image(self):
+        return "resources/Playing_card_" + self._color + "_" + str(self._value) + ".gif"
+
+
+class Deck:
+    def __init__(self):
+        self._cards = []
+
+    def __len__(self):
+        return len(self._cards)
+
+    def add(self, card):
+        self._cards.append(card)
+
+    def show(self):
+        return self._cards[-1]
+
+    def remove(self):
+        if len(self._cards) > 0:
+            return self._cards.pop()
+        else:
+            return None
+
+    def image(self):
+        if len(self._cards) == 0:
+            return 'resources/empty.gif'
+        else:
+            return self.show().image()    
+{{</highlight >}}
+
+
+### test_card.py
+
+On a été obligé de tester des attributs privé dans test `test_creation` (la variable [motorhead](https://www.youtube.com/watch?v=aSsqavYIgNc)). On ime pas trop faire ça, normalement, on ne préfère tester que les fonctionnalités. Ce test est un état intermédiaire. Une fois le test du `==` réalisé (voir pour aller plus loin) on pourra supprimer ce test.
+
+
+{{<highlight python >}}
+    from card import Card, Deck
+
+
+    def test_creation():
+        motorhead = Card(1, Card.SPADES)
+        assert motorhead._value == 1
+        assert motorhead._color == Card.SPADES
+
+
+    def test_str():
+        assert str(Card(1, Card.SPADES)) == 'Card(1, spade)'
+
+
+    def test_image():
+        assert Card(11, Card.DIAMONDS).image() == "resources/Playing_card_diamond_11.gif"
+
+
+    def test_deck_creation():
+        deck = Deck()
+        assert deck is not None
+
+
+    def test_deck_empty_at_creation():
+        deck = Deck()
+        assert len(deck) == 0
+
+
+    def test_add_card():
+        deck = Deck()
+        deck.add(Card(1, Card.SPADES))
+        assert len(deck) == 1
+
+
+    def test_show():
+        deck = Deck()
+        deck.add(Card(1, Card.SPADES))
+        card = Card(2, Card.SPADES)
+        deck.add(card)
+
+        assert deck.show() is card
+
+
+    def test_remove_from_empty_deck():
+        deck = Deck()
+
+        assert deck.remove() is None
+
+
+    def test_remove():
+        deck = Deck()
+        deck.add(Card(1, Card.SPADES))
+        card = Card(2, Card.SPADES)
+        deck.add(card)
+
+        assert deck.remove() is card
+        assert len(deck) == 1
+
+
+    def test_image_emty_deck():
+        assert Deck().image() == 'resources/empty.gif'
+{{</highlight >}}    
+
+
+### main.py
+
+On a fabriquer une méthode `update_ui` qui est appelée à chaque fois que l'UI change. Ceci permet de ne mettre qu'à un endroit toute les modification possibles.
+
+{{<highlight python >}}
+from appJar import gui
+
+from card import Card, Deck
+
+deck_left = Deck()
+deck_right = Deck()
+
+
+app = gui()
+
+
+app.addLabelOptionBox("color", [Card.DIAMONDS, Card.SPADES, Card.CLUBS, Card.HEARTS], 0, 0)
+app.addLabelOptionBox("value", [str(i) for i in range(1, 14)], 0, 1)
+
+
+def update_ui():
+    app.setImage("left_deck_image", deck_left.image())
+    app.setImage("right_deck_image", deck_right.image())
+    app.setLabel("left_len", str(len(deck_left)))
+    app.setLabel("right_len", str(len(deck_right)))
+
+
+def on_click(button):
+    color = app.getOptionBox("color")
+    value = app.getOptionBox("value")
+    deck_left.add(Card(int(value), color))
+    update_ui()
+
+app.addButton("add card", on_click, 1, 0, 2)
+
+app.addImage("left_deck_image", deck_left.image(), 2, 0, 2)
+app.addImage("right_deck_image", deck_right.image(), 2, 3, 2)
+
+app.addLabel("left_len", str(len(deck_left)), 3, 1)
+app.addLabel("right_len", str(len(deck_right)), 3, 4)
+
+
+def on_click_move_card(button):
+    if button == "->" and len(deck_left) > 0:
+        deck_right.add(deck_left.remove())
+    elif button == "<-" and len(deck_right) > 0:
+        deck_left.add(deck_right.remove())
+
+    update_ui()
+
+app.addButton("->", on_click_move_card, 4, 0, 2)
+app.addButton("<-", on_click_move_card, 4, 3, 2)
+
+app.go()
+    
+{{</highlight >}} 
+
+
+### Pour aller plus loin.
+
+
+Tout est placé dans un unique code.
+
+{{<highlight python >}}
+from appJar import gui
+
+class Card:
+    SPADES = "spade"
+    HEARTS = "heart"
+    CLUBS = "club"
+    DIAMONDS = "diamond"
+
+    def __init__(self, value, color):
+        self._value = value
+        self._color = color
+
+    def __str__(self):
+        return "Card(" + str(self._value) + ", " + str(self._color) + ")"
+
+    def __eq__(self, other):
+        return self._value == other._value and self._color == other._color
+
+    def __lt__(self, other):
+        return (other._value == 1 and self._value != 1) or 1 < self._value < other._value
+
+    def __gt__(self, other):
+        return (self._value == 1 and other._value != 1) or self._value > other._value > 1
+
+    def image(self):
+        return "resources/Playing_card_" + self._color + "_" + str(self._value) + ".gif"
+
+
+class Deck:
+    def __init__(self):
+        self._cards = []
+
+    def __len__(self):
+        return len(self._cards)
+
+    def add(self, card):
+        self._cards.append(card)
+
+    def show(self):
+        return self._cards[-1]
+
+    def remove(self):
+        if len(self._cards) > 0:
+            return self._cards.pop()
+        else:
+            return None
+
+    def image(self):
+        if len(self._cards) == 0:
+            return 'resources/empty.gif'
+        else:
+            return self.show().image()
+
+
+deck_left = Deck()
+deck_right = Deck()
+
+
+app = gui()
+
+
+app.addLabelOptionBox("color", [Card.DIAMONDS, Card.SPADES, Card.CLUBS, Card.HEARTS], 0, 0)
+app.addLabelOptionBox("value", [str(i) for i in range(1, 14)], 0, 1)
+
+
+def update_ui():
+    app.setImage("left_deck_image", deck_left.image())
+    app.setImage("right_deck_image", deck_right.image())
+    app.setLabel("left_len", str(len(deck_left)))
+    app.setLabel("right_len", str(len(deck_right)))
+
+    if len(deck_left) == 0 or len(deck_right) == 0:
+        app.setLabel("compare", "?")
+    elif deck_left.show() == deck_right.show():
+        app.setLabel("compare", "=")
+    elif deck_left.show() > deck_right.show():
+        app.setLabel("compare", ">")
+    else:
+        app.setLabel("compare", "<")
+
+
+def on_click(button):
+    color = app.getOptionBox("color")
+    value = app.getOptionBox("value")
+    deck_left.add(Card(int(value), color))
+    update_ui()
+
+app.addButton("add card", on_click, 1, 0, 2)
+
+app.addImage("left_deck_image", deck_left.image(), 2, 0, 2)
+app.addImage("right_deck_image", deck_right.image(), 2, 4, 2)
+
+app.addLabel("left_len", str(len(deck_left)), 3, 1)
+app.addLabel("right_len", str(len(deck_right)), 3, 5)
+app.addLabel("compare", "?", 2, 3)
+
+def on_click_move_card(button):
+    if button == "->" and len(deck_left) > 0:
+        deck_right.add(deck_left.remove())
+    elif button == "<-" and len(deck_right) > 0:
+        deck_left.add(deck_right.remove())
+
+    update_ui()
+
+app.addButton("->", on_click_move_card, 4, 0, 2)
+app.addButton("<-", on_click_move_card, 4, 4, 2)
+
+app.go()   
+{{</highlight >}}     

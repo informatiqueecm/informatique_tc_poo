@@ -36,7 +36,6 @@
 \begin{lstlisting}
 une_liste = []
 truc = une_liste.append
-
 truc("?")
 
 print(une_liste)
@@ -45,8 +44,7 @@ print(une_liste)
 
 
 
-Dans le code ci-dessus, que représente \verb|append|~?
-Exécutez-le  en montrant toutes les lignes de codes et les {\em namespaces} utilisés.
+Dans le code ci-dessus, que représente \verb|append|~? Exécutez-le  en montrant toutes les lignes de codes et les {\em namespaces} utilisés.
 
 
 \subsection{Fonctions de fonction}
@@ -64,9 +62,6 @@ Codez cette fonction et vérifiez (à la main) qu'elle passe bien vos tests en n
 \section{Programmation d'UI}
 
 On veut créer une fenêtre contenant un champ texte de valeur initiale 0 et un bouton. Lorsque l'on clique sur le bouton, la valeur du texte augmente de 1.
-
-\subsection{Design}
-
 Proposez un design de fenêtre permettant de réaliser cette interface.
 Comment la testeriez-vous~?
 
@@ -79,15 +74,11 @@ Un façon pratique de développer une interface est d'utiliser le modèle MVC (M
   \item {\bf Contrôleur} est ce qui fait le lien entre Vue et Modèle
 
 \end{itemize}
+Proposez un modèle UML en 3 classes (Modèle, Vue et Contrôleur) permettant de réaliser cette application.Comment la testeriez-vous avec des tests unitaires ?
 
+\subsubsection{MVC et appjar.info}
 
-Proposez un modèle UML en 3 classes (Modèle, Vue et Contrôleur) permettant de réaliser cette application.
-
-Comment la testeriez-vous avec des tests unitaires ?
-
-\subsection{MVC et appjar.info}
-
-Le code suivant utilise la bibliothèque \url{appjar.info} pour coder l'UI.
+Le code suivant utilise la bibliothèque \url{appjar.info} pour coder l'UI. Associez le code ci-dessus au modèle MVC. Où sont les différentes parties ? 
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -109,13 +100,16 @@ app.go()
 print("c'est fini.")
 \end{lstlisting}
 
-Associez le code ci-dessus au modèle MVC. Où sont les différentes parties ? 
 
 
-\subsection{Ajout de boutons}
+
+\subsubsection{Ajout de boutons}
 
 Ajoutez à  l'application un bouton `-1' qui décrémente la valeur affichée de 1 si cette valeur est $>0$.
 
+\section{Les dés}
+
+Proposez l'UI et le modèle UML d'une fenêtre permettant de lancer un dé. Comment coderiez vous le tout avec \url{appjar.info} ?
 
 \end{document}
 

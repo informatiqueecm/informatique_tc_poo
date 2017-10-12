@@ -4,14 +4,40 @@ weight = 1
 +++
 
 
+{{<note>}}
+Le but de cette séance est de montrer les concepts fondamentaux de classe et d'objet.
+{{</note>}}
 
 
 ## Éléments de cours
 
-
-{{<note>}}
-Le but de cette séance est de montrer les concepts fondamentaux de classe et d'objet.
+{{<note warning>}}
+Les étudiants n'ont aucune notion de classe, d'objets ou d'UML. Il faudra donc tout leur expliquer.
 {{</note>}}
+
+Avant le début du TD, on peut faire un petit exposé sur les classes/objets. On pourra aborder le formalisme UML en créant le dé. Dire qu'en python, beaucoup de choses sont des [conventions](https://en.wikipedia.org/wiki/Convention_over_configuration) (variable privée, premier nom est self, ...) mais tout le monde s'y tient. 
+
+Trois notions sont fondamentales et il faut y passer du temps :
+
+- méthodes spéciales et attributs spéciaux :
+    - qui commencent par `_` : non public (c'est en fait une convention)
+    - qui commencent par `__` : privé (non disponible pour les descendants)
+    - qui commencent et finissent par `__` : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisés dans des cas précis et documentés.
+
+
+- l'ordre d'évaluation détermine la [visibilité des variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en python et se règle en sachant quel namespace est utilisé. Ainsi : 
+
+
+- attributs des objets/classes :
+    - `__init__` pour le constructeur dans lequel on met les attributs sous la forme self.attribute
+    - namespace de Class et d'Objet (self.attribut != Class.attribut). D'abort objet puis classe (les méthodes s'y trouvent par exemple) :
+        - les attributs de classes s'écrivent comme des méthodes (ils se placent, comme les méthodes, dans le namespace de la classe)
+        - `Class.attribute` masqué par `self.attribute` si existe car le namespace de l'objet est vu avant celui de la classe).
+
+
+## Ressources 
+
+Divers tutos sur le net pour aborder les notions objet/python utilisées cette séance
 
 ### Python général
 
@@ -29,18 +55,6 @@ Le but de cette séance est de montrer les concepts fondamentaux de classe et d'
 
   - les [arguments par défaut](https://docs.python.org/3/tutorial/controlflow.html#default-argument-values)
   - les [namespaces](https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces)
-    - l'ordre d'évaluation détermine la [visibilité des variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en python et se règle en sachant quel namespace est utilisé
-    - `Class.attribute` masqué par `self.attribute` si existe car le namespace de l'objet est vu avant celui de la classe.
-
-  - attributs des objets/classes :
-
-    - `__init__` pour le constructeur dans lequel on met les attributs sous la forme self.attribute
-    - les attributs de classes s'écrivent comme des méthodes
-
-  - méthodes spéciales et attributs spéciaux :
-    - qui commencent par `_` : non public (c'est en fait une convention)
-    - qui commencent par `__` : privé (non disponible pour les descendants)
-    - qui commencent et finissent par `__` : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisés dans des cas précis et documentés.
 
 
 ## TD
@@ -49,17 +63,25 @@ Le but de cette séance est de montrer les concepts fondamentaux de classe et d'
 
 > [version pdf du sujet (2 pages par feuille)](/ressources/TD_1_impression.pdf)
 
+
 ### Un dé
+
+Commencez simple avec les éléments minimaux pour créer un dé. Le faire d'abord en UML, mettre des exemples d'utilisation du dé en python, puis  puis mettre le code de la classe.
+
+{{<note warning>}}
+ bien expliciter `self`. 
+{{< /note >}}
+
 
 Diagramme UML du dé classique :
 
-![dice](/img/dice_init.png)
+![dice](/img/dice_init.png#center)
 
 Les tests sont en dessous dans la correction du TP.
 
 Diagramme UML du dé pipé :
 
-![dice_proba](/img/dice_proba.png)
+![dice_proba](/img/dice_proba.png#center)
 
 On ajoute juste un attribut pour la distribution de proba sous forme de liste de proba de chaque face.
 Pour le `roll`, on peut utiliser le `numpy.random.choice(liste_de_valeurs, p=liste_de_probas)`.
@@ -94,12 +116,17 @@ Pour les exemples :
 
 Et le GreenCarpet :
 
-![green_carpet](/img/greenCarpet.png)
+![green_carpet](/img/greenCarpet.png#center)
 
 Le code est en dessous dans la correction du TP.
 
 
 ## TP
+
+
+Les étudiant·e·s commencent par utiliser le module `random` puis on leur demande d'utiliser celui de `numpy` mais ils oublient de changer l'import (la fonction `choice` du module random de python ne permet pas de choisir les probabilités).
+
+
 ### Dice et GreenCarpet
 
 {{<highlight python >}}

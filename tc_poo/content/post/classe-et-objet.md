@@ -74,9 +74,10 @@ def test_roll:
 
 ### Un dé pipé
 
-Nous allons maintenant améliorer notre dé avec la deuxième version de la classe vue en TD : le dé pipé. Il faudra donc ajouter un nouvel attribut permettant de renseigner les probabilités de chaque face.
+Nous allons maintenant améliorer notre dé avec la deuxième version de la classe vue en TD : le dé pipé. Il faudra donc ajouter un nouvel attribut permettant de renseigner les probabilités de chaque face. On ajoutera ces probabilités en paramètre optionnel à l'initialisation du dé et sous forme de *setter/getter*.
 
-Ajoutez cet attribut et modifiez les tests impactés par ce changement :
+
+Pour l'initialisation, ajoutez cet attribut et modifiez les tests impactés par ce changement :
 
   - `test_dice_creation_no_argument()` pour vérifier la valeur par défaut du nouvel attribut si aucun argument n'est donné au constructeur
   - `test_dice_creation_initial_position()` vérifier la valeur par défaut du nouvel attribut si seule la position initiale est donnée au constructeur
@@ -123,7 +124,7 @@ Vous devriez obtenir quelque chose comme :
 <dice.Dice object at 0x7f40e518a668>
 {{</highlight>}}
 
-Le `print` appelle la méthode `__str__` de notre classe. Nous ne l'avons pas définie, c'est donc la méthode par défaut de tous les objets python qui est appelée. Comme vous le contastez, elle n'est pas très intéressante pour nous. Il faut donc la définir dans notre classe.
+Le `print` appelle la méthode `__str__` de notre classe. Nous ne l'avons pas définie, c'est donc la méthode par défaut de tous les objets python qui est appelée. Comme vous le constatez, elle n'est pas très intéressante pour nous. Il faut donc la définir dans notre classe.
 
 Définissez une méthode permettant d'écrire le dé comme une chaîne de caractères sous la forme `"Dice(position=1, probabilities=[1, 0, 0, 0, 0, 0])"`.
 
