@@ -156,7 +156,7 @@ def test_deck_empty_at_creation():
     assert len(deck) == 0
 {{</highlight >}}
 
-Le test va rater puisque vous n'avez pas pas encore écrit le code correspondant. Faites le et voyez comment votre fonctionnalité est implémentée puisque votre test passe.
+Le test va rater puisque vous n'avez pas pas encore écrit le code correspondant. 
 
 
 On ajoute un test qui vérifie que l'on peut ajouter une carte au deck : 
