@@ -10,7 +10,7 @@ Cette séance est consacrée à la notion d'héritage et à son utilisation. Nou
 
 ## Les bases
 
-> [Le sujet de td](/ressources/td_3.pdf)
+> [Le sujet de td](/ressources/td_3_impression.pdf)
 
 ## Interface d'un dé
 
@@ -169,7 +169,7 @@ Avec la fonction `int` appliquée à une chaîne de caractères qu'on ne peut pa
 
 C'est mieux mais l'utilisateur n'a toujours pas d'informations sur son erreur directement sur l'interface. Utilisez une [error box](http://appjar.info/pythonDialogs/#message-boxes) dans la fonction `get_integer` pour afficher un pop-up d'erreur à l'utilisateur si son entrée ne correspond pas à ce qu'on attend.
 
-## Améliorer son interface
+## Allez plus loin
 
 Ajoutez un bouton permettant de recommencer avec un nouveau dé.
 

@@ -110,6 +110,7 @@ Cette fois, vous déterminerez et écrirez vous-même les tests unitaires qui v�
 
 Python dispose de méthodes spéciales qui peuvent être invoquées en utilisant une syntaxe particulière (par exemple les opérations arithmétiques `+, -, *, \` entre objets que nous avons créés nous-mêmes). Vous en trouverez une liste exhaustive sur la [doc officielle](https://docs.python.org/3/reference/datamodel.html#special-method-names). Nous allons en utiliser ici quelques-unes sur nos deux classes. Ces méthodes se présentent toujours sous la forme `__nom_de_la_methode__`.
 
+
 ### Dice
 Essayez de taper :
 

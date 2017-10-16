@@ -4,7 +4,7 @@ weight = 2
 +++
 
 {{<note>}}
-Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorque l'on construit une UI.
+Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorsque l'on construit une UI.
 {{</note>}}
 
 
