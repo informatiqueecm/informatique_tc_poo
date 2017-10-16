@@ -168,7 +168,7 @@ def test_add_card():
     assert len(deck) == 1
 {{</highlight >}}
 
-Puis on écrit le code correspondant. On ne sait cependant pas si la bonne carte a été ajoutée. On va régler ce problème avec la fonctionnalité suivante.
+Puis on écrit le code correspondant (on pourra ajouter un attribut liste au deck. N'oubliez alors pas de l'initialiser dans le constructeur). On ne sait cependant pas si la bonne carte a été ajoutée. On va régler ce problème avec la fonctionnalité suivante.
 
 ### Ajout/suppression de la carte du dessus
 
@@ -232,6 +232,8 @@ On vous demande d'utiliser l'UI précédente pour avoir :
 - deux decks côte à côte initialement vides
 - un bouton qui ajoute une carte (que l'on choisit grâce à deux menus déroulants) au premier deck
 - un bouton permettant de passer une carte du premier au second deck. 
+
+Une façon (élégante) de gérer l'affichage des cartes pourra être de coder une méthode `image` à deck
 
 
 Vous pouvez une fois ceci réalisé ajouter deux chaînes de caractères permettant de savoir le nombre de cartes dans chaque deck.    
