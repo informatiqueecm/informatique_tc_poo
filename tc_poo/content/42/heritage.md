@@ -83,6 +83,26 @@ f.go()
 
 Rien de très compliqué mais cela permet de clarifier l'utilisation de l'héritage et de leur montrer que dans la vraie vie on l'utilisera surtout pour hériter de classes compliquées présentes dans des librairies. Insister à nouveau sur le `super` et les namespaces pour tous les `self.setQQChose()`.
 
+Il est parfois utile de passer tous les arguments du constructeur de la classe fille à la classe mère. Ici par exemple on peut spécifier à gui son nom ou sa taille (http://appjar.info/#appearance-counts).
+
+Pour cela, on va les passer *en bloc*, sans avoir besoin de les spécifier tous. On mettra en premier les argument de la classe fille puis de façon générique les arguments de la classe mère :
+
+{{<highlight python>}}
+from appJar import gui
+
+
+class NotreFenetre(gui):
+    def __init__(self, taille_font, **kwargs):
+        super().__init__(**kwargs)
+        self.setTitle("Notre incroyable programme")
+        self.setGeometry(800, 900)
+        self.setBg("orange")
+        self.setFont(taille_font)
+    
+{{</highlight>}}
+
+
+Pour plus d'info sur cette pratique, voir par exemple :  https://www.digitalocean.com/community/tutorials/how-to-use-args-and-kwargs-in-python-3
 
 ### Exercice 3
 
