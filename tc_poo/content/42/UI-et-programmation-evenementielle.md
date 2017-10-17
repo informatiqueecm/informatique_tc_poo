@@ -4,7 +4,7 @@ weight = 2
 +++
 
 {{<note>}}
-Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorsque l'on construit une UI.
+Le but de cette séance est montrer la méthode de programmation évènementielle, utilisée lorque l'on construit une UI.
 {{</note>}}
 
 
@@ -44,7 +44,7 @@ Voir le corrigé de la première séance pour les namespaces. Ici on montre que 
   
 #### Les fonctions sont des variables comme les autres
 
-Pas de réelle difficultés, on associe juste la méthode append définie dans la class `list` et appliquée à l'objet `une_liste` à une variable nommée `ma_liste` du namespace global. 
+Pas de réelles difficultés, on associe juste la méthode append définie dans la class `list` et appliquée à l'objet `une_liste` à une variable nommée `ma_liste` du namespace global. 
 
 Lorsque l'on utilise cette variable, c'est une fonction (elle est de type `<class 'builtin_function_or_method'>`) et elle ajoute l'argument à la liste de nom `ma_liste`.
 	
@@ -267,7 +267,7 @@ Une façon de faire le code ci-après. L'UML est quasi-identique au précédent.
 
 ### card.py
 
-On a mis les deux classes dans le même fichier. On aurait tout aussi bien pu mettre une classe par fichier comme en Java. Comme le fichier reste petit en taille, on a considéré que c'est encore OK de ne garder qu'un unique fichier.
+On a mis les deux classes dans le même fichier. On aurait tout aussi bien pu mettre une classe par fichier comme en Java. Comme le fichier reste petit en taille, on a considéré que c'est encore OK de ne garder qu'un unique fichier. Dans cette correction, on utilise `__len__` pour la classe `Deck` pour pouvoir utiliser la commande `len` de python et être plus lisible mais on demande aux étudiants d'écrire plutôt une méthode `nb_cards` pour ne pas les embrouiller avec les méthodes spécifiques de python.
 
 {{<highlight python >}}
 class Card:

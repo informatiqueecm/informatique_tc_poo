@@ -148,12 +148,12 @@ On va maintenant ajouter petit à petit les tests qui vont nous permettre d'ajou
 
 Un deck est un conteneur. Il doit être vide à la création et on doit pouvoir lui ajouter des cartes. 
 
-On commence par un test vérifiant que l'on a créé une méthode `__len__` permettant d'utiliser la commande `len()` de python : 
+On commence par un test vérifiant que l'on a créé une méthode `nb_cards` permettant de connaître le nombre de cartes contenues dans le deck : 
 
 {{<highlight python>}}
 def test_deck_empty_at_creation():
     deck = Deck()
-    assert len(deck) == 0
+    assert deck.nb_cards() == 0
 {{</highlight >}}
 
 Le test va rater puisque vous n'avez pas pas encore écrit le code correspondant. 
@@ -165,7 +165,7 @@ On ajoute un test qui vérifie que l'on peut ajouter une carte au deck :
 def test_add_card():
     deck = Deck()
     deck.add(Card(1, Card.SPADES))
-    assert len(deck) == 1
+    assert deck.nb_cards() == 1
 {{</highlight >}}
 
 Puis on écrit le code correspondant (on pourra ajouter un attribut liste au deck. N'oubliez alors pas de l'initialiser dans le constructeur). On ne sait cependant pas si la bonne carte a été ajoutée. On va régler ce problème avec la fonctionnalité suivante.
@@ -220,7 +220,7 @@ def test_remove():
     deck.add(card)
     
     assert deck.remove() is card
-    assert len(deck) == 1
+    assert deck.nb_cards() == 1
 {{</highlight >}}
 
 
