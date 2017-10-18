@@ -263,7 +263,9 @@ Une façon de faire le code ci-après. L'UML est quasi-identique au précédent.
 
 ## TP
 
-
+{{< note >}}
+    C'est leur premier TP objet. Donc les notion de constructeur, d'objet de méthode et d'attributs sont encore très flou. Passer du temps avec chacun pour q'ils comprennent. Quite à expliquer le tout devant tout le monde si beaucoup ont du mal.
+{{< /note>}}
 
 ### card.py
 

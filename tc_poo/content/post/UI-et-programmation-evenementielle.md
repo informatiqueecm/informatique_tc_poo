@@ -40,9 +40,6 @@ class Card:
         self._value = value
         self._color = color
 
-    def __str__(self):
-        return "Card(" + str(self._value) + ", " + str(self._color) + ")"
-
     def image(self):
         return "resources/Playing_card_" + self._color + "_" + str(self._value) + ".gif"
 
@@ -60,16 +57,13 @@ def test_creation():
     assert motorhead._color == Card.SPADES
 
 
-def test_str():
-    assert str(Card(1, Card.SPADES)) == 'Card(1, spade)'
-
-
 def test_image():
     assert Card(11, Card.DIAMONDS).image() == "resources/Playing_card_diamond_11.gif"
 
 {{</highlight>}}  
 
-
+COomprendre les tests vous permet de comprendre le code. Passez un peu de temps pour voir et comprendre ce que l'on test et pourquoi cela marche.
+ 
 ### Choix d'une carte
 
 Le code suivant crée une carte selon ce qui est sélectionné dans les *option boxes*.
@@ -78,6 +72,13 @@ Exécutez le code et comprenez comment tout ceci fonctionne. Assurez vous que vo
 
 
 ##### main.py
+
+Lorsque l'on code on a au-moins 3 fichiers : 
+    
+* le fichier des fonctionnalités (ici `card.py`)
+* le fichier de test des fonctionnalités (ici `test_card.py`)
+* le programme en lui même. Ici notre application dans une fenêtre (le fichier `main.py`)
+
 
 {{<highlight python>}}
     from appJar import gui
@@ -240,7 +241,11 @@ Vous pouvez une fois ceci réalisé ajouter deux chaînes de caractères permett
 
 
 
-## Comparaisons de cartes
+## Pour aller plus loin 
+
+
+
+### Comparaisons de cartes
 
 En utilisant les méthodes de comparaison vues à [la toute fin du TP1]({{< ref "post/classe-et-objet.md#pour-aller-plus-loin" >}}), codez les méthodes permettant de faire passer les tests suivants : 
 
@@ -265,3 +270,7 @@ def test_card_larger_than():
 
 
 On pourra ensuite ajouter entre les 2 decks un champ permettant de savoir si la carte du deck de gauche est égale, inférieure ou supérieure à la carte du deck de droite.
+
+### Considérer deck comme une liste
+
+La méthode `nb_cards` de deck a la même utilité que la fonction `len`que l'on utilise dans les listes. La méthode `__len__` permet d'utiliser la fonction `len` directement. Coder cette fonctionnalité, puis supprimez la méthode `nb_cards`. Il faudra changer le code de l'ui et les tests également.
