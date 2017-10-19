@@ -102,7 +102,7 @@ app.go()
 
 {{</highlight>}}
 
-Modifiez la fonction `press_roll` (qui ne fait rien pour l'instant) pour qu'elle lance le dé et mette à jour le label contenant la position du dé. Vous utiliserez la méthode `set_label(id_label_a_modifier, txt_a_mettre)` de la classe gui (http://appjar.info/pythonWidgets/#set-labels).
+Modifiez la fonction `press_roll` (qui ne fait rien pour l'instant) pour qu'elle lance le dé et mette à jour le label contenant la position du dé. Vous utiliserez la méthode `setLabel(id_label_a_modifier, txt_a_mettre)` de la classe gui (http://appjar.info/pythonWidgets/#set-labels).
 
 
 ## Un dé qui compte
@@ -171,7 +171,7 @@ C'est mieux mais l'utilisateur n'a toujours pas d'informations sur son erreur di
 
 ## Allez plus loin
 
-Ajoutez un bouton permettant de recommencer avec un nouveau dé.
+Ajoutez un bouton permettant de rénitialiser les statistiques du dé. On pourra pour cela ajouter un méthode `reset` à la classe `DiceStat` par exemple.
 
 Ajoutez des champs permettant à l'utilisateur de choisir les pourcentages d'apparition de chaque face. Pensez à vérifier que l'utilisateur a bien entré des pourcentages qui somment à 100.
 

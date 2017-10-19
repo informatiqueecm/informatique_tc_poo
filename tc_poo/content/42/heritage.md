@@ -30,33 +30,25 @@ Classe `Polygon`:
 
 ![polygon](/img/polygon.png)
 
-On (ré)explique ici le lien d'agrégation dont on a déjà un peu pu parler lors du TD1 avec le `GreenCarpet`. `Polygon` utilise des objets `Point` comme attribut mais ces points existent indépendamment du polygone et on les ajoute petit à petit.
+On (ré)explique ici le lien d'agrégation dont on a déjà un peu pu parler lors du TD1 avec le `GreenCarpet`. `Polygon` utilise des objets `Point` comme attribut mais ces points existent indépendamment du polygone et on les ajoute dans l'attribut `vertices` lors de la création de l'objet.
 
-Classe `RegularPolygon`:
+Classe `Triangle`:
 
-![regular_polygon](/img/regular_polygon.png)
+![triangle](/img/triangle.png)
 
-L'héritage arrive ici. On ajoute au polygone régulier les attributs `center` et `radius` pour que les étudiant·e·s comprennent bien que la classe récupère les attributs de la classe parente et peut en avoir d'autres en plus. On réécrit aussi la méthode `add_point` en lui faisant renvoyer une erreur par exemple. On reviendra sur les namespaces pour expliquer que la méthode de cette classe cache celle de `Polygon`.
+L'héritage arrive ici. On fait une version restreinte du polygone très simple. Cela permet de bien expliquer qu'on appelle le constructeur de `Polygon` dans le constructeur de `Triangle`.
 
-Ici, on donnera le début du code pour clarifier l'héritage :
+Ici, on donnera le code pour clarifier l'héritage et expliquer la syntaxe python :
 
 {{<highlight python>}}
-class RegularPolygon(Polygon):
-    def __init__(self, center, radius, n_vertices):
-        super().__init__()
-        for i in range(n_vertices):
-            x = center.x + radius * math.cos(2. * math.pi * i / n_vertices)
-            y = center.y + radius * math.sin(2. * math.pi * i / n_vertices)
-            p = Point(x, y)
-            super().add_point(p)
+
+class Triangle(Polygon):
+  def __init__(self, point1, point2, point3):
+    super().__init__([point1, point2, point3])
+
 {{</highlight>}}
 
-On expliquera donc particulièrement l'usage du `super()`:
-
- - pour l'appel au constructeur de la classe mère
- - pour utiliser la méthode `add_point` de la classe mère et pas celle de `RegularPolygon` (qui est censée renvoyer une erreur).
-
-On peut aussi dire qu'ici on a plutôt une composition entre `RegularPolygon` et `Point` comme les points sont créés à l'intérieur du constructeur du polygone.
+On expliquera donc particulièrement l'usage du `super()` pour l'appel au constructeur de la classe mère mais on expliquera aussi que `super()` permet d'avoir accès à tout ce qu'on veut dans la classe mère, comme le montrera l'exercice suivant.
 
 L'UML complet donne donc :
 
@@ -64,45 +56,56 @@ L'UML complet donne donc :
 
 ### Exercice 2
 
-{{<highlight python>}}
-from appJar import gui
+La classe `Personnage` ne pose normalement pas de problèmes :
 
+![personnage](/img/personnage.png)
 
-class NotreFenetre(gui):
-    def __init__(self):
-        super().__init__()
-        self.setTitle("Notre incroyable programme")
-        self.setGeometry(800, 900)
-        self.setBg("orange")
-        self.setFont(18)
-
-
-f = NotreFenetre()
-f.go()
-{{</highlight>}}
-
-Rien de très compliqué mais cela permet de clarifier l'utilisation de l'héritage et de leur montrer que dans la vraie vie on l'utilisera surtout pour hériter de classes compliquées présentes dans des librairies. Insister à nouveau sur le `super` et les namespaces pour tous les `self.setQQChose()`.
-
-Il est parfois utile de passer tous les arguments du constructeur de la classe fille à la classe mère. Ici par exemple on peut spécifier à gui son nom ou sa taille (http://appjar.info/#appearance-counts).
-
-Pour cela, on va les passer *en bloc*, sans avoir besoin de les spécifier tous. On mettra en premier les argument de la classe fille puis de façon générique les arguments de la classe mère :
+On pourra préciser le code de `taper` et `se_faire_taper` qui permettra à chacun de se faire taper comme il l'entend.
 
 {{<highlight python>}}
-from appJar import gui
 
+def taper(self, personnage):
+    personnage.se_faire_taper(self)
 
-class NotreFenetre(gui):
-    def __init__(self, taille_font, **kwargs):
-        super().__init__(**kwargs)
-        self.setTitle("Notre incroyable programme")
-        self.setGeometry(800, 900)
-        self.setBg("orange")
-        self.setFont(taille_font)
-    
+def se_faire_taper(self, personnage):
+    self.set_vie(self.get_vie - personnage.attaque)
+
 {{</highlight>}}
 
 
-Pour plus d'info sur cette pratique, voir par exemple :  https://www.digitalocean.com/community/tutorials/how-to-use-args-and-kwargs-in-python-3
+On ajoute la guerrière :
+
+![guerriere](/img/guerriere.png)
+
+On donnera ici une partie code (pas la peine d'écrire la méthode `bloque` qui fait le tirage pour savoir si on bloque ou pas), surtout pour bien :
+  - insister sur le `super().__init__()` au début du constructeur de la classe fille,
+  - montrer qu'on ajoute un attribut à la guerrière par rapport au personnage normal,
+  - expliquer la méthode `se_faire_taper(personnage)` dans laquelle on utilisera la méthode `se_faire_taper` de la classe `Personnage` seulement si la guerrière ne bloque pas le coup. On montre donc bien le \super().methode_de_la_mere()` qui permet d'accéder à la méthode de la classe mère même si on a écrit une méthode du même nom dans la classe fille.
+
+
+{{<highlight python>}}
+
+class Guerriere(Personnage):
+    def __init__(self, vie, attaque, blocage):
+        super().__init__(vie, attaque)
+        self.blocage = blocage
+
+    def se_faire_taper(self, personnage):
+        if not self.bloque(personnage):
+            super().se_faire_taper(personnage)
+
+{{</highlight>}}
+
+On prendra le temps de faire des exemples d'utilisation et de montrer ce qu'on peut faire et pourquoi on peut le faire (qu'est-ce qui est appelé quand on fait `guerriere.se_faire_taper(bonhomme)` avec un objet `guerriere` de la classe `Guerriere` par exemple)
+
+Le magicien permet de montrer l'ajout d'une méthode qui n'était pas du tout dans la classe mère.
+
+![magicien](/img/magicien.png)
+
+On peut mettre le code s'ils en ont besoin mais a priori rien de très difficile s'ils ont compris ce qui se passe avant.
+
+
+On mentionnera aussi le fait que l'héritage est utile quand on veut utiliser des classes définies dans un module quelconque et la mettre un peu à notre sauce.
 
 ### Exercice 3
 
@@ -110,7 +113,13 @@ On a l'arbre suivant :
 
 ![arbre_arithmetique](/img/node_arithmetic.png)
 
-On explique ensuite le composite. On aura donc une classe `DiceComponent` qui est le composant, elle représente l'abstraction d'opérations de dés. Les deux classes `SumDice` et `MultDice` sont les composites, elles représentent les deux opérations élémentaires liées aux dés. Enfin la classe `Dice` est la brique de base, la feuille. On a le schéma suivant :
+On explique ensuite le composite. On aura donc une classe `DiceComponent` qui est le composant, elle représente l'abstraction d'opérations de dés. Les deux classes `SumDice` et `MultDice` sont les composites, elles représentent les deux opérations élémentaires liées aux dés. Enfin la classe `Dice` est la brique de base, la feuille. 
+
+Je propose d'expliquer et détailler d'abord le `MultDice` comme s'il était un objet représentant une multiplication d'un objet `Dice` (et pas encore `DiceComponent`) par un réel. On montrera qu'on peut ensuite écrire les méthodes qui vont bien `roll` et `get_position` pour récupérer le résultat du calcul de la multiplication et lancer cet objet représentant un dé multiplié (i.e lancer le dé normal associé) comme si c'était un `Dice` normal. On fait ensuite de même pour le `SumDice` en faisant comme si on allait se contenter de représenter la somme de deux `Dice`. 
+
+Enfin, on explique le `DiceComponent` qui permet de tout considérer de la même manière. On remplace les `Dice` utilisés dans `SumDice` et `MultDice` par des `DiceComponent`. On montre que ça marche bien car quand on `roll` un `SumDice` par exemple, on va `roll` chacun de ses enfants et ces enfants étant des `DiceComponent`, ils ont bien une méthode `roll` eux aussi.
+
+On a finalement le schéma suivant :
 
 ![composite](/img/composite.png)
 
@@ -180,7 +189,7 @@ d1.mult(3).get_position() # qui renvoie 3
 
 {{</highlight>}}
 
-On peut aussi évoquer le fait qu'en python on peut remplacer `add` par `__add__` et `mult` par `__mul__` pour pouvoir utiliser les opérateurs `+` et `*` directement. On peut même ajouter des `__int__` à nos objets à la place de `get_position` : 
+On peut aussi évoquer le fait qu'en python on peut remplacer `add` par `__add__` et `mult` par `__mul__` pour pouvoir utiliser les opérateurs `+` et `*` directement. On peut même ajouter des `__int__` à nos objets à la place de `get_position` mais cela dépasse le cadre de ce qu'on demande aux étudiants de savoir faire : 
 
 {{<highlight python>}}
 
@@ -436,50 +445,87 @@ app.go()
 
 ### PlantUML
 
+Le TextUML des classes données pour info et modification si besoin :
+
 @startuml
 
-class Point {
-    __attributes__
-
-    - x: double
-    - y: double
-
-    __methods__
-
-    +__init__(double, double)
-    +get_x(): double
-    +set_x(double)
-    +get_y(): double
-    +set_y(double)
-    +distance(Point): double
-}
-
-class Polygon {
-    __attributes__
-    
-    - vertices: list of Point
+class Point { 
+    ___attributes
+    - x: float
+    - y: float
     
     __methods__
     
-    +__init__()
-    +add_point(Point)
-    +area(): double
-    +perimeter(): double
+    +__init__(float, float)
+    +get_x(): float
+    +set_x(float)
+    +get_y(): float
+    +set_y(float)
+    +distance(Point): float
 }
 
-class RegularPolygon {
-    __attributes__
-    -center: Point
-    -radius: double
-    
+
+class Polygon { 
+  __attributes__
+  - vertices: list of Point
+
+  __methods__
+
+  +__init__(list of Point)
+  +area(): float
+  +perimeter(): float
+}
+
+
+class Triangle { 
     __methods__
-    +__init__(Point center, double radius, int n_sommets)
-    +add_point()
+    + __init__(Point, Point, Point)
 }
 
-Polygon <|-- RegularPolygon
+Polygon <|-- Triangle
 Polygon o-- Point
-RegularPolygon *-- Point
 
+@enduml
+
+@startuml
+
+class Personnage { 
+    ___attributes__
+    - vie: int
+    - attaque: int
+    
+    __methods__
+    
+    +__init__(vie, attaque)
+    +get_vie(): int
+    +set_vie(int)
+    +get_attaque(): int
+    +set_attaque(int)
+    +taper(Personnage)
+    +se_faire_taper(Personnage)
+}
+
+class Guerriere { 
+  __attributes__
+  - blocage: int
+
+  __methods__
+
+  +__init__(vie, attaque, blocage)
+  +se_faire_taper(Personage)
+}
+
+class Magicien {
+    __attributes__
+  - attaque_magique: int
+
+  __methods__
+
+  +__init__(vie, attaque, attaque_magique)
+  +lancer_sort()
+}
+
+Personnage <|-- Guerriere
+Personnage <|-- Magicien
 @enduml
 
