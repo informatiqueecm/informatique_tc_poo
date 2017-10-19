@@ -78,9 +78,10 @@ On ajoute la guerrière :
 ![guerriere](/img/guerriere.png)
 
 On donnera ici une partie code (pas la peine d'écrire la méthode `bloque` qui fait le tirage pour savoir si on bloque ou pas), surtout pour bien :
+
   - insister sur le `super().__init__()` au début du constructeur de la classe fille,
   - montrer qu'on ajoute un attribut à la guerrière par rapport au personnage normal,
-  - expliquer la méthode `se_faire_taper(personnage)` dans laquelle on utilisera la méthode `se_faire_taper` de la classe `Personnage` seulement si la guerrière ne bloque pas le coup. On montre donc bien le \super().methode_de_la_mere()` qui permet d'accéder à la méthode de la classe mère même si on a écrit une méthode du même nom dans la classe fille.
+  - expliquer la méthode `se_faire_taper(personnage)` dans laquelle on utilisera la méthode `se_faire_taper` de la classe `Personnage` seulement si la guerrière ne bloque pas le coup. On montre donc bien le `super().methode_de_la_mere()` qui permet d'accéder à la méthode de la classe mère même si on a écrit une méthode du même nom dans la classe fille.
 
 
 {{<highlight python>}}

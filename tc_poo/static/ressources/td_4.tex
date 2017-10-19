@@ -29,19 +29,19 @@
 
 
 
-Nous allons ici utiliser des {\em design pattern}. Ce sont sont des façons d'organiser ses classes en vue de résoudre des problèmes courants en développement.
+Nous allons ici utiliser des {\em design pattern}. Ce sont des façons d'organiser ses classes en vue de résoudre des problèmes courants en développement.
 
 \section{Observer}
 
-Le pattern {\em observer} permet de faire fonctionner la programmation évènementielle. Il est utile lorsque plusieurs sources sont dépendantes d'une donnée et veulent être informé lorsque sa valeur change. 
+Le pattern {\em observer} permet de faire fonctionner la programmation évènementielle. Il est utile lorsque plusieurs sources sont dépendantes d'une donnée et veulent être informées lorsque sa valeur change. 
 
 \subsection{Score à jour}
 
-Supposons que l'on possède une classe MatchDeFootball, chaque match réel étant un objet de cette classe. On voudrait être tenu au courant à chaque but. 
+Supposons que l'on possède une classe \texttt{MatchDeFoot}, chaque match réel étant un objet de cette classe. On voudrait être tenu au courant à chaque but. 
 Proposez donc : 
 \begin{enumerate}
-    \item un modèle minimal de la classe MatchDeFoot pour notre problème
-    \item un moyen pour des objets extérieur d'être informés d'un but en temps réel
+    \item un modèle minimal de la classe \texttt{MatchDeFoot} pour notre problème
+    \item un moyen pour des objets extérieurs d'être informés d'un but en temps réel
     \item codez ces classes en python
 \end{enumerate}
 
@@ -62,7 +62,7 @@ Proposez un modèle UML et une façon de faire algorithmique du UNDO.
 
 \subsection{Redo}
 
-Que faudrait-il ajouter pour faire également un REDO~?
+Que faudrait-il ajouter pour faire également un REDO?
 
 
 \section{Iterator}

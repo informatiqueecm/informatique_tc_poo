@@ -6,11 +6,11 @@ weight = 4
 
 ## Introduction
 
-Séance consacrée aux [design pattern](https://fr.wikipedia.org/wiki/Patron_de_conception). Ces façon de faire, sorte d'algorithmie objet permet de résoudre nombre de problèmes courant en développement.
+Séance consacrée aux [design pattern](https://fr.wikipedia.org/wiki/Patron_de_conception). Ces façons de faire, sorte d'algorithmie objet permet de résoudre nombre de problèmes courants en développement.
 
 On utilisera beaucoup le typage dynamique de python pour ces exemples (appelé [duck typing](http://sametmax.com/quest-ce-que-le-duck-typing-et-a-quoi-ca-sert/). Ce nom vient des Monty Python et plus particulièrement la séquence où [l'on brûle une sorcière](https://www.youtube.com/watch?v=gUXB_jLiT3A) dans Sacré Graal. Le [nom même du langage](https://en.wikipedia.org/wiki/Python_(programming_language)#History) vient d'eux et pas de l'[animal](https://www.youtube.com/watch?v=NoX-4Hm1rPU). Les informaticiens ont une passion presque maladive pour les Monthy Python. Par exemple le terme de spam vient aussi d'eux, ou plutôt d'un de [leur sketch](https://www.youtube.com/watch?v=cFrtpT1mKy8) de leur émission de la BBC qui s'appelait le Monthy Python's flying circus (un de mes sketch préféré étant l'[expédition au Kilimandjaro](https://www.youtube.com/watch?v=1T9Yp-2TYzo) mais on pourrait en citer des dizaines d'autres)), mais les design pattern fonctionnent quelques soient le langage utilisé (ils ont d'ailleurs [initialement été écrit](https://fr.wikipedia.org/wiki/Design_Patterns) pour le C++).
 
-Cela ne résout bien sûr pas des problèmes aussi compliqué que [tracer 7 lignes rouges perpendiculaires entre elles](https://www.youtube.com/watch?v=vH0rhNx3dok) mais cela permet d'éviter de faires des [erreurs classiques](http://sahandsaba.com/nine-anti-patterns-every-programmer-should-be-aware-of-with-examples.html), aussi appelés [anti-pattern](https://fr.wikipedia.org/wiki/Antipattern).
+Cela ne résout bien sûr pas des problèmes aussi compliqués que [tracer 7 lignes rouges perpendiculaires entre elles](https://www.youtube.com/watch?v=vH0rhNx3dok) mais cela permet d'éviter de faires des [erreurs classiques](http://sahandsaba.com/nine-anti-patterns-every-programmer-should-be-aware-of-with-examples.html), aussi appelées [anti-pattern](https://fr.wikipedia.org/wiki/Antipattern).
 
 ## Les bases
 
@@ -55,7 +55,7 @@ Ajoutez une ligne de texte contenant l'heure et la valeur du nouveau dé à chaq
 
 Pour cela, vous pourrez utiliser : 
 
-- les http://appjar.info/pythonWidgets/#listbox pour ajouter les lignes de messages (attention. Les list box ont une hauteur par défaut. En choisissant 200 comme hauteur de la fenêtre, vous devriez pouvoir voir et la 1ère ligne (la valeur du dé et le bouton {{< menu_code >}} roll{{< /menu_code >}}) et la 2nde (la *listbox*)).
+- les [listbox](http://appjar.info/pythonWidgets/#listbox) pour ajouter les lignes de messages (1ttention,  les list box ont une hauteur par défaut. En choisissant 200 comme hauteur de la fenêtre, vous devriez pouvoir voir et la 1ère ligne (la valeur du dé et le bouton {{< menu_code >}} roll{{< /menu_code >}}) et la 2nde (la *listbox*)).
 - Pour le temps, on pourra utiliser les objets [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)
 
 ### Memento
@@ -65,7 +65,7 @@ Créez la classe `DiceMemento` dans le fichier `dice_memento.py` et ses tests da
 La classe DiceMemento doit avoir :
 
 - un `Dice` comme paramètre du constructeur.
-- une méthode `restore()` qui remet au dé sauvé la valeur qu'il avait à la création du memento.
+- une méthode `restore()` qui remet au dé sauvé de reprendre la valeur qu'il avait à la création du memento.
 
 
 Vous pouvez par exemple transformer le code ci-après en test(s) :
@@ -88,21 +88,21 @@ Nous pouvons maintenant créer une classe `Undo` (dans le fichier `undo.py`) qui
 
 - sauver un dé avec la méthode : `save(dice)` (un `DiceMemento` sera créé dans la méthode save puis sauvegardé)
 - restaurer la dernière valeur sauvée avec la méthode `restore()`
-- connaitre le nombre d'item sauvegardé avec la commande `len` (il faut donc implémenter une méthode `__len__`)
+- connaître le nombre d'items sauvegardés avec la commande `len` (il faut donc implémenter une méthode `__len__`)
 
-Bien sur vous créerez un fichier de test :file:`test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
+Bien sur vous créerez un fichier de tests :file:`test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
 
 
 ### UI
 
 Ajoutez à l'UI un bouton undo. 
 
-A chaque fois que l'on clique sur le bouton *roll*, la position du dé doit être sauvée. Cette position doit être restaurée lorsque l'on clique sur le bouton *undo*. De plus, on doit ajouter un message à la listbox qui prévient que la valeur du dé à été undoué.
+A chaque fois que l'on clique sur le bouton *roll*, la position du dé doit être sauvée. Cette position doit être restaurée lorsque l'on clique sur le bouton *undo*. De plus, on doit ajouter un message à la listbox qui prévient que la valeur du dé à été undouée.
 
 
 ### Allez plus loin 
 
-Mettez en place un mécanisme de Redo pour vos lancés de dés.
+Mettez en place un mécanisme de Redo pour vos lancers de dés.
 
 
 
