@@ -32,9 +32,34 @@ Parler aussi des anti-pattern, c'est à dire des mauvaises façons de faire qui 
 
 ### Observer
 
-{{< note warning >}}
-TBD.
-{{< /note >}}
+Pattern classique. Le match de foot notifie à ses observateurs lorsqu'il y y aun changement. Les observateurs, qui se sont au préalable inscrit via la méthode `register` doivent implémenter une méthode `update` prenant l'objet observé en paramètre. Ceci leur permet d'être informé à chaque changement. 
+
+
+{{< highlight python>}}
+class MatchDeFoot:
+    def __init__(self):
+        self.chrono = 0
+        self.but_equipe1 = 0
+        self.but_equipe2 = 0
+        
+        self.observers = [] # list of observers
+
+    def but(self):
+        # .....
+        self.notifiy()
+        
+        
+    def register(self, observer):
+        self.observers.append(observer)
+        
+    def notifiy(self):
+        for observer in self.observers:
+            observer.update(self)
+        
+{{< /highlight >}}
+
+
+#### Observer et UI
 
 Pour les UI, on s'abonne à des *events* comme par exemple "cliquer sur ce bouton", "mettre du texte dans ce champ", "la souris passe sur cet objet", etc. Un exemple simple pour voir tout ça en action est de faire du javascript. 
 
@@ -164,11 +189,7 @@ class UndoRedo:
 
 
 
-### Iterateurs
-
-{{< note warning >}}
-TBD.
-{{< /note >}}
+### Itérateurs
 
 
 Le module [itertools](https://docs.python.org/3/library/itertools.html) de python contient de nombreux utilitaires pour créer des itérateurs. On peut aussi, mais cela dépasse un peu le scope du cours utiliser des générateurs (avec la commande `yield`) pour créer automatiquement des itérateurs. Un exemple célèbre est la fonction de Fibonacci (pris de https://www.python-course.eu/python3_generators.php) : 
@@ -190,6 +211,59 @@ for x in f:
 
 
 {{< /highlight >}}
+
+
+#### Modèle UML
+
+
+Les méthodes nécessaires pour un itérateur dépendent du langage. En python, on pourra consulter : https://docs.python.org/3/tutorial/classes.html#iterators 
+
+
+Python demande pour un itérateur une unique méthode `__next__` qui rend soit un objet soit lance une exception `StopIteration` qui définit la fin de l'itération. 
+
+On peut proposer le modèle suivant, qui rajoute une méthode privée has_next() pour savoir s'il y a un nouvel élément. En python, on a une méthode qui crée un itérateur (via la méthode `__iter__`). L'itérateur proprement dit possède lui la méthode `__next__`. Ils peuvent cohabiter dans la même classe ou dans deux classes séparée.
+
+![iterator](/img/iterator_next.png)
+
+Il n'est pas nécessaire d'avoir la méthode `__iter__` pour créer un itérateur. Cette fonction est juste utilisée pour créer  l'itérateur par défaut. Si on écrit `for card in deck`, l'itérateur utilisé est `iter(deck)` (ce qui est équivalent à `deck.__iter__()`)
+
+#### Itérateur Dé
+
+Ici on place __iter__ et __next__ dans la même classe, ce qui nous permet d'écrire :  `for value in dice.roll_iterator(10)` par exemple
+
+
+
+{{< highlight python>}}
+
+class Dice:
+    # ...
+    
+    def roll_iterator(self, number):
+        return IterDice(self, number)
+
+    # ...
+    
+    
+class IterDice:
+    def __init__(self, dice, number):
+        self.dice = dice
+        self.number = number
+        self.current = 0
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self.current == self.number:
+            raise StopIteration
+        else:
+            self.current += 1
+            self.dice.roll()
+            return self.dice.get_position()
+    
+{{< /highlight >}}
+
+
 ## TP
 
 ### UI
