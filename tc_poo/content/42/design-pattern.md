@@ -93,23 +93,23 @@ class DiceMemento(Memento):
         super.__init__(stored_state, object_to_restore)
     
     def restore(self):
-        self._object_to_restore.set_value(self._stored_state)
+        self._object_to_restore.set_position(self._stored_state)
 {{< /highlight >}}
 
 #### Undo
 
 {{< highlight python>}}
 class Undo:
-    def __init__(self):
-        self._actions = []
+    def __init__(self, current_state_memento):
+        self._actions = [current_state_memento]
 
     def save(self, memento):
         self._actions.append(memento)
     
     def restore(self):
         if self._actions:
-            last_memento = self._actions.pop()
-            last_memento.restore()
+            self._actions.pop()
+            self._actions[-1].restore()
 {{< /highlight>}}
 
 On peut utiliser le code comme suit : 
@@ -117,18 +117,19 @@ On peut utiliser le code comme suit :
 {{< highlight python>}}
 dice = Dice()
 
-undo = Undo()
+undo = Undo(DiceMemento(dice))
 
 for i in range(10):
+    dice.roll()
     undo.save(DiceMemento(dice))
-    print(dice.roll().get_value())
-state.save(DiceMemento(dice))
-
+    
+    print(dice.get_position())
+    
 print("--------")
 
 for i in range(10):
     undo.restore()
-    print(dice.get_value())
+    print(dice.get_position())
 {{< /highlight>}}
 
 Qui pourra rendre le code suivant : 
@@ -227,39 +228,35 @@ On peut proposer le modèle suivant, qui rajoute une méthode privée has_next()
 
 Il n'est pas nécessaire d'avoir la méthode `__iter__` pour créer un itérateur. Cette fonction est juste utilisée pour créer  l'itérateur par défaut. Si on écrit `for card in deck`, l'itérateur utilisé est `iter(deck)` (ce qui est équivalent à `deck.__iter__()`)
 
-#### Itérateur Dé
+#### Itérateur Deck
 
-Ici on place __iter__ et __next__ dans la même classe, ce qui nous permet d'écrire :  `for value in dice.roll_iterator(10)` par exemple
-
+On a ajouté une méthode donnant la ième carte (la première étant la carte du dessus) du deck
 
 
 {{< highlight python>}}
 
-class Dice:
+class Deck:
     # ...
-    
-    def roll_iterator(self, number):
-        return IterDice(self, number)
-
-    # ...
-    
-    
-class IterDice:
-    def __init__(self, dice, number):
-        self.dice = dice
-        self.number = number
-        self.current = 0
     
     def __iter__(self):
-        return self
+        return IterDice(self, number)
+
+    def show_card(self, position)
+        reurn self._cards[-position]
+    # ...
     
+    
+class IterDeck:
+    def __init__(self, deck):
+        self.deck = deck
+        self.current = 0
+        
     def __next__(self):
-        if self.current == self.number:
+        if self.current >= self.deck.nb_cartes():
             raise StopIteration
         else:
             self.current += 1
-            self.dice.roll()
-            return self.dice.get_position()
+            return self.deck.show_card(self.current)
     
 {{< /highlight >}}
 
@@ -285,19 +282,19 @@ MESSAGE_LABEL = "message value"
 def on_click(button):
     dice.roll()
 
-    app.setLabel(DICE_LABEL, dice.get_value())
-    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_value()))
+    app.setLabel(DICE_LABEL, dice.get_position())
+    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_position()))
 
 app = gui()
 
 app.setGeometry(400, 200)
 
-app.addLabel(DICE_LABEL, dice.get_value(), 0, 0)
+app.addLabel(DICE_LABEL, dice.get_position(), 0, 0)
 app.addButton("roll", on_click, 0, 1)
 
 
 app.addListBox(MESSAGE_LABEL, [str(datetime.datetime.now()) + ": " + "Begin",
-                               str(datetime.datetime.now()) + ": " + str(dice.get_value())], 1, 0, 2)
+                               str(datetime.datetime.now()) + ": " + str(dice.get_position())], 1, 0, 2)
 
 app.go()
 {{< /highlight>}}
@@ -313,10 +310,10 @@ app.go()
 class Memento:
     def __init__(self, dice):
         self.dice = dice
-        self.value = dice.get_value()
+        self.value = dice.get_position()
 
     def restore(self):
-        self.dice.set_value(self.value)
+        self.dice.set_position(self.value)
 {{< /highlight >}}
 
 
@@ -324,18 +321,18 @@ class Memento:
 
 {{< highlight python>}}
 from dice import Dice
-from memento import DMemento
+from memento import Memento
 
 
 def test_memento():
     dice = Dice()
-    dice.set_value(2)
+    dice.set_position(2)
 
     memento = DiceMemento(dice)
-    dice.set_value(6)
+    dice.set_position(6)
 
     memento.restore()
-    assert dice.get_value() == 2
+    assert dice.get_position() == 2
 {{< /highlight >}}
 
 ### Undo
@@ -346,17 +343,19 @@ def test_memento():
 from memento import Memento
 
 class Undo:
-    def __init__(self):
-        self._undo_item = []
+    def __init__(self, dice):
+        self._actions = [Memento(dice)]
 
-    def __len__(self):
-        return len(self._undo_item)
-
+    def nb_undos(self):
+        return len(self._actions)
     def save(self, dice):
-        self._undo_item.append(Memento(dice))
-
+        self._actions.append(Memento(dice))
+    
     def restore(self):
-        self._undo_item.pop().restore()
+        if self._actions:
+            self._actions.pop()
+            self._actions[-1].restore()
+            
 {{< /highlight>}}
 
 
@@ -366,27 +365,32 @@ class Undo:
 from dice import Dice
 from undo import Undo
 
-
-def test_len():
-    undo = Undo()
-    assert len(undo) == 0
-
-    undo.save(Dice())
-    assert len(undo) == 1
-
+def test_save_once():
+    dice = Dice()
+    dice.set_position(1)
+    undo = Undo(dice)
+    assert undo.nb_undos() == 1
+    
+    dice.set_position(2)
+    undo.restore()
+    assert dice.get_position() == 1
+    
 
 def test_save_restore():
     dice = Dice()
-    undo = Undo()
+    dice.set_position(1)
+    undo = Undo(dice)
 
+    dice.set_position(5)
     undo.save(dice)
-    dice.set_value(5)
-    undo.save(dice)
-
+    
+    assert undo.nb_undos() == 2
+    
+    dice.set_position(6)
     undo.restore()
-    assert dice.get_value() == 5
+    assert dice.get_position() == 5
     undo.restore()
-    assert dice.get_value() == 1
+    assert dice.get_position() == 1
 {{< /highlight>}}
 
 
@@ -404,32 +408,33 @@ DICE_LABEL = "dice value"
 
 MESSAGE_LABEL = "message value"
 
-undo = Undo()
+undo = Undo(dice)
 
 app = gui()
 app.setGeometry(400, 200)
 
 
 def on_undo(button):
-    if len(undo) > 0:
+    if undo.nb_undos() > 1:
         undo.restore()
-        app.setLabel(DICE_LABEL, dice.get_value())
-        app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": undo value to " + str(dice.get_value()))
+        app.setLabel(DICE_LABEL, dice.get_position())
+        app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": undo value to " + str(dice.get_position()))
 
 
 def on_click(button):
-    undo.save(dice)
     dice.roll()
+    undo.save(dice)
 
-    app.setLabel(DICE_LABEL, dice.get_value())
-    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_value()))
+
+    app.setLabel(DICE_LABEL, dice.get_position())
+    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_position()))
 
 
 app.addButton("undo", on_undo, 0, 0, 2)
-app.addLabel(DICE_LABEL, dice.get_value(), 1, 0)
+app.addLabel(DICE_LABEL, dice.get_position(), 1, 0)
 app.addButton("roll", on_click, 1, 1)
 app.addListBox(MESSAGE_LABEL, [str(datetime.datetime.now()) + ": " + "Begin",
-                               str(datetime.datetime.now()) + ": " + str(dice.get_value())], 2, 0, 2)
+                               str(datetime.datetime.now()) + ": " + str(dice.get_position())], 2, 0, 2)
 
 app.go()
 {{< /highlight>}}

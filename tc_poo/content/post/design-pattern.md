@@ -35,12 +35,12 @@ DICE_LABEL = "dice value"
 def on_click(button):
     dice.roll()
 
-    app.setLabel(DICE_LABEL, dice.get_value())
+    app.setLabel(DICE_LABEL, dice.get_position())
 
 app = gui()
 app.setGeometry(400, 200)
 
-app.addLabel(DICE_LABEL, dice.get_value(), 0, 0)
+app.addLabel(DICE_LABEL, dice.get_position(), 0, 0)
 app.addButton("roll", on_click, 0, 1)
 
 
@@ -73,13 +73,13 @@ Vous pouvez par exemple transformer le code ci-après en test(s) :
 
 {{< highlight python >}}
 dice = Dice()
-dice.set_value(2)
+dice.set_position(2)
 
 memento = DiceMemento(dice)
-dice.set_value(6)
+dice.set_position(6)
 
 memento.restore()
-print(dice.get_value())  # doit valoir 2
+print(dice.get_position())  # doit valoir 2
 {{< /highlight >}}
 
 ### Undo list
@@ -90,7 +90,7 @@ Nous pouvons maintenant créer une classe `Undo` (dans le fichier `undo.py`) qui
 - restaurer la dernière valeur sauvée avec la méthode `restore()`
 - connaître le nombre d'items sauvegardés avec la commande `len` (il faut donc implémenter une méthode `__len__`)
 
-Bien sur vous créerez un fichier de tests :file:`test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
+Bien sur vous créerez un fichier de tests `test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
 
 
 ### UI
