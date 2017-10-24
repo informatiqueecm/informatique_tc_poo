@@ -86,11 +86,27 @@ print(dice.get_position())  # doit valoir 2
 
 Nous pouvons maintenant créer une classe `Undo` (dans le fichier `undo.py`) qui va nous permettre de sauver des dés (et leurs valeurs) et de les restaurer à la demande. Cette classe doit pouvoir :
 
-- sauver un dé avec la méthode : `save(dice)` (un `DiceMemento` sera créé dans la méthode save puis sauvegardé)
+- sauver un dé avec la méthode : `save(memento)` (un `DiceMemento` sera créé exemple comme ça : `DiceMemento(dice)`)
 - restaurer la dernière valeur sauvée avec la méthode `restore()`
-- connaître le nombre d'items sauvegardés avec la commande `len` (il faut donc implémenter une méthode `__len__`)
+- connaître le nombre d'items sauvegardés avec une méthode `nb_undos()`
 
 Bien sur vous créerez un fichier de tests `test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
+
+{{< highlight python >}}
+dice = Dice()
+
+undo = Undo(dice)
+
+dice.set_position(5)
+print(dice.get_position()) # vaut 5
+undo.save(DiceMemento(dice))
+dice.roll() # dès que l'on change la valeur (ici possiblement différent de 5)
+undo.save(DiceMemento(dice)) # on sauve dans un memento
+
+undo.restore()
+print(dice.get_position()) # vaut 5
+
+{{< /highlight >}}
 
 
 ### UI
