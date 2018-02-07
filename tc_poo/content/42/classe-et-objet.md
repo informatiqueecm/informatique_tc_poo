@@ -25,7 +25,10 @@ Trois notions sont fondamentales et il faut y passer du temps :
     - qui commencent et finissent par `__` : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisés dans des cas précis et documentés.
 
 
-- l'ordre d'évaluation détermine la [visibilité des variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en python et se règle en sachant quel namespace est utilisé. Ainsi : 
+- l'ordre d'évaluation détermine la [visibilité des
+  variables](http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html) : tout est toujours logique en
+  python et se règle en sachant quel namespace est utilisé. Les namespaces possibles sont rappelés plus bas dans la
+  correction de l'exercice dédié.
 
 
 - attributs des objets/classes :
@@ -66,7 +69,7 @@ Divers tutos sur le net pour aborder les notions objet/python utilisées cette s
 
 ### Un dé
 
-Commencez simple avec les éléments minimaux pour créer un dé. Le faire d'abord en UML, mettre des exemples d'utilisation du dé en python, puis  puis mettre le code de la classe.
+Commencez simple avec les éléments minimaux pour créer un dé. Le faire d'abord en UML, mettre des exemples d'utilisation du dé en python, puis mettre le code de la classe.
 
 {{<note warning>}}
  bien expliciter `self`. 
@@ -77,7 +80,7 @@ Diagramme UML du dé classique :
 
 ![dice](/img/dice_init.png#center)
 
-Les tests sont en dessous dans la correction du TP.
+Montrez bien comment on utilise la classe.
 
 Diagramme UML du dé pipé :
 
@@ -111,14 +114,7 @@ Pour les exemples :
   - `print(dice._position)` : dans le namespace de l'objet
   - `dice.roll()` : python cherche le nom `roll`. Il regarde d'abord dans l'objet. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `roll` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
   - `print(dice.get_position())` : pareil qu'au dessus. `get_position` est défini dans la classe.
-  - `print(dice.NUMBER_FACES)` : comme avant, python recherche d'abord dans l'objet, ça n'y est pas. Il regarde donc dans le namespace de la classe.
 
-
-Et le GreenCarpet :
-
-![green_carpet](/img/greenCarpet.png#center)
-
-Le code est en dessous dans la correction du TP.
 
 
 ## TP
@@ -127,7 +123,7 @@ Le code est en dessous dans la correction du TP.
 Les étudiant·e·s commencent par utiliser le module `random` puis on leur demande d'utiliser celui de `numpy` mais ils oublient de changer l'import (la fonction `choice` du module random de python ne permet pas de choisir les probabilités).
 
 
-### Dice et GreenCarpet
+### Dice
 
 {{<highlight python >}}
 import numpy.random
@@ -164,22 +160,6 @@ class Dice:
     return self.position > other.position
 
 
-class GreenCarpet:
-  def __init__(self):
-    self.dices = [Dice() for i in range(5)]
-
-  def get_dices(self):
-    return self.dices
-
-  def roll(self):
-    for dice in self.dices:
-      dice.roll()
-
-  def get_dice_by_id(self, item):
-    return self.dices[item]
-
-  def __getitem__(self, item):
-    return self.dices[item]
 {{</highlight>}}
 
 ### Tests
@@ -243,21 +223,4 @@ def test_gt():
     large_dice = Dice(position=2)
     assert large_dice > small_dice
 
-
-def test_green_carpet_creation():
-    carpet = GreenCarpet()
-    assert len(carpet.dices) == 5
-
-
-def test_green_carpet_roll():
-    carpet = GreenCarpet()
-    for dice in carpet.get_dices():
-        assert 1 <= dice.position <= dice.NUMBER_FACES
-
-
-def test_get_dice_by_id():
-    carpet = GreenCarpet()
-    second_dice = Dice()
-    carpet.dices[1] = second_dice
-    assert carpet.get_dice_by_id(1) == second_dice
 {{</highlight>}}

@@ -35,11 +35,11 @@ On veut créer une classe \verb|Dice|. Elle doit être capable de :
 	\item créer un objet sans paramètre,
 	\item créer un objet avec sa valeur initiale,
 	\item connaître et donner la valeur du dé (avec les méthodes \verb|get_position| et \verb|set_position|),
-	\item lancer un dé,
-	\item connaître le nombre maximum de faces (\verb|NUMBER_FACES|), commun à tous les dés.
+	\item lancer un dé.
 \end{itemize}
 
-Proposez une modélisation UML de la classe \verb|Dice| et écrivez des tests (en python) permettant de vérifier que tout se passe comme prévu.
+Proposez une modélisation UML de la classe \verb|Dice|. Donnez des exemples de manipulation d'objets de cette classe :
+crééer un objet, modifier la valeur de sa position, obtenir sa position et le lancer.
 
 \subsection{Modèle d'un dé pipé}
 
@@ -60,17 +60,9 @@ dice = Dice()
 print(dice.position)
 dice.roll()
 print(dice.get_position())
-print(dice.NUMBER_FACES)
 \end{lstlisting}
 
-\section{Des Dés}
-
-Pour pouvoir jouer à des jeux de dés, implémentons une classe \verb|TapisVert|. Cette classe doit avoir~:
-\begin{itemize}
-	\item 5 dés comme attribut,
-	\item pouvoir lancer les 5 dés simultanément ou individuellement,
-	\item Connaître la valeur d'un dé spécifique.
-\end{itemize}
+\section{Compteur}
 
 \end{document}
 
