@@ -20,7 +20,7 @@
     \\
         {\bf \textsf {\Large Programmation Orientée Objet}}\\
     \\
-        {\bf \textsf {\Large TD 2 : Programmation évènementielle \& UI}}\\
+        {\bf \textsf {\Large TD 2 : Composition et agrégation \& UI}}\\
     \\
         \hline
       \end{tabular}
@@ -59,57 +59,19 @@ Comment testeriez vous cette fonction~?
 
 Codez cette fonction et vérifiez (à la main) qu'elle passe bien vos tests en notant toutes les variables et les namespaces rencontrés.
 
-\section{Programmation d'UI}
+\section{Des Dés}
 
-On veut créer une fenêtre contenant un champ texte de valeur initiale 0 et un bouton. Lorsque l'on clique sur le bouton, la valeur du texte augmente de 1.
-Proposez un design de fenêtre permettant de réaliser cette interface.
-Comment la testeriez-vous~?
-
-\subsection{Modèle MVC}
-
-Un façon pratique de développer une interface est d'utiliser le modèle MVC (Modèle, Vue, Contrôleur) :
+Nous allons réutiliser les dés de la séance 1. Pour pouvoir jouer à des jeux de dés, implémentons une classe
+\verb|TapisVert|. Cette classe doit avoir~:
 \begin{itemize}
-	\item le {\bf Modèle} régit l'accès aux données
-  \item la {\bf Vue} est tout ce qui est affiché
-  \item {\bf Contrôleur} est ce qui fait le lien entre Vue et Modèle
-
+	\item 5 dés comme attribut,
+	\item pouvoir lancer les 5 dés simultanément ou individuellement,
+	\item Connaître la valeur d'un dé spécifique.
 \end{itemize}
-Proposez un modèle UML en 3 classes (Modèle, Vue et Contrôleur) permettant de réaliser cette application.Comment la testeriez-vous avec des tests unitaires ?
 
-\subsubsection{MVC et appjar.info}
-
-Le code suivant utilise la bibliothèque \url{appjar.info} pour coder l'UI. Associez le code ci-dessus au modèle MVC. Où sont les différentes parties ? 
-
-\lstset{language=Python}
-\begin{lstlisting}
-from appJar import gui
-
-model = {
-    "value": 0
-}
-
-def press(button):
-    model["value"] += 1
-    app.setLabel("value", str(model["value"]))
-
-app = gui()
-app.addLabel("value", str(model["value"]), 0, 0)
-app.addButton("+1", press, 0, 1)
-
-app.go()
-print("c'est fini.")
-\end{lstlisting}
-
-
-
-
-\subsubsection{Ajout de boutons}
-
-Ajoutez à  l'application un bouton `-1' qui décrémente la valeur affichée de 1 si cette valeur est $>0$.
-
-\section{Les dés}
-
-Proposez l'UI et le modèle UML d'une fenêtre permettant de lancer un dé. Comment coderiez vous le tout avec \url{appjar.info} ?
+Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?\\
+Proposez un modèle UML pour cette classe.\\
+Écrivez quelques tests unitaires permettant de vérifier son bon fonctionnement.\\
 
 \end{document}
 
