@@ -30,7 +30,7 @@ Classe `Polygon`:
 
 ![polygon](/img/polygon.png)
 
-On (ré)explique ici le lien d'agrégation dont on a déjà un peu pu parler lors du TD1 avec le `GreenCarpet`. `Polygon` utilise des objets `Point` comme attribut mais ces points existent indépendamment du polygone et on les ajoute dans l'attribut `vertices` lors de la création de l'objet.
+On (ré)explique ici le lien d'agrégation dont on a déjà un peu pu parler lors du TD2. `Polygon` utilise des objets `Point` comme attribut mais ces points existent indépendamment du polygone et on les ajoute dans l'attribut `vertices` lors de la création de l'objet.
 
 Classe `Triangle`:
 
@@ -109,6 +109,8 @@ On peut mettre le code s'ils en ont besoin mais a priori rien de très difficile
 On mentionnera aussi le fait que l'héritage est utile quand on veut utiliser des classes définies dans un module quelconque et la mettre un peu à notre sauce.
 
 ### Exercice 3
+
+Cet exercice est là uniquement si il reste du temps et que tout le reste est bien compris.
 
 On a l'arbre suivant :
 
