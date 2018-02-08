@@ -66,34 +66,25 @@ Divers tutos sur le net pour aborder les notions objet/python utilisées cette s
 
 > [version pdf du sujet (2 pages par feuille)](/ressources/TD_1_impression.pdf)
 
+### Un compteur
 
-### Un dé
-
-Commencez simple avec les éléments minimaux pour créer un dé. Le faire d'abord en UML, mettre des exemples d'utilisation du dé en python, puis mettre le code de la classe.
+Le premier exemple est très simple pour permettre d'introduire dans un premier temps l'UML, de regarder des exemples de
+code utilisant l'objet et enfin de montrer le code en python de la classe en elle-même.
 
 {{<note warning>}}
- bien expliciter `self`. 
+ Passez assez de temps à expliquer `self` qui peut souvent paraître magique aux étudiants.
 {{< /note >}}
 
+Diagrammes UML des deux compteurs !
+![counter](/img/counter_init.png#center)
 
-Diagramme UML du dé classique :
-
-![dice](/img/dice_init.png#center)
-
-Montrez bien comment on utilise la classe.
-
-Diagramme UML du dé pipé :
-
-![dice_proba](/img/dice_proba.png#center)
-
-On ajoute juste un attribut pour la distribution de proba sous forme de liste de proba de chaque face.
-Pour le `roll`, on peut utiliser le `numpy.random.choice(liste_de_valeurs, p=liste_de_probas)`.
+On montre grâce à l'exemple que les deux objets compteurs sont différents et maintiennent leur propre compte chacun.
 
 Les namespaces possibles sont :
 
   - le namespace global
-  - la classe, ici `Dice`. Contient tout ce qui est définit dans la classe comme les méthodes ou les constantes.
-  - l'objet : ici un objet dice de la classe `Dice`. Contient tout ce qui est défini pour l'objet en particulier (par exemple dans le __init__ quand l'objet est appelé self)
+  - la classe, ici `Counter`. Contient tout ce qui est défini dans la classe comme les méthodes ou les constantes.
+  - l'objet : ici un objet counter de la classe `Counter`. Contient tout ce qui est défini pour l'objet en particulier (par exemple dans le __init__ quand l'objet est appelé self)
   - les méthodes : ce qui n'existe que de l'exécution de la méthode à la fin de son exécution
 
 
@@ -109,12 +100,34 @@ S'il y a inclusion de namespaces, on suit la règle [LEGB](http://sebastianrasch
 
 Pour les exemples :
 
-  - `from dice import Dice` : cherche un fichier "dice.py" dans le répertoire courant. L'exécute avec son propre namespace/ Prend ensuite le nom `Dice` dans `dice.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Dice` qui est définit dans le namespace de dice.py
-  - `dice = Dice()` : `Dice` est dans le namespace global grâce à la ligne précédente. On crée l'objet en utilisant le `__init__` dans le namespace `Dice`, ce qui ajoute l'attribut `_position` dans le namespace de l'objet.
-  - `print(dice._position)` : dans le namespace de l'objet
-  - `dice.roll()` : python cherche le nom `roll`. Il regarde d'abord dans l'objet. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `roll` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
-  - `print(dice.get_position())` : pareil qu'au dessus. `get_position` est défini dans la classe.
+  - `from counter import Counter` : cherche un fichier "counter.py" dans le répertoire courant. L'exécute avec son propre namespace/ Prend ensuite le nom `Counter` dans `counter.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Counter` qui est défini dans le namespace de counter.py
+  - `counter = Counter()` : `Counter` est dans le namespace global grâce à la ligne précédente. On crée l'objet en utilisant le `__init__` dans le namespace `Counter`, ce qui ajoute l'attribut `_value` dans le namespace de l'objet.
+  - `print(counter._value)` : dans le namespace de l'objet
+  - `counter.count()` : python cherche le nom `count`. Il regarde d'abord dans l'objet. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `count` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
+  - `print(counter.get_value())` : pareil qu'au dessus. `get_value` est défini dans la classe.
 
+
+
+![counter_step](/img/counter_step.png#center)
+
+
+
+### Un dé
+
+Commencez simple avec les éléments minimaux pour créer un dé. Le faire d'abord en UML, mettre des exemples d'utilisation du dé en python, puis mettre le code de la classe.
+
+Diagramme UML du dé classique :
+
+![dice](/img/dice_no_class_att.png#center)
+
+Montrez bien comment on utilise la classe.
+
+Diagramme UML du dé pipé :
+
+![dice_proba](/img/dice_proba_no_class_att.png#center)
+
+On ajoute juste un attribut pour la distribution de proba sous forme de liste de proba de chaque face.
+Pour le `roll`, on peut utiliser le `numpy.random.choice(liste_de_valeurs, p=liste_de_probas)`.
 
 
 ## TP
@@ -122,6 +135,9 @@ Pour les exemples :
 
 Les étudiant·e·s commencent par utiliser le module `random` puis on leur demande d'utiliser celui de `numpy` mais ils oublient de changer l'import (la fonction `choice` du module random de python ne permet pas de choisir les probabilités).
 
+
+Dans le code donné ici on utilise un attribut de classe `NUMBER_FACES`, pour l'instant on les laissera faire sans, les
+attributs de classe viendront à la deuxième séance.
 
 ### Dice
 

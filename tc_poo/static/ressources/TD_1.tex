@@ -26,6 +26,45 @@
     \end{center}
     \vspace{15mm}
 
+\section{Compteur}
+\subsection{Compteur simple}
+On souhaite créer un objet \verb|Compteur| qui retient le compte de quelque chose et est capable d'ajouter 1 à son
+compte quand on lui demande.\\
+
+Proposez une modélisation UML de cet objet simple.\\
+\\
+On propose le code suivant :
+
+\begin{lstlisting}
+    from counter import Counter
+    
+    c1 = Counter()
+    c2 = Counter()
+    c1.count()
+    c2.count()
+    c1.count()
+\end{lstlisting}
+Que valent \verb|c1.value|, \verb|c2.value| et \verb|c3.value| à la fin de l'exécution ? 
+
+
+\subsection{Compteur à pas choisi}
+On souhaite maintenant pouvoir choisir le pas de notre compteur (c'est-à-dire ajouter 2 à chaque fois plutôt que 1 par
+exemple). Que faut-il ajouter à notre classe ?
+
+\section{Namespaces}
+
+Exécutez le code suivant en montrant toutes les lignes de codes et les {\em Namespaces} utilisés.
+
+\lstset{language=Python}
+\begin{lstlisting}
+from counter import Counter
+
+counter = Counter()
+print(counter._value)
+counter.count()
+print(counter.get_value())
+\end{lstlisting}
+
 \section{Un Dé}
 
 \subsection{Modèle d'un dé classique}
@@ -39,30 +78,14 @@ On veut créer une classe \verb|Dice|. Elle doit être capable de :
 \end{itemize}
 
 Proposez une modélisation UML de la classe \verb|Dice|. Donnez des exemples de manipulation d'objets de cette classe :
-crééer un objet, modifier la valeur de sa position, obtenir sa position et le lancer.
+créer un objet, modifier la valeur de sa position, obtenir sa position et le lancer.
 
 \subsection{Modèle d'un dé pipé}
 
-On souhaite améliorer notre classe \verb|Dice| pour pouvoir tricher. Complétez la modélisation UML précédente afin d'associer à chaque dé une liste correspondant aux probabilités de tomber sur chaque face.
+On souhaite améliorer notre classe \verb|Dice| pour pouvoir tricher. Complétez la modélisation UML précédente afin
+d'associer à chaque dé une liste correspondant aux probabilités de tomber sur chaque face.
 
 Que faut-il modifier ?
-
-
-\subsection{Namespaces}
-
-Exécutez le code suivant en montrant toutes les lignes de codes et les {\em Namespaces} utilisés.
-
-\lstset{language=Python}
-\begin{lstlisting}
-from dice import Dice
-
-dice = Dice()
-print(dice.position)
-dice.roll()
-print(dice.get_position())
-\end{lstlisting}
-
-\section{Compteur}
 
 \end{document}
 
