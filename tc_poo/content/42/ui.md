@@ -1,5 +1,5 @@
 +++
-title = "2 - UI et programmation évènementielle"
+title = "4 - UI et programmation évènementielle"
 weight = 2
 +++
 
@@ -35,45 +35,6 @@ Je ne saurais trop conseiller la lecture de [Don't make me think](https://www.se
 
 > [version pdf du sujet (2 pages par feuille)](/ressources/TD_2_impression.pdf)
 
-### Fonctions et namespaces
-
-Voir le corrigé de la première séance pour les namespaces. Ici on montre que :
-  
-  - une méthode ou fonction est une variable comme une autre
-  - l'ordre d'évaluation des namespace permet de créer des fonctions à partir de fonctions
-  
-#### Les fonctions sont des variables comme les autres
-
-Pas de réelles difficultés, on associe juste la méthode append définie dans la class `list` et appliquée à l'objet `une_liste` à une variable nommée `ma_liste` du namespace global. 
-
-Lorsque l'on utilise cette variable, c'est une fonction (elle est de type `<class 'builtin_function_or_method'>`) et elle ajoute l'argument à la liste de nom `ma_liste`.
-	
-#### Fonctions de fonction
-
-La première fonction teste que le retour est bien une fonction et que 0 est un élément neutre.
-La seconde essai sur un exemple différent de 0.
-
-{{< highlight python >}}
-def test_ajoute_0():
-    ajoute_0 = ajoute(0)
-    assert ajoute_0(0) == 0
-
-def test_ajoute_different():
-	assert ajoute(41)(1) == ajoute(1)(41) == 42
-{{< /highlight >}}
-
-Question piège. Qu'est censé rendre `ajoute("truc")("bidule")` ? Si on est dans le mode de pensée python, on utilise la concaténation de chaînes de caractères et donc c'est censé rendre "trucbidule". Et c'est le cas avec la proposition de code suivant (attention, pour les chaînes de caractères, `+` n'est pas commutatif...): 
-
-
-{{< highlight python >}}
-def ajoute(valeur_a_ajouter):
-	def ajoute(valeur):
-		return valeur_a_ajouter + valeur
-	return ajoute
-{{< /highlight >}}
-
-
-Bien faire les namespaces et les noms pour comprendre comment tout ça marche pour de vrai (ici le `ajoute` local masque le `ajoute` du namespace qui possède le nom de la fonction `ajoute` du dessus).
 
 ### Programmation d'UI
 
@@ -153,14 +114,14 @@ Note sur les UML :
   - on n'a pas mis de nom de variable pour les méthodes
   
   
-Pour le test unitaire, il ne faut pas utiliser la vue. On vérifie donc uniquement que le controlleur fonctionne et modifie bien le modèle.
+Pour le test unitaire, il ne faut pas utiliser la vue. On vérifie donc uniquement que le contrôleur fonctionne et modifie bien le modèle.
 
 
 #### MVC et appjar.info
 
 Le modèle MVC permet de créer des classes, mais dans l'application elles ne sont pas forcément nécessaires : 
 
-  - pour le modèle, il n'y a que des attributs auxquels on accède. Le fait qu'ils soient privé n'est vraiment pas indspensable. Du coup, pour ne pas réinventer la roue, on utilise un dictionnaire pour cette classe. 
+  - pour le modèle, il n'y a que des attributs auxquels on accède. Le fait qu'ils soient privé n'est vraiment pas indispensable. Du coup, pour ne pas réinventer la roue, on utilise un dictionnaire pour cette classe. 
   - pour le contrôleur, il n'y a qu'une méthode. On le remplace par une unique fonction.
   
 Le modèle UML n'est qu'une aide pour le découpage du code. Le suivre aveuglément ajoute de la complexité inutilement :
@@ -233,7 +194,7 @@ On a mis le bouton {{< menu_code >}}-1{{< /menu_code >}} à gauche pour que l'on
 
 ### Les dés
 
-Une façon de faire le code ci-après. L'UML est quasi-identique au précédent. J'ai ajouté la bonne pratique de mettre les noms des boutons en constante et un moyen de dimensioner la fenêtre.
+Une façon de faire le code ci-après. L'UML est quasi-identique au précédent. J'ai ajouté la bonne pratique de mettre les noms des boutons en constante et un moyen de dimensionner la fenêtre.
 
 
 {{<highlight python >}}
@@ -262,10 +223,6 @@ Une façon de faire le code ci-après. L'UML est quasi-identique au précédent.
 
 
 ## TP
-
-{{< note >}}
-    C'est leur premier TP objet. Donc les notion de constructeur, d'objet de méthode et d'attributs sont encore très flou. Passer du temps avec chacun pour q'ils comprennent. Quite à expliquer le tout devant tout le monde si beaucoup ont du mal.
-{{< /note>}}
 
 ### card.py
 
