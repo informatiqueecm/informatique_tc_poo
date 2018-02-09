@@ -22,7 +22,7 @@ Dans cette séance nous allons voir les notions :
 ## PyCharm
 
 {{<note>}}
-Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie Algorithmes par exemple, vous êtes censés : (i) connaître PyCharm, (ii) programmer en python, (iii) utiliser le développement par les tests. Si vous avez répondu OUI aux trois questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
+Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie Algorithmes par exemple, vous êtes censés : (i) connaître PyCharm, (ii) programmer en python. Si vous avez répondu OUI aux deux questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
 {{</note>}}
 
 On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
@@ -43,6 +43,7 @@ Implémentez la première version de la classe `Dice` vue dans le TD1 dans un fi
 
 Pour vérifier que votre code fait ce qu'on lui demande, vous devez créer un fichier de tests `essai_dice.py` pour
 essayer votre classe. Prenez le temps d'essayer :
+
   - de créer un objet sans argument et de vérifier dans quelle position il est,
   - de créer un objet en choisissant sa position et de vérifier sa position,
   - de modifier la position d'un dé créé et de vérifier qu'elle a bien été changée,
