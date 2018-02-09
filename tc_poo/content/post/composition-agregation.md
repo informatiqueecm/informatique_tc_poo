@@ -8,9 +8,10 @@ weight = 1
 
 Cette séance vise à consolider ce que vous avez appris la dernière fois sur les objets en général et d'ajouter à cela
 les notions de :
-    - composition,
-    - agrégation,
-    - attribut de classe.
+
+ - composition,
+ - agrégation,
+ - attribut de classe.
 
 ## Les bases
 
@@ -23,10 +24,11 @@ Tout ce que vous allez implémenter dans tous les TP à partir de celui-ci doit 
 Suivez les étapes [la programmation par les
 tests](https://informatique.centrale-marseille.fr/tutos/post/python-tests.html) pour découvrir ou vous remémorer le 
 principe des tests unitaires. En particulier, vérifiez que vous avez bien retenu et compris :
-    - à quoi sert le mot clé `assert`,
-    - comment créer un environnement de tests dans PyCharm,
-    - comment lancer les tests,
-    - comment bien séparer les tests du code.
+
+ - à quoi sert le mot clé `assert`,
+ - comment créer un environnement de tests dans PyCharm,
+ - comment lancer les tests,
+ - comment bien séparer les tests du code.
 
 
 ## Dice et tests unitaires
