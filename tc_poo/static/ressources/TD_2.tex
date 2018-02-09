@@ -20,7 +20,7 @@
     \\
         {\bf \textsf {\Large Programmation Orientée Objet}}\\
     \\
-        {\bf \textsf {\Large TD 2 : Composition et agrégation \& UI}}\\
+        {\bf \textsf {\Large TD 2 : Composition et agrégation}}\\
     \\
         \hline
       \end{tabular}
@@ -42,9 +42,7 @@ print(une_liste)
 \end{lstlisting}
 
 
-
-
-Dans le code ci-dessus, que représente \verb|append|~? Exécutez-le  en montrant toutes les lignes de codes et les {\em namespaces} utilisés.
+Dans le code ci-dessus, que représente \verb|append|~? Exécutez-le en montrant toutes les lignes de codes et les {\em namespaces} utilisés.
 
 
 \subsection{Fonctions de fonction}
@@ -73,8 +71,17 @@ Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?\\
 Proposez un modèle UML pour cette classe.\\
 Écrivez quelques tests unitaires permettant de vérifier son bon fonctionnement.\\
 
-\end{document}
+\section{Des Cartes}
+\subsection{Une carte}
+Donnez le diagramme UML d'une classe \verb|Card| définie par une couleur et une valeur. Les couleurs possibles sont communes à
+toutes les cartes.
 
+\subsection{Un tas de cartes}
+Un \verb|Deck| est un tas de cartes, initialement vide auquel on peut ajouter une carte, dont on peut voir la carte du
+dessus et dont on peut prendre la carte du dessus (la piocher i.e la récupérer et l'enlever du paquet). Proposez un
+diagramme UML pour cette classe. Quel est son lien avec la classe \verb|Card| ?
+
+\end{document}
 
 %%% Local Variables:
 %%% mode: latex
