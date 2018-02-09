@@ -55,27 +55,5 @@ On souhaite donner naissance à des personnages plus spécifiques : une guerriè
 La guerrière dispose d'un score de bloquage qui représente son pourcentage de chances de ne pas perdre de vie quand un autre personnage l'attaque. Proposer une modélisation UML de la classe \texttt{Guerrière}. \\
 Le magicien peut faire tout ce que peut faire un personnage normal mais il dispose en plus d'un score d'attaque magique qui détermine les dégâts qu'il fait en lançant un sort. Modéliser la classe \texttt{Magicien}.
 
-\section{Design pattern composite}
-\subsection{Expression arithmétique}
-On suppose que l'on a deux opérations : + et *. En représentant chaque opération par un noeud, proposer une structure en arbre pour représenter l'expression : $2*(3*x+y+z)+t$.
-
-\subsection{Composite}
-Le design pattern composite, qui permet d'utiliser un ensemble d'objets comme on utiliserait un objet simple comprend plusieurs modèles de classes :
-\begin{itemize}
-	\item la \emph{feuille} : l'objet de base,
-	\item les \emph{composites} qui représentent les composants qui ont des enfants et qui permettent la manipulation de ces enfants,
-	\item le \emph{composant} qui est l'abstraction de tous les composants (incluant les composites et les feuilles).
-\end{itemize}
-
-Que sont concrètement les \emph{feuilles}, \emph{composites}, \emph{composant} dans le cas de l'expression arithmétique ?
-
-On souhaite pouvoir faire des opérations de dés et faire par exemple \texttt{3 * d6 + d6} en écrivant \texttt{d6.mult(3).add(d6)}.
-
-Proposer une classe \texttt{MultDice} représentant la multiplication par un facteur multiplicateur d'un dé. On voudra pouvoir obtenir la valeur de cet objet et le faire rouler.
-
-De la même manière proposez une classe \texttt{SumDice} représentant la somme de deux dés.
-
-Compléter la modélisation par une classe \texttt{DiceComponent} représentant les expressions de dés et l'utiliser pour que \texttt{SumDice} et \texttt{MultDice} soient des opérations d'expressions de dés.
-
 \end{document}
 
