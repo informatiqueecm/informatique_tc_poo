@@ -10,7 +10,7 @@ Cette séance est consacrée à la programmation évènementielle et son applica
 
 ## Les bases
 
-> [Le sujet de td](/ressources/TD_2_impression.pdf)
+> [Le sujet de td](/ressources/TD_4_impression.pdf)
 
 ## Le dé
 
