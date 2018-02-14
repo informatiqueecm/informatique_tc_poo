@@ -107,6 +107,7 @@ def test_roll_proba():
 
 Implémentez la classe `GreenCarpet` vue en TD en écrivant **au fur et à mesure** les tests unitaires nécessaires. On
 utilisera la méthode du Test Driven Development qui se décompose en plusieurs étapes :
+ 
  - écrire un test qui teste une fonctionnalité qu'on veut implémenter,
  - vérifier qu'il échoue (car le code qu'il teste n'existe pas), afin de vérifier que le test est valide,
  - écrire juste le code correspondant au test,
@@ -114,6 +115,7 @@ utilisera la méthode du Test Driven Development qui se décompose en plusieurs 
  - recommencer avec une autre fonctionnalité.
 
  Pour rappel, cette classe possède :
+  
   - une liste de cinq objets `Dice` comme attribut. On jouera avec des dés non pipés.
   - une méthode `roll` qui lance les cinq dés ou un dé en particulier.
   - un moyen de connaître la position d'un dé donné.
