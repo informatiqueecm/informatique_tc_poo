@@ -10,7 +10,7 @@ Cette séance est consacrée à la notion d'héritage et à son utilisation. Nou
 
 ## Les bases
 
-> [Le sujet de td](/ressources/td_3_impression.pdf)
+> [Le sujet de td](/ressources/TD_3_impression.pdf)
 
 ## Les bases de l'héritage
 
