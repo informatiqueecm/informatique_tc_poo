@@ -176,7 +176,7 @@ c1.count()
 {{< /note >}}
 
 
-Les namespaces ne font que stocker des noms, ils peuvent donc être crée et détruit sans détruire des objets. Seul un objet qui n'est référencer dans aucun namespace est effacer car on ne peut plus y acceder (ie. une personne meurt vraiment quand plus personne ne pense à elle).
+Les namespaces ne font que stocker des noms, ils peuvent donc être créés et détruits sans détruire des objets. Seul un objet qui n'est référencé dans aucun namespace est effacé car on ne peut plus y accéder (ie. une personne meurt vraiment quand plus personne ne pense à elle).
 
 
 ### Un dé
