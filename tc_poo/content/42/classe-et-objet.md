@@ -21,8 +21,8 @@ Trois notions sont fondamentales et il faut y passer du temps :
 
 - méthodes spéciales et attributs spéciaux :
     - qui commencent par `_` : non public (c'est en fait une convention)
-    - qui commencent par `__` : privé (non disponible pour les descendants)
-    - qui commencent et finissent par `__` : méthodes spécifique de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisés dans des cas précis et documentés.
+    - qui commencent par `__` : privé (non disponibles pour les descendants)
+    - qui commencent et finissent par `__` : méthodes spécifiques de python qui ont un sens (par exemple __str__, __eq__), elles sont utilisées dans des cas précis et documentés.
 
 
 - l'ordre d'évaluation détermine la [visibilité des
@@ -33,7 +33,7 @@ Trois notions sont fondamentales et il faut y passer du temps :
 
 - attributs des objets/classes :
     - `__init__` pour le constructeur dans lequel on met les attributs sous la forme self.attribute
-    - namespace de Class et d'Objet (self.attribut != Class.attribut). D'abort objet puis classe (les méthodes s'y trouvent par exemple) :
+    - namespace de Class et d'Objet (self.attribut != Class.attribut). D'abord objet puis classe (les méthodes s'y trouvent par exemple) :
         - les attributs de classes s'écrivent comme des méthodes (ils se placent, comme les méthodes, dans le namespace de la classe)
         - `Class.attribute` masqué par `self.attribute` si existe car le namespace de l'objet est vu avant celui de la classe).
 
@@ -71,25 +71,28 @@ Divers tutos sur le net pour aborder les notions objet/python utilisées cette s
 Le premier exemple est très simple pour permettre d'introduire dans un premier temps l'UML, de regarder des exemples de
 code utilisant l'objet et enfin de montrer le code en python de la classe en elle-même.
 
-L'idée est tout d'abord de montrer qu'un objet est un ensemble de fonctionnalités récurrente dans un programme. Ici un compteur. Les fonctionnalités sont : 
+L'idée est tout d'abord de montrer qu'un objet est un ensemble de fonctionnalités récurrente dans un programme. Ici un
+compteur. Les fonctionnalités sont : 
+
   - ajouter une unité à un compteur
-  - connaitre la valeur du compteur.
+  - connaître la valeur du compteur.
 
 
-#### uml
-Pour que l'on puisse avoir plusieurs compteurs (si on a qu'un seul compteur, ce n'est pas la peine de faire des objets), il faut que chaque compteur est une valeur à lui.
+#### UML
+Pour que l'on puisse avoir plusieurs compteurs (si on n'a qu'un seul compteur, ce n'est pas la peine de faire des objets), il faut que chaque compteur ait une valeur à lui.
 
 On a donc ce qu'il faut pour notre classe : 
-    - un nom : Counter
-    - des méthodes (= fonctionnalités = ce qui est pareil pour tous les objets) : \verb|count| et \verb|get_value|
-    - un attribut §= ce qui est différent pour chaque objet) : \value|value|
 
-Diagrammes UML des deux compteurs !
+ - un nom : Counter
+ - des méthodes (= fonctionnalités = ce qui est pareil pour tous les objets) : `count` et `get_value`
+ - un attribut (= ce qui est différent pour chaque objet) : `value`
+
+Diagrammes UML du compteur !
 ![counter](/img/counter_init.png#center)
 
-#### python
+#### Python
 
-En python, tout peut être vu comme un {\em namespace} particulier, un endroit où sont rangé des noms : nom de variable, de fonction, de classes, etc.
+En python, tout peut être vu comme un *namespace* particulier, un endroit où sont rangés des noms : noms de variables, de fonctions, de classes, etc.
 
 Les namespaces possibles sont :
 
@@ -111,29 +114,29 @@ S'il y a inclusion de namespaces, on suit la règle [LEGB](http://sebastianrasch
 
 Pour les exemples :
 
-  - `from counter import Counter` : cherche un fichier "counter.py" dans le répertoire courant. L'exécute avec son propre namespace/ Prend ensuite le nom `Counter` dans `counter.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Counter` qui est défini dans le namespace de counter.py
+  - `from counter import Counter` : cherche un fichier "counter.py" dans le répertoire courant. L'exécute avec son propre namespace. Prend ensuite le nom `Counter` dans `counter.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Counter` qui est défini dans le namespace de counter.py
   - `c1 = Counter()` : 
-      - en informatique `=` n'est pas symétrique. A gauche un nom à droite un objet. Ici ceci signifie que l'on ajoute le nom `counter` au namespace global et que sa valeur sera le résultat de `Counter()`
+      - en informatique `=` n'est pas symétrique. A gauche un nom à droite un objet. Ici ceci signifie que l'on ajoute le nom `c1` au namespace global et que sa valeur sera le résultat de `Counter()`
       - `Counter()` : est le résultat de l'exécution du nom `Counter`. Les parenthèses (et les paramètres éventuels) après un nom l'exécute. On aurait pu tout à fait écrire `c1 = Counter` on aurait alors eu un nom counter qui sera égal à la classe Counter.      
       - `Counter` est dans le namespace global grâce à la ligne précédente. Exécuter une classe revient à : 
            - créer un namespace vierge
            - chercher la méthode `__init__` de la classe et l'exécuter en passant le nouveau namespace en premier paramètre :
                - pour exécuter une fonction on crée un namespace pour elle.
-               - on place le nom `self` qui vaut ici le nouveau namespace crée
+               - on place le nom `self` qui vaut ici le nouveau namespace créé
                - la première ligne crée le nom `value` dans le namespace nommé `self`
                - la fonction étant terminée, on supprime le namespace de la fonction (qui contenait le nom `self`)
                - on rend l'objet
-      - l'objet (qu'on peut assimiler au namespace) crée est associer au nom `c1`
+      - l'objet (qu'on peut assimiler au namespace) créé est associer au nom `c1`
   - `c1.count()` : python cherche le nom `count`. Il regarde d'abord dans l'objet de nom `c1`. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `count` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
   - `print(c1.get_value())` : pareil qu'au dessus. `get_value` est défini dans la classe. On essaye ici d'afficher à l'écran le résultat de l'exécution de la méthode \verb|get_value| appliquée à l'objet de nom `c1`
 
 
 
 {{<note warning>}}
-Prenez votre temps pour expliquer `self` qui peut souvent paraître magique aux étudiants. C'est la manière explicite de python de monter quel objet est utilisé.
+Prenez votre temps pour expliquer `self` qui peut souvent paraître magique aux étudiants. C'est la manière explicite de python de montrer quel objet est utilisé.
 {{< /note >}}
 
-#### un paramètre par défaut
+#### Un paramètre par défaut
 
 On peut ajouter un paramètre par défaut en python.  L'UML de ce qu'on veut est :
 
@@ -153,7 +156,7 @@ class Counter:
 {{</highlight>}}
 
 On peut utiliser deux fois le même nom step car ils sont dans des namespaces différent : 
-  - un dans le namespace de la fonction (crée lorsque l'on exécute la fonction et détruit à la fin. Attention : on détruit les noms pas les objets)
+  - un dans le namespace de la fonction (créé lorsque l'on exécute la fonction et détruit à la fin. Attention : on détruit les noms pas les objets)
   - un dans l'objet lui-même.
   
   
@@ -169,7 +172,7 @@ c1.count()
 
 
 {{<note warning>}}
-    Notez bien que le premier paramètre de la définition dela classe est TOUJOURS self. Le premier paramètre de l'utilisation de la méthode est alors le second dans sa définition.
+    Notez bien que le premier paramètre de la définition de la classe est TOUJOURS self. Le premier paramètre de l'utilisation de la méthode est alors le second dans sa définition.
 {{< /note >}}
 
 
