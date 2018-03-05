@@ -27,43 +27,47 @@
     \vspace{15mm}
 
 \section{Compteur}
-\subsection{Compteur simple}
+\subsection{Compteur simple\label{execution}}
 On souhaite créer un objet \verb|Compteur| qui retient le compte de quelque chose et est capable d'ajouter 1 à son
-compte quand on lui demande.\\
+compte quand on le lui demande.
+Proposez une modélisation UML de cet objet simple. Cette modélisation doit être capable de répondre au code suivant~: \\
 
-Proposez une modélisation UML de cet objet simple.\\
-\\
-On propose le code suivant :
 
 \begin{lstlisting}
-    from counter import Counter
+from counter import Counter
     
-    c1 = Counter()
-    c2 = Counter()
-    c1.count()
-    c2.count()
-    c1.count()
+c1 = Counter()
+c2 = Counter()
+c1.count()
+c2.count()
+c1.count()
+
+print(c2.get_value())
 \end{lstlisting}
-Que valent \verb|c1.value|, \verb|c2.value| et \verb|c3.value| à la fin de l'exécution ? 
+Que valent \verb|c1.get_value()|, \verb|c2.get_value()| à la fin de l'exécution ? 
+
+\subsection{Code de classes}
+Le fichier \verb|counter.py| contient le code la classe \verb|Counter|~:
+
+\begin{lstlisting}
+class Counter:
+    def __init__(self):
+        self.value = 0
+           
+    def count(self):
+        self.value = self.value + 1
+    
+    def get_value(self):
+        return self.value
+\end{lstlisting}
+
+Exécutez le code de la partie~\ref{execution} un utilisant le code python de la classe ci-avant. Montrez tous les {\em namespaces} utilisés.
 
 
 \subsection{Compteur à pas choisi}
 On souhaite maintenant pouvoir choisir le pas de notre compteur (c'est-à-dire ajouter 2 à chaque fois plutôt que 1 par
 exemple). Que faut-il ajouter à notre classe ?
 
-\section{Namespaces}
-
-Exécutez le code suivant en montrant toutes les lignes de codes et les {\em Namespaces} utilisés.
-
-\lstset{language=Python}
-\begin{lstlisting}
-from counter import Counter
-
-counter = Counter()
-print(counter._value)
-counter.count()
-print(counter.get_value())
-\end{lstlisting}
 
 \section{Un Dé}
 

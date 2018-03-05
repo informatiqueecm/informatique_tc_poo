@@ -71,14 +71,25 @@ Divers tutos sur le net pour aborder les notions objet/python utilisées cette s
 Le premier exemple est très simple pour permettre d'introduire dans un premier temps l'UML, de regarder des exemples de
 code utilisant l'objet et enfin de montrer le code en python de la classe en elle-même.
 
-{{<note warning>}}
- Passez assez de temps à expliquer `self` qui peut souvent paraître magique aux étudiants.
-{{< /note >}}
+L'idée est tout d'abord de montrer qu'un objet est un ensemble de fonctionnalités récurrente dans un programme. Ici un compteur. Les fonctionnalités sont : 
+  - ajouter une unité à un compteur
+  - connaitre la valeur du compteur.
+
+
+#### uml
+Pour que l'on puisse avoir plusieurs compteurs (si on a qu'un seul compteur, ce n'est pas la peine de faire des objets), il faut que chaque compteur est une valeur à lui.
+
+On a donc ce qu'il faut pour notre classe : 
+    - un nom : Counter
+    - des méthodes (= fonctionnalités = ce qui est pareil pour tous les objets) : \verb|count| et \verb|get_value|
+    - un attribut §= ce qui est différent pour chaque objet) : \value|value|
 
 Diagrammes UML des deux compteurs !
 ![counter](/img/counter_init.png#center)
 
-On montre grâce à l'exemple que les deux objets compteurs sont différents et maintiennent leur propre compte chacun.
+#### python
+
+En python, tout peut être vu comme un {\em namespace} particulier, un endroit où sont rangé des noms : nom de variable, de fonction, de classes, etc.
 
 Les namespaces possibles sont :
 
@@ -101,15 +112,68 @@ S'il y a inclusion de namespaces, on suit la règle [LEGB](http://sebastianrasch
 Pour les exemples :
 
   - `from counter import Counter` : cherche un fichier "counter.py" dans le répertoire courant. L'exécute avec son propre namespace/ Prend ensuite le nom `Counter` dans `counter.py` et l'ajoute au namespace global. On peut donc utiliser le nom `Counter` qui est défini dans le namespace de counter.py
-  - `counter = Counter()` : `Counter` est dans le namespace global grâce à la ligne précédente. On crée l'objet en utilisant le `__init__` dans le namespace `Counter`, ce qui ajoute l'attribut `_value` dans le namespace de l'objet.
-  - `print(counter._value)` : dans le namespace de l'objet
-  - `counter.count()` : python cherche le nom `count`. Il regarde d'abord dans l'objet. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `count` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
-  - `print(counter.get_value())` : pareil qu'au dessus. `get_value` est défini dans la classe.
+  - `c1 = Counter()` : 
+      - en informatique `=` n'est pas symétrique. A gauche un nom à droite un objet. Ici ceci signifie que l'on ajoute le nom `counter` au namespace global et que sa valeur sera le résultat de `Counter()`
+      - `Counter()` : est le résultat de l'exécution du nom `Counter`. Les parenthèses (et les paramètres éventuels) après un nom l'exécute. On aurait pu tout à fait écrire `c1 = Counter` on aurait alors eu un nom counter qui sera égal à la classe Counter.      
+      - `Counter` est dans le namespace global grâce à la ligne précédente. Exécuter une classe revient à : 
+           - créer un namespace vierge
+           - chercher la méthode `__init__` de la classe et l'exécuter en passant le nouveau namespace en premier paramètre :
+               - pour exécuter une fonction on crée un namespace pour elle.
+               - on place le nom `self` qui vaut ici le nouveau namespace crée
+               - la première ligne crée le nom `value` dans le namespace nommé `self`
+               - la fonction étant terminée, on supprime le namespace de la fonction (qui contenait le nom `self`)
+               - on rend l'objet
+      - l'objet (qu'on peut assimiler au namespace) crée est associer au nom `c1`
+  - `c1.count()` : python cherche le nom `count`. Il regarde d'abord dans l'objet de nom `c1`. Ça n'y est pas. Il regarde donc au dessus : dans le namespace de la classe qui définit le nom `count` (une fonction). C'est cette fonction qui est utilisée. Comme pour toutes les fonctions définies dans une classe et utilisée par un objet, le premier paramètre (le self dans le namespace de la méthode) est l'objet. On peut donc ensuite l'utiliser dans le namespace de la méthode pour modifier un attribut dans le namespace de l'objet (ici le position de l'objet).
+  - `print(c1.get_value())` : pareil qu'au dessus. `get_value` est défini dans la classe. On essaye ici d'afficher à l'écran le résultat de l'exécution de la méthode \verb|get_value| appliquée à l'objet de nom `c1`
 
 
+
+{{<note warning>}}
+Prenez votre temps pour expliquer `self` qui peut souvent paraître magique aux étudiants. C'est la manière explicite de python de monter quel objet est utilisé.
+{{< /note >}}
+
+#### un paramètre par défaut
+
+On peut ajouter un paramètre par défaut en python.  L'UML de ce qu'on veut est :
 
 ![counter_step](/img/counter_step.png#center)
 
+En python cela donne : 
+
+{{<highlight python >}}
+class Counter:
+    def __init__(self, step=1):
+        self.value = 0
+        self.step = step
+    def count(self):
+        self.value = self.value + self.step
+ def get_value(self):
+    return self.value  
+{{</highlight>}}
+
+On peut utiliser deux fois le même nom step car ils sont dans des namespaces différent : 
+  - un dans le namespace de la fonction (crée lorsque l'on exécute la fonction et détruit à la fin. Attention : on détruit les noms pas les objets)
+  - un dans l'objet lui-même.
+  
+  
+Que l'on peut utiliser comme ça : 
+
+{{<highlight python >}}
+c1 = Counter(3)
+c2 = Counter()
+c1.count()
+c2.count()
+c1.count()    
+{{</highlight>}}
+
+
+{{<note warning>}}
+    Notez bien que le premier paramètre de la définition dela classe est TOUJOURS self. Le premier paramètre de l'utilisation de la méthode est alors le second dans sa définition.
+{{< /note >}}
+
+
+Les namespaces ne font que stocker des noms, ils peuvent donc être crée et détruit sans détruire des objets. Seul un objet qui n'est référencer dans aucun namespace est effacer car on ne peut plus y acceder (ie. une personne meurt vraiment quand plus personne ne pense à elle).
 
 
 ### Un dé
