@@ -78,6 +78,11 @@ compteur. Les fonctionnalités sont :
   - connaître la valeur du compteur.
 
 
+Commencez par écrire le code d'utilisation du TD. Puis à côté sur le tableau créez le diagramme UML permettant d'exécuter le code. Regardez avec eux ce qui peut être vu comme une utilisation de la classe (les méthodes) et de là ce qu'il est nécessaire de stocker dans les objets pour qu'ils puissent fonctionner (ici garder la trace d'un compteur). 
+
+De là, donnez tout le code de la classe python au tableau à côté des deux autres formes (UML et utilisation). On pourra ensuite expliquer le lien entre UML et code python, puis comment tout ça mache ensemble en exécutant à la main le code d'utilisation (on suivra le déroulement précis de chaque instruction.)
+
+
 #### UML
 Pour que l'on puisse avoir plusieurs compteurs (si on n'a qu'un seul compteur, ce n'est pas la peine de faire des objets), il faut que chaque compteur ait une valeur à lui.
 
