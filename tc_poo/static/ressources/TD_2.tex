@@ -27,6 +27,41 @@
     \end{center}
     \vspace{15mm}
 
+\section{Des Dés}
+
+Nous allons réutiliser les dés de la séance 1 pour les composer à une autre classe qui permettra de jouer à un jeu comportant plusieurs dés.
+
+\subsection{Un dé}
+
+Rappelez le modèle UML du dé de la séance 1 et donnez un petit exemple de programme lançant 3 dés différents.
+
+
+\subsection{Tapis Vert}
+
+Pour pouvoir jouer à des jeux de dés, implémentons une classe
+\verb|TapisVert|. Cette classe doit avoir~:
+\begin{itemize}
+	\item 5 dés comme attribut,
+	\item pouvoir lancer les 5 dés simultanément ou individuellement,
+	\item Connaître la somme des valeurs des dés.
+\end{itemize}
+
+Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?\\
+Proposez un modèle UML pour cette classe.\\
+Écrivez quelques tests unitaires permettant de vérifier son bon fonctionnement.\\
+
+\section{Des Cartes}
+\subsection{Une carte}
+Donnez le diagramme UML d'une classe \verb|Card| définie par une couleur et une valeur. 
+
+\subsection{Un tas de cartes}
+Un \verb|Deck| est un tas de cartes, initialement vide auquel on peut ajouter une carte, dont on peut voir la carte du
+dessus et dont on peut prendre la carte du dessus (la piocher i.e la récupérer et l'enlever du paquet). Proposez un
+diagramme UML pour cette classe. Quel est son lien avec la classe \verb|Card| ?
+
+\subsection{Les couleurs}
+On veut que les couleurs des cartes soient communes à toutes les cartes. Une façon de faire est de mettre les différentes possibilités {\em dans}  la classe carte. Proposez une modélisation UML/python de ceci. 
+
 \section{Fonctions et namespaces}
 
 \subsection{Les fonctions sont des variables comme les autres}
@@ -35,6 +70,7 @@
 \lstset{language=Python}
 \begin{lstlisting}
 une_liste = []
+une_liste.append("premier")
 truc = une_liste.append
 truc("?")
 
@@ -57,29 +93,6 @@ Comment testeriez vous cette fonction~?
 
 Codez cette fonction et vérifiez (à la main) qu'elle passe bien vos tests en notant toutes les variables et les namespaces rencontrés.
 
-\section{Des Dés}
-
-Nous allons réutiliser les dés de la séance 1. Pour pouvoir jouer à des jeux de dés, implémentons une classe
-\verb|TapisVert|. Cette classe doit avoir~:
-\begin{itemize}
-	\item 5 dés comme attribut,
-	\item pouvoir lancer les 5 dés simultanément ou individuellement,
-	\item Connaître la valeur d'un dé spécifique.
-\end{itemize}
-
-Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?\\
-Proposez un modèle UML pour cette classe.\\
-Écrivez quelques tests unitaires permettant de vérifier son bon fonctionnement.\\
-
-\section{Des Cartes}
-\subsection{Une carte}
-Donnez le diagramme UML d'une classe \verb|Card| définie par une couleur et une valeur. Les couleurs possibles sont communes à
-toutes les cartes.
-
-\subsection{Un tas de cartes}
-Un \verb|Deck| est un tas de cartes, initialement vide auquel on peut ajouter une carte, dont on peut voir la carte du
-dessus et dont on peut prendre la carte du dessus (la piocher i.e la récupérer et l'enlever du paquet). Proposez un
-diagramme UML pour cette classe. Quel est son lien avec la classe \verb|Card| ?
 
 \end{document}
 

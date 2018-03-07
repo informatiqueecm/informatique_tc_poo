@@ -16,7 +16,7 @@ autre classe en attribut et plus particulièrement :
  
  - agrégation : quand les objets utilisés sont créés en dehors,
  - composition : quand les objets utilisés sont créés dans le constructeur de la classe qui les utilise.
-On expliquera l'idée, la réalisation et l'UML correspondant.
+On expliquera l'idée, la réalisation et l'UML correspondant. Insistez sur la forme des flèches différentes pour l'agrégation et la composition.
 
 
 ## TD
@@ -24,6 +24,43 @@ On expliquera l'idée, la réalisation et l'UML correspondant.
 > [Les sources tex du sujet](/ressources/TD_2.tex)
 
 > [version pdf du sujet (2 pages par feuille)](/ressources/TD_2_impression.pdf)
+
+
+
+### Des Dés
+
+{{<highlight python>}}
+from dice import Dice
+
+d1 = Dice()
+d2 = Dice(3)
+d3 = Dice(2)
+
+for essai in range(10):
+    for d in (d1, d2, d3):
+        d.roll()
+    
+    print(d1.get_position(), d2.get_position(), d3.get_position())
+{{</highlight>}}
+
+![greencarpet](/img/greenCarpet.png#center)
+
+Ici on montre la composition, les dés appartiennent au jeu de dés, on les crée donc lors de l'initialisation de notre
+jeu.
+
+Le code est dans la correction du TP en dessous.
+
+### Des cartes
+
+Pour les 2 premières questions, on donne juste un nom/nombre (1, 2, 3, 4 ou "pique", "cœur", "carreau", "trèfle") aux couleurs. Ceci n'est pas satisfaisant car c'est un [magic number](https://codeburst.io/software-anti-patterns-magic-numbers-7bc484f40544). On rectifie le tout à la troisième question.
+
+ L'idée est de mettre des noms de constantes explicites et d'utiliser ces noms plutôt que les chaînes de caractères. Pour se rappeler des différentes possibilités, on place des constantes dans la définition de la classe.
+
+
+On va montrer ici les attributs de classes avec les différentes couleurs de cartes et l'agrégation avec les decks qui
+sont des tas de cartes qui existent déjà indépendamment.
+
+![carddeck](/img/card_deck.png#center)
 
 ### Fonctions et namespaces
 
@@ -65,23 +102,27 @@ def ajoute(valeur_a_ajouter):
 
 Bien faire les namespaces et les noms pour comprendre comment tout ça marche pour de vrai (ici le `ajoute` local masque le `ajoute` du namespace qui possède le nom de la fonction `ajoute` du dessus).
 
-### Des Dés
-
-![greencarpet](/img/greenCarpet.png#center)
-
-Ici on montre la composition, les dés appartiennent au jeu de dés, on les crée donc lors de l'initialisation de notre
-jeu.
-
-Le code est dans la correction du TP en dessous.
-
-### Des cartes
-
-On va montrer ici les attributs de classes avec les différentes couleurs de cartes et l'agrégation avec les decks qui
-sont des tas de cartes qui existent déjà indépendamment.
-
-![carddeck](/img/card_deck.png#center)
-
 ## TP
+
+
+{{<highlight python>}}
+from dice import Dice
+
+d1 = Dice()
+d2 = Dice()
+d3 = Dice()
+
+NOMBRE_LANCER = 42
+moyenne = 0
+for essai in range(NOMBRE_LANCER):     
+    for d in (d1, d2, d3):        
+        d.roll()
+        moyenne += d.get_position()
+    
+moyenne /= NOMBRE_LANCER
+print("moyenne :", moyenne)
+{{</highlight>}}
+
 
 {{<highlight python>}}
 
@@ -178,27 +219,11 @@ class GreenCarpet:
 {{</highlight>}}
 
 {{<highlight python>}}
-
-
-from dice import *
-
+from dice import Dice
 
 def test_dice_creation_no_argument():
     dice = Dice()
     assert dice.get_position() == 1
-    assert dice.probabilities == [1/6, 1/6, 1/6, 1/6, 1/6, 1/6]
-
-
-def test_dice_creation_initial_position():
-    dice = Dice(position=5)
-    assert dice.get_position() == 5
-    assert dice.probabilities == [1/6, 1/6, 1/6, 1/6, 1/6, 1/6]
-
-
-def test_str():
-    dice = Dice(position=1, probabilities=[1, 0, 0, 0, 0, 0])
-    assert str(dice) == "Dice(position=1, probabilities=[1, 0, 0, 0, 0, 0]"
-
 
 def test_set_position():
     dice = Dice()
@@ -206,39 +231,22 @@ def test_set_position():
     dice.set_position(3)
     assert dice.get_position() == 3
 
-
-def test_roll_no_proba():
+def test_roll():
     dice = Dice()
     dice.roll()
     assert 1 <= dice.get_position() <= dice.NUMBER_FACES
 
+def test_dice_creation_initial_position():
+    dice = Dice(position=5)
+    assert dice.get_position() == 5
 
 def test_roll_proba():
     dice = Dice(probabilities=[1, 0, 0, 0, 0, 0])
     dice.roll()
     assert dice.get_position() == 1
+{{</highlight>}}
 
-
-def test_eq():
-    dice = Dice(position=1)
-    different_dice = Dice(position=2)
-    equal_dice = Dice(position=1)
-    assert dice != different_dice
-    assert dice == equal_dice
-
-
-def test_lt():
-    small_dice = Dice(position=1)
-    large_dice = Dice(position=2)
-    assert small_dice < large_dice
-
-
-def test_gt():
-    small_dice = Dice(position=1)
-    large_dice = Dice(position=2)
-    assert large_dice > small_dice
-
-
+{{<highlight python>}}
 def test_green_carpet_creation():
     carpet = GreenCarpet()
     assert len(carpet.dices) == 5
@@ -248,14 +256,6 @@ def test_green_carpet_roll():
     carpet = GreenCarpet()
     for dice in carpet.get_dices():
         assert 1 <= dice.position <= dice.NUMBER_FACES
-
-
-def test_get_dice_by_id():
-    carpet = GreenCarpet()
-    second_dice = Dice()
-    carpet.dices[1] = second_dice
-    assert carpet.get_dice_by_id(1) == second_dice
-
 
 def test_is_three_of_a_kind():
     carpet = GreenCarpet()
@@ -312,7 +312,7 @@ class GreenCarpet {
     
  + __init__()
  + roll()
- + get_dice_by_id()
+ + sum()
 }
 
 Dice --* GreenCarpet
