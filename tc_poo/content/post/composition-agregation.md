@@ -18,8 +18,6 @@ les notions de :
 > [Le sujet de td](/ressources/TD_2_impression.pdf)
 
 
-
-
 ## Dice et tests unitaires
 
 On vous propose l'implémentation minimale suivante de la classe `Dice` que vous avez du réaliser la dernière fois.
@@ -53,7 +51,7 @@ class Dice:
 
 ### main.py
 
-Ecrivez un petit programme qui crée 3 dés, les lance 10 fois et affiche à l'écran la moyenne de la somme des 3 dés.
+Ecrivez un petit programme qui crée 5 dés, les lance 10 fois et affiche à l'écran la moyenne de la somme des 5 dés.
 
 
 ### test_dice.py
