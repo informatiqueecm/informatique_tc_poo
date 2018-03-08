@@ -33,7 +33,7 @@ Nous allons réutiliser les dés de la séance 1 pour les composer à une autre 
 
 \subsection{Un dé}
 
-Rappelez le modèle UML du dé de la séance 1 et donnez un petit exemple de programme lançant 3 dés différents.
+Rappelez le modèle UML du dé de la séance 1 et donnez un petit exemple de programme lançant 5 dés différents.
 
 
 \subsection{Tapis Vert}
@@ -41,14 +41,19 @@ Rappelez le modèle UML du dé de la séance 1 et donnez un petit exemple de pro
 Pour pouvoir jouer à des jeux de dés, implémentons une classe
 \verb|TapisVert|. Cette classe doit avoir~:
 \begin{itemize}
-	\item 5 dés comme attribut,
-	\item pouvoir lancer les 5 dés simultanément ou individuellement,
-	\item Connaître la somme des valeurs des dés.
+	\item 5 dés comme attribut (une liste de 5 dés nommée \verb|dices|),
+	\item pouvoir lancer les 5 dés simultanément (méthode \verb|roll|),
+	\item Connaître la somme des valeurs des dés (méthode \verb|sum|).
 \end{itemize}
 
-Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?\\
-Proposez un modèle UML pour cette classe.\\
-Écrivez quelques tests unitaires permettant de vérifier son bon fonctionnement.\\
+\begin{enumerate}
+    \item retranscrivez le code la question précédente en utilisant ma classe \verb|TapisVert|
+    \item Proposez un modèle UML pour cette classe. Quel lien la classe \verb|TapisVert| a-t-elle avec la classe \verb|Dice| ?
+    \item Ecrire le code python de la classe.
+    \item comment est-il possible d'avoir à la fois une méthode \verb|roll| pour \verb|Dice| et pour \verb|TapisVert| sans que python s'embrouille ?
+    \item exécutez le code précédent en explicitant tous les namespaces utilisées (namespace de classe, d'objet, de fichier et de fonctions)
+\end{enumerate}
+
 
 \section{Des Cartes}
 \subsection{Une carte}
@@ -84,10 +89,6 @@ Dans le code ci-dessus, que représente \verb|append|~? Exécutez-le en montrant
 \subsection{Fonctions de fonctions}
 
 On souhaite créer une fonction \verb|ajoute| avec un paramètre (entier) \verb|x|. Le retour de cette fonction doit être une fonction à un paramètre \verb|y| qui rend \verb|x + y|
-
-\subsubsection{Tests}
-
-Comment testeriez vous cette fonction~?
 
 \subsubsection{Implémentation}
 
