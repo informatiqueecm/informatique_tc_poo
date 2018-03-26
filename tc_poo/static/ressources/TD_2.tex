@@ -67,33 +67,6 @@ diagramme UML pour cette classe. Quel est son lien avec la classe \verb|Card| ?
 \subsection{Les couleurs}
 On veut que les couleurs des cartes soient communes à toutes les cartes. Une façon de faire est de mettre les différentes possibilités {\em dans}  la classe carte. Proposez une modélisation UML/python de ceci. 
 
-\section{Fonctions et namespaces}
-
-\subsection{Les fonctions sont des variables comme les autres}
-
-
-\lstset{language=Python}
-\begin{lstlisting}
-une_liste = []
-une_liste.append("premier")
-truc = une_liste.append
-truc("?")
-
-print(une_liste)
-\end{lstlisting}
-
-
-Dans le code ci-dessus, que représente \verb|append|~? Exécutez-le en montrant toutes les lignes de codes et les {\em namespaces} utilisés.
-
-
-\subsection{Fonctions de fonctions}
-
-On souhaite créer une fonction \verb|ajoute| avec un paramètre (entier) \verb|x|. Le retour de cette fonction doit être une fonction à un paramètre \verb|y| qui rend \verb|x + y|
-
-\subsubsection{Implémentation}
-
-Codez cette fonction et vérifiez (à la main) qu'elle passe bien vos tests en notant toutes les variables et les namespaces rencontrés.
-
 
 \end{document}
 

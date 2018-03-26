@@ -14,6 +14,9 @@ Cette séance est consacrée à la notion d'héritage et à son utilisation. Nou
 
 ## Les bases de l'héritage
 
+
+### héritage de méthodes
+
 Écrivez une classe `A` qui a :
 
  - un attribut `a`
@@ -23,6 +26,7 @@ Cette séance est consacrée à la notion d'héritage et à son utilisation. Nou
 Écrivez une classe `B` qui hérite de A et qui a :
 
  - un attribut `b`
+ - le constructeur à 2 paramètres, un qui est initialisé dans la classe A, l'autre initialisé dans B
  - une méthode `autre_truc()` qui affiche "C'est mon autre truc à moi"
  - une méthode `que_de_b()` qui affiche "Méthode seulement de la classe fille"
 
@@ -45,6 +49,16 @@ objet_b.autre_truc()
 objet_b.que_de_b()
 
 {{</highlight>}}
+
+### combinaison de méthodes
+
+Ajoutez :
+
+  - dans la  classe `A` : une méthode `j_herite(x)` qui prend un paramètre `x` qui est une chaine de caractère et affiche la valeur de x
+  - dans la  classe `B` : une méthode `j_herite(x)` qui commence par appeler la méthode de la classe mère puis affiche la valeur de x en majuscules
+
+Vérifiez que tout se passe comme prévu.
+
 
 
 ## Le dé
@@ -127,9 +141,14 @@ Implémentez la classe `StatDice` qui hérite de `Dice`, retient le nombre de fo
  - une méthode `stats` qui renvoie les fréquences d'apparition de chaque valeur et un test unitaire qui vérifie que le calcul est bien fait,
  - une méthode `mean` qui renvoie la moyenne des lancers du dé et un test unitaire.
 
-On pourra utiliser les [dictionnaires](https://docs.python.org/2/tutorial/datastructures.html#dictionaries) qui permettent d'associer une clé à une valeur pour faciliter certaines opérations.
+On pourra stocker le nombre d'apparition de chaque face dans une liste où l'index + 1 correspond à la face.
 
 Prenez le temps de tester votre code (vous pourrez entre autres faire beaucoup de lancers d'un dé et vérifier qu'il suit la loi de probabilité que vous lui avez donnée) et de bien comprendre quelle méthode est appelée et pourquoi quand vous utilisez un `StatDice`.
+
+
+### Pour aller plus loin 
+
+On pourra utiliser les [dictionnaires](https://docs.python.org/2/tutorial/datastructures.html#dictionaries) qui permettent d'associer une clé à une valeur pour faciliter certaines opérations.
 
 
 

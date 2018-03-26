@@ -73,40 +73,6 @@ Parlez également du fait que l'on ne contrôle pas lorsque le bouton est appel�
 
 ![mvc](/img/MVC.png#center)
 
-{{<highlight uml>}}
-@startuml
-@startuml
-
-title Modèle MVC
-
-
-class Vue {
-  - str texte
-  - bouton
-  
-  + str get_texte()
-  + set_texte(str)
-  + associe_action(fct)
-}
-
-
-class Modèle {
-    - int valeur
-    
-    +int get_valeur()
-    + set_valeur(int)
-}
-class Contrôleur {
-  + ajoute_1()
-}
-
-Vue <|-up- Modèle: Mise à jour
-Contrôleur  <|-up-|> Vue
-Contrôleur  <|-up-|> Modèle
-
-@enduml
-{{</highlight>}}
-
 
 Note sur les UML : 
 
@@ -118,6 +84,13 @@ Pour le test unitaire, il ne faut pas utiliser la vue. On vérifie donc uniqueme
 
 
 #### MVC et appjar.info
+
+{{< note >}}
+Lier les lignes de code au modèle MVC. ON aura pu recopier le code au tableau à côté des 3 classes du modèle UML.
+
+On doit retrouver les différentes parties, mais agencées à la mode appjar. En utilisant un autre gestionnaire de fenêtre (comme QT, par exemple) on aurait eu un autre découpage. L'important est de bien décomposer son UI en 3 parties au moins formellement.
+{{< /note>}}
+
 
 Le modèle MVC permet de créer des classes, mais dans l'application elles ne sont pas forcément nécessaires : 
 
@@ -189,8 +162,49 @@ En rendant le texte éditable, il faut interdire de taper autre chose que des en
 	print("c'est fini.")
 {{< /highlight >}}
 
-On a mis le bouton {{< menu_code >}}-1{{< /menu_code >}} à gauche pour que l'on comprenne mieux la relation entre les différentes partie de l'UI.
+On a mis le bouton {{< menu_code >}}-1{{< /menu_code >}} à gauche pour que l'on comprenne mieux la relation entre les différentes parties de l'UI.
 
+### Fonctions et namespaces
+
+Cette partie est là pour expliquer comment on peut associer une action à un click sur un bouton en ne passant que le nom de la fonction.
+
+Voir le corrigé de la première séance pour les namespaces. Ici on montre que :
+  
+  - une méthode ou fonction est une variable comme une autre
+  - l'ordre d'évaluation des namespace permet de créer des fonctions à partir de fonctions
+  
+#### Les fonctions sont des variables comme les autres
+
+Pas de réelles difficultés, on associe juste la méthode append définie dans la class `list` et appliquée à l'objet `une_liste` à une variable nommée `ma_liste` du namespace global. 
+
+Lorsque l'on utilise cette variable, c'est une fonction (elle est de type `<class 'builtin_function_or_method'>`) et elle ajoute l'argument à la liste de nom `ma_liste`.
+	
+#### Fonctions de fonction
+
+La première fonction teste que le retour est bien une fonction et que 0 est un élément neutre.
+La seconde essai sur un exemple différent de 0.
+
+{{<highlight python>}}
+def test_ajoute_0():
+    ajoute_0 = ajoute(0)
+    assert ajoute_0(0) == 0
+
+def test_ajoute_different():
+	assert ajoute(41)(1) == ajoute(1)(41) == 42
+{{</highlight>}}
+
+Question piège. Qu'est censé rendre `ajoute("truc")("bidule")` ? Si on est dans le mode de pensée python, on utilise la concaténation de chaînes de caractères et donc c'est censé rendre "trucbidule". Et c'est le cas avec la proposition de code suivant (attention, pour les chaînes de caractères, `+` n'est pas commutatif...): 
+
+
+{{<highlight python>}}
+def ajoute(valeur_a_ajouter):
+	def ajoute(valeur):
+		return valeur_a_ajouter + valeur
+	return ajoute
+{{</highlight>}}
+
+
+Bien faire les namespaces et les noms pour comprendre comment tout ça marche pour de vrai (ici le `ajoute` local masque le `ajoute` du namespace qui possède le nom de la fonction `ajoute` du dessus).
 
 ### Les dés
 
@@ -517,3 +531,45 @@ app.addButton("<-", on_click_move_card, 4, 4, 2)
 
 app.go()   
 {{</highlight >}}     
+
+
+## Ressources
+
+### uml 
+
+Pour https://www.planttext.com/
+
+
+{{<highlight uml>}}
+@startuml
+@startuml
+
+title Modèle MVC
+
+
+class Vue {
+  - str texte
+  - bouton
+  
+  + str get_texte()
+  + set_texte(str)
+  + associe_action(fct)
+}
+
+
+class Modèle {
+    - int valeur
+    
+    +int get_valeur()
+    + set_valeur(int)
+}
+class Contrôleur {
+  + ajoute_1()
+}
+
+Vue <|-up- Modèle: Mise à jour
+Contrôleur  <|-up-|> Vue
+Contrôleur  <|-up-|> Modèle
+
+@enduml
+{{</highlight>}}

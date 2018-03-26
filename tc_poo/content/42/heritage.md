@@ -68,7 +68,7 @@ def taper(self, personnage):
     personnage.se_faire_taper(self)
 
 def se_faire_taper(self, personnage):
-    self.set_vie(self.get_vie - personnage.attaque)
+    self.set_vie(self.get_vie() - personnage.get_attaque())
 
 {{</highlight>}}
 
@@ -103,8 +103,12 @@ Le magicien permet de montrer l'ajout d'une méthode qui n'était pas du tout da
 
 ![magicien](/img/magicien.png)
 
-On peut mettre le code s'ils en ont besoin mais a priori rien de très difficile s'ils ont compris ce qui se passe avant.
 
+On peut mettre le code s'ils en ont besoin mais a priori rien de très difficile s'ils ont compris ce qui se passe avant. Il faut :
+
+  - ajouter une méthode `lancer_sort`
+  - ajouter un paramètre et son attribut associé `attaque_magique` au constructeur
+  - ajouter une méthode `se_faire_toucher_par_un_sort(magicien)` avec un paramètre de type Magicien dans la classe Personnage.
 
 On mentionnera aussi le fait que l'héritage est utile quand on veut utiliser des classes définies dans un module quelconque et la mettre un peu à notre sauce.
 
