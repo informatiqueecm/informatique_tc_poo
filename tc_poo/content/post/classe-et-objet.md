@@ -22,7 +22,7 @@ Dans cette séance nous allons voir les notions :
 ## PyCharm
 
 {{<note>}}
-Si ce n'est pas votre premier rodéo et que vous avez déjà suivi la partie Algorithmes par exemple, vous êtes censés : (i) connaître PyCharm, (ii) programmer en python. Si vous avez répondu OUI aux deux questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
+Si ce n'est pas votre premier cours d'informatique à l'école centrale marseille et que vous avez déjà suivi la partie Algorithmes par exemple, vous êtes censés : (i) connaître PyCharm, (ii) programmer en python. Si vous avez répondu OUI aux deux questions précédentes vous pouvez aller à la partie Dice. Sinon faites ce qui suit.
 {{</note>}}
 
 On vous demande donc d'aller sur le [site des tutos](https://informatique.centrale-marseille.fr/tutos) pour :
