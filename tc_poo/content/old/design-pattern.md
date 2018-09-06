@@ -18,7 +18,7 @@ Cela ne résout bien sûr pas des problèmes aussi compliqués que [tracer 7 lig
 
 ## Un Dés
 
-Reprenez le [code du dé du dernier tp]({{< ref "post/heritage.md#interface-d-un-dé" >}}) et utilisez le dans l'UI ci-après.
+Reprenez le [code du dé du dernier tp]({{< ref "/post/heritage.md#interface-d-un-dé" >}}) et utilisez le dans l'UI ci-après.
 
 #### main.py initial
 
