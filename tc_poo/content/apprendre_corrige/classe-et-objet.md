@@ -12,7 +12,7 @@ Le but de cette séance est de montrer les concepts fondamentaux de classe et d'
 ## Éléments de cours
 
 {{<note warning>}}
-Les étudiants n'ont aucune notion de classe, d'objets ou d'UML. Il faudra donc tout leur expliquer.
+    On ne présuppose aucune notion de classe, d'objets ou d'UML. Il faudra donc tout expliquer.
 {{</note>}}
 
 Avant le début du TD, on peut faire un petit exposé sur les classes/objets. On pourra aborder le formalisme UML en créant le dé. Dire qu'en python, beaucoup de choses sont des [conventions](https://en.wikipedia.org/wiki/Convention_over_configuration) (variable privée, premier nom est self, ...) mais tout le monde s'y tient. 

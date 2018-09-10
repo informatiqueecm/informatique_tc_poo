@@ -1,6 +1,6 @@
 +++
-title = "4 - Design Pattern : cas du undo"
-weight = 4
+title = "1 - Design patterns"
+weight = 5
 +++
 
 {{<note>}}
@@ -15,10 +15,10 @@ On essayera de leur montrer quelques diagrammes UML de design pattern, puis leur
 
 On peut prendre la liste initiale des design pattern du [GOF](https://en.wikipedia.org/wiki/Design_Patterns) mais je déconseille singleton qui tient plus de l'anti-pattern que du pattern...
 
-Pour les trois types, on pourra choisir comme exemple : 
+Pour les trois types, on verra : 
 
-- type structural : composite. Vu à la troisième séance
 - type creational : factory. Créer les objets via des méthodes presque sans paramètre et avec un nom adapté plutôt qu'avec un contructeur avec des milliers de paramètres
+- type structural : composite. Vu à la troisième séance
 - type behavioural : strategy. Même fonction mais algorithmes différents (pour un tri par exemple)
 
 
@@ -26,46 +26,250 @@ Parler aussi des anti-pattern, c'est à dire des mauvaises façons de faire qui 
 
 
 
-## TD
+### Nota bene 
+
+ Le nom de duck typing  vient des Monty Python et plus particulièrement la séquence où [l'on brûle une sorcière](https://www.youtube.com/watch?v=gUXB_jLiT3A) dans Sacré Graal. Le [nom même du langage](https://en.wikipedia.org/wiki/Python_(programming_language)#History) vient d'eux et pas de l'[animal](https://www.youtube.com/watch?v=NoX-4Hm1rPU). Les informaticiens ont une passion presque maladive pour les Monthy Python. Par exemple le terme de spam vient aussi d'eux, ou plutôt d'un de [leur sketch](https://www.youtube.com/watch?v=cFrtpT1mKy8) de leur émission de la BBC qui s'appelait le Monthy Python's flying circus (un de mes sketch préféré étant l'[expédition au Kilimandjaro](https://www.youtube.com/watch?v=1T9Yp-2TYzo) mais on pourrait en citer des dizaines d'autres)),
+
+Cela ne résout bien sûr pas des problèmes aussi compliqués que [tracer 7 lignes rouges perpendiculaires entre elles](https://www.youtube.com/watch?time_continue=2&v=BKorP55Aqvg)
 
 
 
-### Observer
+## Première amélioration
 
-Pattern classique. Le match de foot notifie à ses observateurs lorsqu'il y y aun changement. Les observateurs, qui se sont au préalable inscrit via la méthode `register` doivent implémenter une méthode `update` prenant l'objet observé en paramètre. Ceci leur permet d'être informé à chaque changement. 
+Il est important que les propriétés d'un objet soient protégées. Ici, on fait rentrer une liste (`choices`) dans l'objet. Comme on ne veut pas qu'elle puisse être modifiée, il faut la recopier dans l'objet.
+
+De plus, utiliser des properties python, permet de se passer élégamment des getter/setter. Ci après, le code avec les properties, mais ce n'est peut-être pas la peine de le faire avec les étudiants. Pour que l'on puisse écrire `d6.choices`, on stocke le tout dans l'attribut `_choices`, `d6.choices` étant le résultat de la méthode `choices` grace au décorateur `@property`
+
+La méthode `roll` rend `self` ce qui permet de chainer les instructions et rend possible des choses du genre : 
+`print(Choice([1, 2, 2, 3]).roll().get_position())`. C'est important de comprendre comment tout ça fonctionne : 
+
+1. on lit de droite à gauche
+2. on applique la méthode à l'objet à gauche du point.
+3. puis on remonte les apels pour voir si cela marche.
+
+Pour l'instruction précédente : 
+
+* on affiche à l'écran (c'est la méthode `print`) l'objet `A` qui est le résultat de `Choice([1, 2, 2, 3]).roll().get_position()`
+* cet objet `A` est le résultat de la méthode `get_position()` appliquée à l'objet `B` qui est `Choice([1, 2, 2, 3]).roll()`
+* cet objet est `B` le résultat de `roll()` appliqué à l'objet `C` qui est le résultat de `Choice([1, 2, 2, 3])` 
+* l'objet `C` et un objet de classe `Choice`
+
+On peut donc remonter : 
+
+* `C` est un objet de classe Choice
+* `B` est le résultat de `roll` appliqué à `C`, c'est donc `C`
+* `A` est un entier valant 1, 2, ou 3
+* on affiche `A`, c'est à die 1, 2 ou 3
 
 
-{{< highlight python>}}
-class MatchDeFoot:
-    def __init__(self):
-        self.chrono = 0
-        self.but_equipe1 = 0
-        self.but_equipe2 = 0
-        
-        self.observers = [] # list of observers
+#### choice.py
 
-    def but(self):
-        # .....
-        self.notifiy()
-        
-        
-    def register(self, observer):
-        self.observers.append(observer)
-        
-    def notifiy(self):
-        for observer in self.observers:
-            observer.update(self)
-        
+
+{{< highlight python >}}
+
+import random
+
+
+class Choice:
+    def __init__(self, choices):
+        self._choices = tuple(choices)
+        self.position = self.choices[0]
+
+    @property
+    def choices(self):
+        return self._choices
+    
+    def get_position(self):
+        return self.position
+
+    def roll(self):
+        self.position = self.choices[random.randint(0, len(self.choices) - 1)]
+        return self
+
+
 {{< /highlight >}}
 
 
-#### Observer et UI
+#### tests.py
 
-Pour les UI, on s'abonne à des *events* comme par exemple "cliquer sur ce bouton", "mettre du texte dans ce champ", "la souris passe sur cet objet", etc. Un exemple simple pour voir tout ça en action est de faire du javascript. 
 
-Attention cependant, si le principe est simple, sa mise en œuvre est souvent plus compliquée. Ainsi, l'héritage des objets graphiques entre eux est pris en compte (arbre DOM en html par exemple) et on ajoute souvent une phase de remontée des évènements (phase de *bubble*). Voir par exemple  https://www.w3.org/TR/uievents/ pour le web. 
+{{< highlight python >}}
+import pytest
 
-### Memento
+from choice import Choice
+
+
+def test_init():
+    d1 = Choice([1])
+    assert d1.choices == (1, )
+
+
+def test_initial_position():
+    d1 = Choice([1, 2])
+    assert d1.get_position() == 1
+
+
+def test_roll():
+    d1 = Choice([1])
+    d1.roll()
+    assert d1.get_position() == 1
+
+
+def test_sets():
+    assert Choice({1}).roll().get_position() == 1
+
+
+def test_copy_choices():
+    initial_list = ["a"]
+    d1 = Choice(initial_list)
+    initial_list[0] = "CHANGE"
+    d1.roll()
+    assert d1.get_position() == "a"
+
+
+def test_no_modification():
+    d1 = Choice([1])
+    with pytest.raises(Exception):
+        d1.choices[0] = 2
+{{< /highlight >}}
+
+
+## factory
+
+Ils l'auront vu en cours. Ce pattern est super pour créer des objets. En gros, plutôt que d'apprendre par cœur des paramètre d'initialisation, les objets courant sont créés par des méthodes.
+
+On va procéder par étapes.
+
+### des dés dans le main.
+
+{{< highlight python >}}
+
+def a_dice():
+    N = 1000
+    d6 = Choice(list(range(1, 7)))
+
+    results = []
+    for number in range(N):
+        results.append(d6.roll().get_position())
+
+    count = Counter(results)
+    print(count)
+    for key, value in count.items():
+        print(key, "proba: ", value / N, "; number: ", value)
+
+
+def two_dice():
+    N = 1000
+    d6 = Choice([i + j for i in range(1, 7) for j in range(1, 7)])
+
+    results = []
+    for number in range(N):
+        results.append(d6.roll().get_position())
+
+    count = Counter(results)
+    print(count)
+    for key, value in count.items():
+        print(key, "proba: ", value / N, "; number: ", value)
+
+{{< /highlight >}}
+
+### Méthodes
+
+
+Les méthodes de classes sont des façons pratique de créer des objets, elles prennent la classe comme premier paramètre (comme les méthodes d'objet prennent l'objet en paramètre). Utilisez le quand vous créez des objets avec, car elles permettent d'utiliser l'héritage sans problème.
+
+#### choice.py
+
+{{< highlight python >}}
+
+import random
+
+
+class Choice:
+    def __init__(self, choices):
+        self._choices = tuple(choices)
+        self.position = self.choices[0]
+
+    @classmethod
+    def dice(cls):
+        return cls(range(1, 7))
+
+    @classmethod
+    def two_dices(cls):
+        return cls([i + j for i in range(1, 7) for j in range(1, 7)])
+
+    @property
+    def choices(self):
+        return self._choices
+
+    def get_position(self):
+        return self.position
+
+    def roll(self):
+        self.position = self.choices[random.randint(0, len(self.choices) - 1)]
+        return self
+
+
+{{< /highlight >}}
+
+#### tests.py
+
+{{< highlight python >}}
+
+import pytest
+
+from collections import Counter
+
+from choice import Choice
+
+
+def test_init():
+    d1 = Choice([1])
+    assert d1.choices == (1, )
+
+
+def test_initial_position():
+    d1 = Choice([1, 2])
+    assert d1.get_position() == 1
+
+
+def test_roll():
+    d1 = Choice([1])
+    d1.roll()
+    assert d1.get_position() == 1
+
+
+def test_sets():
+    assert Choice({1}).roll().get_position() == 1
+
+
+def test_copy_choices():
+    initial_list = ["a"]
+    d1 = Choice(initial_list)
+    initial_list[0] = "CHANGE"
+    d1.roll()
+    assert d1.get_position() == "a"
+
+
+def test_no_modification():
+    d1 = Choice([1])
+    with pytest.raises(Exception):
+        d1.choices[0] = 2
+
+
+def test_classmethod_dice():
+    assert Choice.dice().choices == (1, 2, 3, 4, 5, 6)
+
+
+def test_classmethod_two_dice():
+    assert Counter(Choice.two_dices().choices) == {2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 5, 9: 4, 10: 3, 11: 2, 12: 1}
+
+{{< /highlight >}}
+
+
+
+
+## Memento
 
 
 L'UML de memento possède : 
@@ -189,118 +393,6 @@ class UndoRedo:
 {{< /highlight >}}
 
 
-
-### Itérateurs
-
-
-Le module [itertools](https://docs.python.org/3/library/itertools.html) de python contient de nombreux utilitaires pour créer des itérateurs. On peut aussi, mais cela dépasse un peu le scope du cours utiliser des générateurs (avec la commande `yield`) pour créer automatiquement des itérateurs. Un exemple célèbre est la fonction de Fibonacci (pris de https://www.python-course.eu/python3_generators.php) : 
-
-{{< highlight python>}}
-def fibonacci(n):
-    """ A generator for creating the Fibonacci numbers """
-    a, b, counter = 0, 1, 0
-    while True:
-        if (counter > n): 
-            return
-        yield a
-        a, b = b, a + b
-        counter += 1
-
-f = fibonacci(5)
-for x in f:
-    print(x) # 
-
-
-{{< /highlight >}}
-
-
-#### Modèle UML
-
-
-Les méthodes nécessaires pour un itérateur dépendent du langage. En python, on pourra consulter : https://docs.python.org/3/tutorial/classes.html#iterators 
-
-
-Python demande pour un itérateur une unique méthode `__next__` qui rend soit un objet soit lance une exception `StopIteration` qui définit la fin de l'itération. 
-
-On peut proposer le modèle suivant, qui rajoute une méthode privée has_next() pour savoir s'il y a un nouvel élément. En python, on a une méthode qui crée un itérateur (via la méthode `__iter__`). L'itérateur proprement dit possède lui la méthode `__next__`. Ils peuvent cohabiter dans la même classe ou dans deux classes séparée.
-
-![iterator](/img/iterator_next.png)
-
-Il n'est pas nécessaire d'avoir la méthode `__iter__` pour créer un itérateur. Cette fonction est juste utilisée pour créer  l'itérateur par défaut. Si on écrit `for card in deck`, l'itérateur utilisé est `iter(deck)` (ce qui est équivalent à `deck.__iter__()`)
-
-#### Itérateur Deck
-
-On a ajouté une méthode donnant la ième carte (la première étant la carte du dessus) du deck
-
-
-{{< highlight python>}}
-
-class Deck:
-    # ...
-    
-    def __iter__(self):
-        return IterDice(self, number)
-
-    def show_card(self, position)
-        reurn self._cards[-position]
-    # ...
-    
-    
-class IterDeck:
-    def __init__(self, deck):
-        self.deck = deck
-        self.current = 0
-        
-    def __next__(self):
-        if self.current >= self.deck.nb_cartes():
-            raise StopIteration
-        else:
-            self.current += 1
-            return self.deck.show_card(self.current)
-    
-{{< /highlight >}}
-
-
-## TP
-
-### UI
-
-
-{{< highlight python>}}
-import datetime
-
-from appJar import gui
-from dice import Dice
-
-
-dice = Dice()
-DICE_LABEL = "dice value"
-
-MESSAGE_LABEL = "message value"
-
-
-def on_click(button):
-    dice.roll()
-
-    app.setLabel(DICE_LABEL, dice.get_position())
-    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_position()))
-
-app = gui()
-
-app.setGeometry(400, 200)
-
-app.addLabel(DICE_LABEL, dice.get_position(), 0, 0)
-app.addButton("roll", on_click, 0, 1)
-
-
-app.addListBox(MESSAGE_LABEL, [str(datetime.datetime.now()) + ": " + "Begin",
-                               str(datetime.datetime.now()) + ": " + str(dice.get_position())], 1, 0, 2)
-
-app.go()
-{{< /highlight>}}
-
-
-
 ### Memento
 
 
@@ -308,27 +400,27 @@ app.go()
 
 {{< highlight python>}}
 class Memento:
-    def __init__(self, dice):
-        self.dice = dice
-        self.value = dice.get_position()
+    def __init__(self, choice):
+        self.choice = choice
+        self.value = choice.get_position()
 
     def restore(self):
-        self.dice.set_position(self.value)
+        self.choice.set_position(self.value)
 {{< /highlight >}}
 
 
 #### test_memento.py
 
 {{< highlight python>}}
-from dice import Dice
+from choice import Choice
 from memento import Memento
 
 
 def test_memento():
-    dice = Dice()
+    dice = Choice.dice()
     dice.set_position(2)
 
-    memento = DiceMemento(dice)
+    memento = Memento(dice)
     dice.set_position(6)
 
     memento.restore()
@@ -362,11 +454,11 @@ class Undo:
 #### test_undo.py
 
 {{< highlight python>}}
-from dice import Dice
+from choice import Choice
 from undo import Undo
 
 def test_save_once():
-    dice = Dice()
+    dice = Choice.defice()
     dice.set_position(1)
     undo = Undo(dice)
     assert undo.nb_undos() == 1
@@ -391,50 +483,4 @@ def test_save_restore():
     assert dice.get_position() == 5
     undo.restore()
     assert dice.get_position() == 1
-{{< /highlight>}}
-
-
-### UI
-
-{{< highlight python >}}
-import datetime
-
-from appJar import gui
-from dice import Dice
-from undo import Undo
-
-dice = Dice()
-DICE_LABEL = "dice value"
-
-MESSAGE_LABEL = "message value"
-
-undo = Undo(dice)
-
-app = gui()
-app.setGeometry(400, 200)
-
-
-def on_undo(button):
-    if undo.nb_undos() > 1:
-        undo.restore()
-        app.setLabel(DICE_LABEL, dice.get_position())
-        app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": undo value to " + str(dice.get_position()))
-
-
-def on_click(button):
-    dice.roll()
-    undo.save(dice)
-
-
-    app.setLabel(DICE_LABEL, dice.get_position())
-    app.addListItem(MESSAGE_LABEL, str(datetime.datetime.now()) + ": " + str(dice.get_position()))
-
-
-app.addButton("undo", on_undo, 0, 0, 2)
-app.addLabel(DICE_LABEL, dice.get_position(), 1, 0)
-app.addButton("roll", on_click, 1, 1)
-app.addListBox(MESSAGE_LABEL, [str(datetime.datetime.now()) + ": " + "Begin",
-                               str(datetime.datetime.now()) + ": " + str(dice.get_position())], 2, 0, 2)
-
-app.go()
 {{< /highlight>}}

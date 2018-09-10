@@ -254,6 +254,10 @@ def test_roll_until():
 
 ## PlantUML
 
+Pour https://www.planttext.com/
+
+{{<highlight uml>}}
+
 @startuml
 
 
@@ -308,5 +312,6 @@ class Deck {
 
 Card --o Deck
 
+{{</highlight>}}
 
 

@@ -1,0 +1,17 @@
+{{ define "main" }}
+<article>
+        <header>
+            <h1 class="is-size-1">{{.Title}}</h1>
+        </header>
+        <!-- "{{.Content}}" pulls from the markdown content of the corresponding _index.md -->
+        <p>
+        {{.Content}}
+    </p>
+    <br />
+    </article>
+  <div class="archive-body">
+    {{ range .Pages }}
+      {{ .Render "li" }}
+    {{ end }}
+  </div>
+{{ end }}

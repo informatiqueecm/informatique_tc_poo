@@ -273,7 +273,7 @@ Vous pouvez une fois ceci réalisé ajouter deux chaînes de caractères permett
 
 ### Comparaisons de cartes
 
-En utilisant les méthodes de comparaison vues à [la toute fin du TP1]({{< ref "/post/classe-et-objet.md#pour-aller-plus-loin" >}}), codez les méthodes permettant de faire passer les tests suivants : 
+En utilisant les méthodes de comparaison vues à [la toute fin du TP1]({{< ref "/apprendre/classe-et-objet.md#pour-aller-plus-loin" >}}), codez les méthodes permettant de faire passer les tests suivants : 
 
 {{<highlight python>}}
 def test_card_equality():

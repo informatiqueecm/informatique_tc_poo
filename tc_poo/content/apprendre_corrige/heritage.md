@@ -151,9 +151,13 @@ class StatDice(Dice):
 
 
 
-### PlantUML
+## PlantUML
 
-Le TextUML des classes données pour info et modification si besoin :
+Pour https://www.planttext.com/
+
+{{<highlight uml>}}
+
+
 
 @startuml
 
@@ -237,3 +241,4 @@ Personnage <|-- Guerriere
 Personnage <|-- Magicien
 @enduml
 
+{{</highlight>}}
