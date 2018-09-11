@@ -201,7 +201,10 @@ On sait maintenant comment faire :
 3. ajouter une méthode `set_position` à `Choice`,
 4. regardez le test réussir.
 
-Pour l'instant, on fera une méthode st_position la plus simple possible car elle ne sera utilisée que pour le memento. En particulier, on ne verifiera pas la validité de la valeur remise dans choice, ce n'est pas utile maintenant. Le coder serait du codage préventif et c'est [YAGNI](https://fr.wikipedia.org/wiki/YAGNI).
+Pour l'instant, on fera une méthode st_position la plus simple possible car elle ne sera utilisée que pour le memento. En particulier, on ne verifiera pas la validité de la valeur remise dans choice, ce n'est pas utile maintenant. Le coder serait du codage préventif et c'est [YAGNI](https://fr.wikipedia.org/wiki/YAGNI). 
+
+> Pour aller plus loin utiliser les properties pour gérer l'attribut position. Il faudra bien sur aussi modifier les memento en conséquence.
+
 
 ### Création d'un memento
 

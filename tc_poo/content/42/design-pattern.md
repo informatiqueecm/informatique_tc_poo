@@ -285,47 +285,160 @@ class Memento:
         self._object_to_restore = object_to_restore
     
     def restore(self):
-        pass
+        pass # dépend de l'objet
 {{< /highlight >}}
 
-Pour un Dé, on peut utiliser l'héritage : 
 
+Pour créer un Memento, on peut utiliser l'héritage et particulariser les memento pour chacune des classes (Un `ChoiceMemento` qi hérite de `Memento` et qui est le memento des objets de type `Choice`), mais la façon la plus simple est d'utiliser des conventions. On dira que le Memento fonctionne pour tout objet ayant deux méthodes : 
+* `get_position`
+* `set_position`
+
+De là pour tout objet ayant ces deux méthodes on pourra utiliser un `Memento` de la forme ci-après.
+
+
+### Choice avec properties
+
+L'intérêt est que l'on utilise pas de méthode pour position un attribut mais directement l'attribut, ce qui augmente la lisibilité du code. Comme ce sont au final des méthodes qui sont utilisées, on ne pert rien par rapport à l'utilisation de getter/setter à l'ancienne.
+
+#### choice.py
+
+{{< highlight python >}}
+
+import random
+
+
+class Choice:
+    def __init__(self, choices):
+        self._choices = tuple(choices)
+        self._position = self.choices[0]
+
+    @classmethod
+    def dice(cls):
+        return cls(range(1, 7))
+
+    @classmethod
+    def two_dices(cls):
+        return cls([i + j for i in range(1, 7) for j in range(1, 7)])
+
+    @property
+    def choices(self):
+        return self._choices
+
+    @property
+    def position(self):
+        return self._position
+
+    @position.setter
+    def get_position(self, new_position):
+        self._position = new_position
+
+    def roll(self):
+        self.position = self.choices[random.randint(0, len(self.choices) - 1)]
+        return self
+
+
+{{< /highlight >}}
+
+
+#### memento.py
 
 {{< highlight python>}}
-class DiceMemento(Memento):
-    def __init__(self, stored_state, object_to_restore):
-        super.__init__(stored_state, object_to_restore)
+class Memento(Memento):
+    def __init__(self, object_to_restore):
+        self._stored_state = object_to_restore.get_position()
+        self._object_to_restore = object_to_restore
     
     def restore(self):
         self._object_to_restore.set_position(self._stored_state)
 {{< /highlight >}}
 
-#### Undo
+
+#### test_memento.py
 
 {{< highlight python>}}
-class Undo:
-    def __init__(self, current_state_memento):
-        self._actions = [current_state_memento]
+from choice import Choice
+from memento import Memento
 
-    def save(self, memento):
-        self._actions.append(memento)
+
+def test_memento():
+    dice = Choice.dice()
+    dice.set_position(2)
+
+    memento = Memento(dice)
+    dice.set_position(6)
+
+    memento.restore()
+    assert dice.get_position() == 2
+{{< /highlight >}}
+
+## Undo
+
+#### undo.py
+
+{{< highlight python>}}
+from memento import Memento
+
+class Undo:
+    def __init__(self, dice):
+        self._actions = [Memento(dice)]
+
+    def nb_undos(self):
+        return len(self._actions)
+    def save(self, dice):
+        self._actions.append(Memento(dice))
     
     def restore(self):
         if self._actions:
             self._actions.pop()
             self._actions[-1].restore()
+            
 {{< /highlight>}}
 
-On peut utiliser le code comme suit : 
+
+#### test_undo.py
 
 {{< highlight python>}}
-dice = Dice()
+from choice import Choice
+from undo import Undo
 
-undo = Undo(DiceMemento(dice))
+def test_save_once():
+    dice = Choice.dice()
+    dice.set_position(1)
+    undo = Undo(dice)
+    assert undo.nb_undos() == 1
+    
+    dice.set_position(2)
+    undo.restore()
+    assert dice.get_position() == 1
+    
+
+def test_save_restore():
+    dice = Choice.dice()
+    dice.set_position(1)
+    undo = Undo(dice)
+
+    dice.set_position(5)
+    undo.save(dice)
+    
+    assert undo.nb_undos() == 2
+    
+    dice.set_position(6)
+    undo.restore()
+    assert dice.get_position() == 5
+    undo.restore()
+    assert dice.get_position() == 1
+{{< /highlight>}}
+
+#### main.py
+
+{{< highlight python>}}
+dice = Choice.dice()
+
+undo = Undo(Memento(dice))
 
 for i in range(10):
     dice.roll()
-    undo.save(DiceMemento(dice))
+    undo.save(Memento(dice))
     
     print(dice.get_position())
     
@@ -363,7 +476,7 @@ Qui pourra rendre le code suivant :
 {{< /highlight>}}
 
 
-#### Redo
+## Redo
 
 Pour le redo, on utilise un undo d'undo. Pour des objets plus compliqués, on préfèrera sûrement refaire un Memento plutôt que d'utiliser celui déja stocké pour le undo.
 
@@ -392,95 +505,3 @@ class UndoRedo:
             
 {{< /highlight >}}
 
-
-### Memento
-
-
-#### memento.py
-
-{{< highlight python>}}
-class Memento:
-    def __init__(self, choice):
-        self.choice = choice
-        self.value = choice.get_position()
-
-    def restore(self):
-        self.choice.set_position(self.value)
-{{< /highlight >}}
-
-
-#### test_memento.py
-
-{{< highlight python>}}
-from choice import Choice
-from memento import Memento
-
-
-def test_memento():
-    dice = Choice.dice()
-    dice.set_position(2)
-
-    memento = Memento(dice)
-    dice.set_position(6)
-
-    memento.restore()
-    assert dice.get_position() == 2
-{{< /highlight >}}
-
-### Undo
-
-#### undo.py
-
-{{< highlight python>}}
-from memento import Memento
-
-class Undo:
-    def __init__(self, dice):
-        self._actions = [Memento(dice)]
-
-    def nb_undos(self):
-        return len(self._actions)
-    def save(self, dice):
-        self._actions.append(Memento(dice))
-    
-    def restore(self):
-        if self._actions:
-            self._actions.pop()
-            self._actions[-1].restore()
-            
-{{< /highlight>}}
-
-
-#### test_undo.py
-
-{{< highlight python>}}
-from choice import Choice
-from undo import Undo
-
-def test_save_once():
-    dice = Choice.defice()
-    dice.set_position(1)
-    undo = Undo(dice)
-    assert undo.nb_undos() == 1
-    
-    dice.set_position(2)
-    undo.restore()
-    assert dice.get_position() == 1
-    
-
-def test_save_restore():
-    dice = Dice()
-    dice.set_position(1)
-    undo = Undo(dice)
-
-    dice.set_position(5)
-    undo.save(dice)
-    
-    assert undo.nb_undos() == 2
-    
-    dice.set_position(6)
-    undo.restore()
-    assert dice.get_position() == 5
-    undo.restore()
-    assert dice.get_position() == 1
-{{< /highlight>}}
