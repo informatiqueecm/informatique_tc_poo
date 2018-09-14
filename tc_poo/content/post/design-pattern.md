@@ -10,9 +10,7 @@ weight = 5
 
 Séance consacrée aux [design pattern](https://fr.wikipedia.org/wiki/Patron_de_conception). Ces façons de faire, sorte d'algorithmie objet permet de résoudre nombre de problèmes courants en développement. Cela permet d'éviter de faires des [erreurs classiques](http://sahandsaba.com/nine-anti-patterns-every-programmer-should-be-aware-of-with-examples.html), aussi appelées [anti-pattern](https://fr.wikipedia.org/wiki/Antipattern).
 
-Comme ce cours est dispensé en utilisant le langage python, on utilisera beaucoup le typage dynamique de celui-ci pour ces exemples (appelé [duck typing](http://sametmax.com/quest-ce-que-le-duck-typing-et-a-quoi-ca-sert/), mais les design pattern fonctionnent quelques soient le langage utilisé (ils ont d'ailleurs [initialement été écrit](https://fr.wikipedia.org/wiki/Design_Patterns) pour le C++).
-
-
+Comme ce cours est dispensé en utilisant le langage python, on utilisera beaucoup le typage dynamique de celui-ci pour ces exemples (appelé [duck typing](http://sametmax.com/quest-ce-que-le-duck-typing-et-a-quoi-ca-sert/), mais les design pattern fonctionnent quelques soient le langage utilisé (ils ont d'ailleurs [initialement été écrits](https://fr.wikipedia.org/wiki/Design_Patterns) pour le C++).
 
 
 
@@ -101,24 +99,12 @@ def test_roll():
 
 Choice prend l'objet `choices` et le garde. Cela pose plusieurs problèmes. En particulier :
 
-* on est obligé de passer des listes en paramètres, pas d'ensembles.
 * si on modifie l'objet passé en paramètre, cela change le comportement de choice.
 * on expose l'attribut `choices` par un attribut public.
     
 Pour résoudre ces soucis on va copier l'objet `choices` et rendre l'attribut non modifiable. Pour cela, on va écrire des tests pour mettre en  lumière le problème puis corriger le code. Il faudra certainement changer d'autres tests dans le processus de réécriture du code.
 
 On commence par écrire un petit test : 
-
-{{< highlight python >}}
-
-def test_sets():
-    assert Choice({1}).roll().get_position() == 1
-    
-{{< /highlight >}}
-
-Regardez-le planter. Puis proposez une solution. 
-
-Cette solution devrait également corriger le second problème. Vérifiez-le en ajoutant le test : 
 
 {{< highlight python >}}
 
@@ -131,10 +117,15 @@ def test_copy_choices():
     
 {{< /highlight >}}
 
-Enfin, on peut tester la troisième objection avec le test ci-après. Remarquez que ce test cherche à produire une erreur : modifier un élément [non mutable](https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747).
+
+Regardez-le planter. Que s'est-il passé ? Puis proposez une solution. 
+
+
+Enfin, on peut tester la deuxième objection avec le test ci-après. Le but de ce test est de vérifier que l'attribut  `choices` est non mutable. Il cherche à produire une erreur : modifier un élément [non mutable](https://medium.com/@meghamohan/mutable-and-immutable-side-of-python-c2145cf72747).
 
 
 {{< highlight python >}}
+import pytest 
 
 def test_no_modification():
     d1 = Choice([1])
@@ -146,23 +137,20 @@ def test_no_modification():
  La façon dont pytest gère les erreurs est décrite [ici](https://docs.pytest.org/en/latest/assert.html#assertions-about-expected-exceptions) : le test précédent est vrai si le code plante et produit une erreur. essayer de comprendre la structure de ce test.
 
 
-> Pour aller plus loin : on pourrait aussi empêcher le changement de l'attribut `choices`. Pour cela, on utilise les [properties](http://dauzon.com/lire-Python-Getters-et-setters-passez-votre-chemin-31) de python.
-
-
 ## pattern factory
 
 ### Premières expérimentations
 
-Commencez par créer dans le fichier `main.py` un objet simulant 1 dé à six face (dont les faces valent 1, 2, 3, 4, 5 ou 6). On ne va pas faire de test pour cela, car nos tests sont censés couvrir ce genre d'usage. 
+Commencez par créer dans le fichier `main.py` un objet simulant 1 dé à six faces (dont les faces valent 1, 2, 3, 4, 5 ou 6). On ne va pas faire de test pour cela, car nos tests sont censés couvrir ce genre d'usage. 
 
-En revanche, on peut les probabilités d'apparitions de chaque face :
+En revanche, on peut calculer les probabilités d'apparitions de chaque face :
 
 1. lancez N fois le dé (N = 1000) 
 2. comparez les probabilités d'apparition de chaque face par rapport à la théorie (1/6)
 
 Pour aller vite, on pourra utiliser la classe `Counter` du module `collections` de python (voir [la définition](https://docs.python.org/3.7/library/collections.html#collections.Counter), ou [des exemples](https://data-flair.training/blogs/python-counter/)). Le module [collections](https://docs.python.org/3.7/library/collections.html#module-collections) de python, c'est plein de bonnes choses. 
 
-> N'hésitez pas à regarder les différents mmodules de la [bibliothèque standard](https://docs.python.org/3.7/library/index.html) de python avant de recoder la roue...
+> N'hésitez pas à regarder les différents modules de la [bibliothèque standard](https://docs.python.org/3.7/library/index.html) de python avant de recoder la roue...
 
 
 {{< note >}}
@@ -171,20 +159,19 @@ On prendra soin de créer une constante N, pour éviter l'anti-pattern "magic nu
 
 {{< /note >}}
 
-Refaite la même chose pour simuler un lancer de 2 dé à 6 faces (2d6 si on jargonne) avec un seul objet `Choice`.  
+Refaite la même chose pour simuler la somme d'un lancer de 2 dés à 6 faces (2d6 si on jargonne) avec un seul objet `Choice`.  
 
 
 ### On place le tout dans le fichier de la classe
 
-Une fois que vous êtes satisfait de vos fonctions, ajoutez les dans le fichier `choices.py`, ce qui rajoutera des fonctions de créations d'objets.
+Une fois que vous êtes satisfait de vos fonctions, ajoutez les dans le fichier `choices.py`, ce qui rajoutera des fonctions de créations d'objets et modifiez votre `main.py` pour utiliser ces nouvelles fonctions. 
 
-Comme maintenant ce sont des méthodes de votre programme et non plus une utilisation de votre code, il faut ajouter des tests pour ces deux fonctions. Faites le. 
+Comme maintenant ce sont des fonctions de votre programme et non plus une utilisation de votre code, il faut ajouter des tests pour ces deux fonctions. Faites le. 
 
-{{ < note >}}
-Pour que vos tests ne soient pas trop fastidieux, vous pouvez vérifier que les possibilités correspondent aux comptes que vous avez effectué avec les objets Counter (du module collections).
-{{ < /note >}}
+{{< note >}}
+Pour que vos tests ne soient pas trop fastidieux, vous pouvez vérifier que les possibilités correspondent aux comptes que vous avez effectués avec les objets Counter (du module collections).
+{{< /note >}}
 
-> Pour aller plus loin : Utilisez les [méthodes de classe](https://realpython.com/instance-class-and-static-methods-demystified/#class-methods) pour votre factory. 
 
 
 
@@ -201,27 +188,27 @@ On sait maintenant comment faire :
 3. ajouter une méthode `set_position` à `Choice`,
 4. regardez le test réussir.
 
-Pour l'instant, on fera une méthode st_position la plus simple possible car elle ne sera utilisée que pour le memento. En particulier, on ne verifiera pas la validité de la valeur remise dans choice, ce n'est pas utile maintenant. Le coder serait du codage préventif et c'est [YAGNI](https://fr.wikipedia.org/wiki/YAGNI). 
+Pour l'instant, on fera une méthode `set_position` la plus simple possible car elle ne sera utilisée que pour le memento. En particulier, on ne vérifiera pas la validité de la valeur remise dans choice, ce n'est pas utile maintenant. Le coder serait du codage préventif et c'est [YAGNI](https://fr.wikipedia.org/wiki/YAGNI). 
 
-> Pour aller plus loin utiliser les properties pour gérer l'attribut position. Il faudra bien sur aussi modifier les memento en conséquence.
+Attention cependant. Pour respecter le [DRY](https://fr.wikipedia.org/wiki/Ne_vous_r%C3%A9p%C3%A9tez_pas) la modification d'un attribut ne doit se faire qu'à un seul endroit : ici la méthode `set_position`. Il faut donc modifier la méthode `roll` pour qu'elle l'utilise.
 
 
 ### Création d'un memento
 
-Créez la classe `Memento` dans le fichier `memento.py` et ses tests dans le fichiers :`test_memento.py`.
+Créez la classe `Memento` dans le fichier `memento.py` et ses tests dans le fichier :`test_memento.py`.
 
-La classe DiceMemento doit avoir :
+La classe Memento doit avoir :
 
-- un objet comme paramètre du constructeur ayant les méthode `get_position` et `set_position`. Ici un Choice.
-- une méthode `restore()` qui remet au dé sauvé de reprendre la valeur qu'il avait à la création du memento.
-
-
+- un objet comme paramètre du constructeur ayant les méthodes `get_position` et `set_position`. Ici un `Choice`.
+- une méthode `restore()` qui permet à l'objet sauvé de reprendre la valeur qu'il avait à la création du memento.
 
 Vous pouvez par exemple transformer le code ci-après en test(s) :
 
 
 {{< highlight python >}}
-dice = Choice.dice()
+import choice 
+
+dice = choice.dice()
 dice.set_position(2)
 
 memento = Memento(dice)
@@ -235,26 +222,60 @@ print(dice.get_position())  # doit valoir 2
 
 Nous pouvons maintenant créer une classe `Undo` (dans le fichier `undo.py`) qui va nous permettre de sauver des dés (et leurs valeurs) et de les restaurer à la demande. Cette classe doit pouvoir :
 
-- sauver un dé avec la méthode : `save(memento)` (un `ChoiceMemento` sera créé exemple comme ça : `ChoiceMemento(dice)`)
+- sauver un dé avec la méthode : `save(dice)` (un `Memento` sera créé dans la méthode `save` exemple comme ça : `Memento(dice)`)
 - restaurer la dernière valeur sauvée avec la méthode `restore()`
 - connaître le nombre d'items sauvegardés avec une méthode `nb_undos()`
 
 Bien sur vous créerez un fichier de tests `test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
 
 {{< highlight python >}}
-dice = Choice.dice()
+import choice 
+from undo import Undo
 
-undo = Undo(dice)
+dice = choice.dice()
 
+undo = Undo()
+
+undo.save(dice)
 dice.set_position(5)
 print(dice.get_position()) # vaut 5
-undo.save(DiceMemento(dice))
+undo.save(dice)
 dice.roll() # dès que l'on change la valeur (ici possiblement différent de 5)
-undo.save(DiceMemento(dice)) # on sauve dans un memento
+
 
 undo.restore()
 print(dice.get_position()) # vaut 5
 
 {{< /highlight >}}
+
+
+### Un undo dans dice
+
+
+Pour ne pas toujours avoir à sauver le dé avant un roll, on pourra utiliser une classe fille de `Choice` dont le `set_position` sauve l'état dans un undo avant de modifier la position. L'objet undo devant être unique dans le programme, il faudrait que le code suivant fonctionne :
+
+{{< highlight python >}}
+
+from undo import Undo
+
+
+undo = Undo()
+
+d = ChoiceUndo(range(1, 7), undo)
+
+d.set_position(1)
+print(d.get_position())  # 1
+d.set_position(4)
+print(d.get_position())  # 4
+undo.restore()
+print(d.get_position())  # 1
+
+{{< /highlight >}}
+
+Respectez le DRY ! Ne recodez que le minimum possible, c'est à dire une classe `ChoiceUndo` qui hérite de `Choice` et qui ne diffère de celle-ci que par la méthode `set_position` (et le constructeur bien sûr).
+
+
+Faites le même essai avec 10 utilisations de la méthode `roll()`.
+
 
 

@@ -11,14 +11,14 @@ Le but de cette séance est de faire sentir la notion de design pattern.
 
 ## Éléments de cours
 
-On essayera de leur montrer quelques diagrammes UML de design pattern, puis leurs applications dans des cas concrets. Montrez les 3 grands types de design pattern et donnez un exemple pour chaque.
+IL existe 3 grands types de design pattern, on pourra en donner un exemple pour chaque.
 
 On peut prendre la liste initiale des design pattern du [GOF](https://en.wikipedia.org/wiki/Design_Patterns) mais je déconseille singleton qui tient plus de l'anti-pattern que du pattern...
 
 Pour les trois types, on verra : 
 
 - type creational : factory. Créer les objets via des méthodes presque sans paramètre et avec un nom adapté plutôt qu'avec un contructeur avec des milliers de paramètres
-- type structural : composite. Vu à la troisième séance
+- type structural : composite. On essayera de le voir dans la prochaine séance.
 - type behavioural : strategy. Même fonction mais algorithmes différents (pour un tri par exemple)
 
 
@@ -38,14 +38,12 @@ Cela ne résout bien sûr pas des problèmes aussi compliqués que [tracer 7 lig
 
 Il est important que les propriétés d'un objet soient protégées. Ici, on fait rentrer une liste (`choices`) dans l'objet. Comme on ne veut pas qu'elle puisse être modifiée, il faut la recopier dans l'objet.
 
-De plus, utiliser des properties python, permet de se passer élégamment des getter/setter. Ci après, le code avec les properties, mais ce n'est peut-être pas la peine de le faire avec les étudiants. Pour que l'on puisse écrire `d6.choices`, on stocke le tout dans l'attribut `_choices`, `d6.choices` étant le résultat de la méthode `choices` grace au décorateur `@property`
-
 La méthode `roll` rend `self` ce qui permet de chainer les instructions et rend possible des choses du genre : 
 `print(Choice([1, 2, 2, 3]).roll().get_position())`. C'est important de comprendre comment tout ça fonctionne : 
 
 1. on lit de droite à gauche
 2. on applique la méthode à l'objet à gauche du point.
-3. puis on remonte les apels pour voir si cela marche.
+3. puis on remonte les appels pour voir si cela marche.
 
 Pour l'instruction précédente : 
 
@@ -59,7 +57,7 @@ On peut donc remonter :
 * `C` est un objet de classe Choice
 * `B` est le résultat de `roll` appliqué à `C`, c'est donc `C`
 * `A` est un entier valant 1, 2, ou 3
-* on affiche `A`, c'est à die 1, 2 ou 3
+* on affiche `A`, c'est à dire 1, 2 ou 3
 
 
 #### choice.py
@@ -72,15 +70,11 @@ import random
 
 class Choice:
     def __init__(self, choices):
-        self._choices = tuple(choices)
-        self.position = self.choices[0]
-
-    @property
-    def choices(self):
-        return self._choices
+        self.choices = tuple(choices)
+        self._position = self.choices[0]
     
     def get_position(self):
-        return self.position
+        return self._position
 
     def roll(self):
         self.position = self.choices[random.randint(0, len(self.choices) - 1)]
@@ -89,6 +83,7 @@ class Choice:
 
 {{< /highlight >}}
 
+Dans le constructeur, on utilise `self.choices[0]` car on sait que cela va marcher : c'est un tuple. Si on avait écrit : `self._position = choices[0]` on essaie d'obtenir le 1er élément du paramètre choices qui peut être un itérable sans être une liste ou un tuple (un ensemble, un dictionnaire).
 
 #### tests.py
 
@@ -115,10 +110,6 @@ def test_roll():
     assert d1.get_position() == 1
 
 
-def test_sets():
-    assert Choice({1}).roll().get_position() == 1
-
-
 def test_copy_choices():
     initial_list = ["a"]
     d1 = Choice(initial_list)
@@ -131,12 +122,13 @@ def test_no_modification():
     d1 = Choice([1])
     with pytest.raises(Exception):
         d1.choices[0] = 2
+        
 {{< /highlight >}}
 
 
 ## factory
 
-Ils l'auront vu en cours. Ce pattern est super pour créer des objets. En gros, plutôt que d'apprendre par cœur des paramètre d'initialisation, les objets courant sont créés par des méthodes.
+Ils l'auront vu en cours. Ce pattern est super pour créer des objets. En gros, plutôt que d'apprendre par cœur des paramètres d'initialisation, les objets courants sont créés par des méthodes.
 
 On va procéder par étapes.
 
@@ -160,7 +152,12 @@ def a_dice():
 
 def two_dice():
     N = 1000
-    d6 = Choice([i + j for i in range(1, 7) for j in range(1, 7)])
+    d6 = []
+    
+    for i range(1, 7):
+        for j in range(1, 7):
+            d6.append(i + j)
+
 
     results = []
     for number in range(N):
@@ -176,7 +173,7 @@ def two_dice():
 ### Méthodes
 
 
-Les méthodes de classes sont des façons pratique de créer des objets, elles prennent la classe comme premier paramètre (comme les méthodes d'objet prennent l'objet en paramètre). Utilisez le quand vous créez des objets avec, car elles permettent d'utiliser l'héritage sans problème.
+Les méthodes de classes sont des façons pratiques de créer des objets, elles prennent la classe comme premier paramètre (comme les méthodes d'objet prennent l'objet en paramètre). Utilisez le quand vous créez des objets avec, car elles permettent d'utiliser l'héritage sans problème.
 
 #### choice.py
 
@@ -184,23 +181,10 @@ Les méthodes de classes sont des façons pratique de créer des objets, elles p
 
 import random
 
-
 class Choice:
     def __init__(self, choices):
-        self._choices = tuple(choices)
+        self.choices = tuple(choices)
         self.position = self.choices[0]
-
-    @classmethod
-    def dice(cls):
-        return cls(range(1, 7))
-
-    @classmethod
-    def two_dices(cls):
-        return cls([i + j for i in range(1, 7) for j in range(1, 7)])
-
-    @property
-    def choices(self):
-        return self._choices
 
     def get_position(self):
         return self.position
@@ -208,6 +192,13 @@ class Choice:
     def roll(self):
         self.position = self.choices[random.randint(0, len(self.choices) - 1)]
         return self
+
+
+def dice():
+        return Choice(range(1, 7))    
+
+def two_dices():
+    return Choice([i + j for i in range(1, 7) for j in range(1, 7)])
 
 
 {{< /highlight >}}
@@ -221,6 +212,7 @@ import pytest
 from collections import Counter
 
 from choice import Choice
+import choice
 
 
 def test_init():
@@ -257,12 +249,14 @@ def test_no_modification():
         d1.choices[0] = 2
 
 
-def test_classmethod_dice():
-    assert Choice.dice().choices == (1, 2, 3, 4, 5, 6)
+def test_factory_dice():
+    d = choice.dice()
+    assert d.choices == (1, 2, 3, 4, 5, 6)
 
 
-def test_classmethod_two_dice():
-    assert Counter(Choice.two_dices().choices) == {2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 5, 9: 4, 10: 3, 11: 2, 12: 1}
+def test_factory_two_dice():
+    d = choice.two_dices()
+    assert Counter(d.choices) == {2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 5, 9: 4, 10: 3, 11: 2, 12: 1}
 
 {{< /highlight >}}
 
@@ -272,33 +266,22 @@ def test_classmethod_two_dice():
 ## Memento
 
 
-L'UML de memento possède : 
-
- * un attribut `stored_state` qui contient l'état antérieur de l'objet que l'on veut stocker
- * un attribut `object_to_restore` contenant l'objet dont l'état a été sauvé
- * une méthode `restore` permettant de remettre l'état sauvé à l'objet stocké.
-
-{{< highlight python>}}
-class Memento:
-    def __init__(self, stored_state, object_to_restore):
-        self._stored_state = stored_state
-        self._object_to_restore = object_to_restore
-    
-    def restore(self):
-        pass # dépend de l'objet
-{{< /highlight >}}
-
-
-Pour créer un Memento, on peut utiliser l'héritage et particulariser les memento pour chacune des classes (Un `ChoiceMemento` qi hérite de `Memento` et qui est le memento des objets de type `Choice`), mais la façon la plus simple est d'utiliser des conventions. On dira que le Memento fonctionne pour tout objet ayant deux méthodes : 
+Pour créer un Memento, la façon la plus simple est d'utiliser des conventions. On dira que le Memento fonctionne pour tout objet ayant deux méthodes : 
 * `get_position`
 * `set_position`
 
-De là pour tout objet ayant ces deux méthodes on pourra utiliser un `Memento` de la forme ci-après.
+Ce qui donne : 
 
+{{< highlight python>}}
+class Memento:
+    def __init__(self, object_to_save):
+        self._stored_state = object_to_save.get_position()
+        self._object_to_restore = object_to_save
+    
+    def restore(self):
+        self._object_to_restore.set_position(self._stored_state)
+{{< /highlight >}}
 
-### Choice avec properties
-
-L'intérêt est que l'on utilise pas de méthode pour position un attribut mais directement l'attribut, ce qui augmente la lisibilité du code. Comme ce sont au final des méthodes qui sont utilisées, on ne pert rien par rapport à l'utilisation de getter/setter à l'ancienne.
 
 #### choice.py
 
@@ -306,35 +289,28 @@ L'intérêt est que l'on utilise pas de méthode pour position un attribut mais 
 
 import random
 
-
 class Choice:
     def __init__(self, choices):
-        self._choices = tuple(choices)
-        self._position = self.choices[0]
+        self.choices = tuple(choices)
+        self.position = self.choices[0]
 
-    @classmethod
-    def dice(cls):
-        return cls(range(1, 7))
-
-    @classmethod
-    def two_dices(cls):
-        return cls([i + j for i in range(1, 7) for j in range(1, 7)])
-
-    @property
-    def choices(self):
-        return self._choices
-
-    @property
-    def position(self):
-        return self._position
-
-    @position.setter
-    def get_position(self, new_position):
-        self._position = new_position
+    def get_position(self):
+        return self.position
+        
+    def set_position(self, new):
+        self.position = new
+        
 
     def roll(self):
-        self.position = self.choices[random.randint(0, len(self.choices) - 1)]
+        self.set_position(self.choices[random.randint(0, len(self.choices) - 1)])
         return self
+
+
+def dice():
+        return Choice(range(1, 7))    
+
+def two_dices():
+    return Choice([i + j for i in range(1, 7) for j in range(1, 7)])
 
 
 {{< /highlight >}}
@@ -343,10 +319,10 @@ class Choice:
 #### memento.py
 
 {{< highlight python>}}
-class Memento(Memento):
-    def __init__(self, object_to_restore):
-        self._stored_state = object_to_restore.get_position()
-        self._object_to_restore = object_to_restore
+class Memento:
+    def __init__(self, object_to_save):
+        self._stored_state = object_to_save.get_position()
+        self._object_to_restore = object_to_save
     
     def restore(self):
         self._object_to_restore.set_position(self._stored_state)
@@ -356,12 +332,12 @@ class Memento(Memento):
 #### test_memento.py
 
 {{< highlight python>}}
-from choice import Choice
+import choice
 from memento import Memento
 
 
 def test_memento():
-    dice = Choice.dice()
+    dice = choice.dice()
     dice.set_position(2)
 
     memento = Memento(dice)
@@ -379,18 +355,19 @@ def test_memento():
 from memento import Memento
 
 class Undo:
-    def __init__(self, dice):
-        self._actions = [Memento(dice)]
+    def __init__(self, ):
+        self._actions = []
 
     def nb_undos(self):
         return len(self._actions)
+        
     def save(self, dice):
         self._actions.append(Memento(dice))
     
     def restore(self):
         if self._actions:
-            self._actions.pop()
-            self._actions[-1].restore()
+            x = self._actions.pop()
+            x.restore()
             
 {{< /highlight>}}
 
@@ -398,48 +375,68 @@ class Undo:
 #### test_undo.py
 
 {{< highlight python>}}
-from choice import Choice
+import choice
 from undo import Undo
 
-def test_save_once():
-    dice = Choice.dice()
+def test_init():
+    dice = choice.dice()
     dice.set_position(1)
-    undo = Undo(dice)
+    undo = Undo()
+    assert undo.nb_undos() == 0
+    
+
+def test_save_restore_once():
+    dice = choice.dice()
+    undo = Undo()
+
+    dice.set_position(1)
+    undo.save(dice)
+    dice.set_position(5)
+    
+    
     assert undo.nb_undos() == 1
     
-    dice.set_position(2)
     undo.restore()
     assert dice.get_position() == 1
-    
 
-def test_save_restore():
-    dice = Choice.dice()
+def test_save_restore_several():
+    dice = choice.dice()
+    undo = Undo()
+
     dice.set_position(1)
-    undo = Undo(dice)
-
-    dice.set_position(5)
+    
     undo.save(dice)
+    dice.set_position(5)
+
+    undo.save(dice)
+    dice.set_position(6)
+    
     
     assert undo.nb_undos() == 2
     
-    dice.set_position(6)
     undo.restore()
     assert dice.get_position() == 5
+    assert undo.nb_undos() == 1
+    
     undo.restore()
     assert dice.get_position() == 1
+    assert undo.nb_undos() == 0
+
+
 {{< /highlight>}}
 
 #### main.py
 
 {{< highlight python>}}
-dice = Choice.dice()
+import choice
 
-undo = Undo(Memento(dice))
+dice = choice.dice()
+
+undo = Undo()
 
 for i in range(10):
+    undo.save(dice)
     dice.roll()
-    undo.save(Memento(dice))
-    
     print(dice.get_position())
     
 print("--------")
@@ -476,32 +473,25 @@ Qui pourra rendre le code suivant :
 {{< /highlight>}}
 
 
-## Redo
-
-Pour le redo, on utilise un undo d'undo. Pour des objets plus compliqués, on préfèrera sûrement refaire un Memento plutôt que d'utiliser celui déja stocké pour le undo.
+### Un undo dans dice
 
 
-Le dernier élément du undo doit toujours être l'état courant de l'objet. On initialise donc le UndoRedo avec l'état courant. Après chaque changment d'état de l'objet on le sauvera. 
+#### choiceUndo.py
+
+On a bien fait de modifier la méthode `roll` de `Choice` pour qu'elle utilise `set_position`, ceci nous permet de ne modifier que `set_position` pour la classe `ChoiceUndo`.
 
 {{< highlight python>}}
-class UndoRedo:
-    def __init__(self, current_state_memento):
-        self._undo = [current_state_memento]
-        self._redo = []
+from choice import Choice
 
-    def save(self, current_state_memento):        
-        self._undo.append(current_state_memento)
-        self._redo = []
-    
-    def undo(self):
-        if len(self._undo) > 1:  #  current_state and someting to restore        
-            self._redo.append(self._undo.pop())  # move current_state
-            self._undo[-1].restore()   # restore old state. Last elem of undo si current state
+class ChoiceUndo(Choice):
+    def __init__(self, choices, undo):
+        super().__init__(choices)
+        self.undo = undo
 
-    def redo(self):
-        if self._redo:
-            self._undo.append(self._redo.pop())
-            self._undo[-1].restore()
-            
-{{< /highlight >}}
+    def set_position(self, new):
+        self.undo.save(self)
+        super().set_position(new)
+        
+
+{{< /highlight>}}
 
