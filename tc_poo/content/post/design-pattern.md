@@ -8,7 +8,7 @@ weight = 5
 
 
 
-Séance consacrée aux [design pattern](https://fr.wikipedia.org/wiki/Patron_de_conception). Ces façons de faire, sorte d'algorithmie objet permet de résoudre nombre de problèmes courants en développement. Cela permet d'éviter de faires des [erreurs classiques](http://sahandsaba.com/nine-anti-patterns-every-programmer-should-be-aware-of-with-examples.html), aussi appelées [anti-pattern](https://fr.wikipedia.org/wiki/Antipattern).
+Séance consacrée aux [design pattern](https://fr.wikipedia.org/wiki/Patron_de_conception). Ces façons de faire, sorte d'algorithmie objet permettent de résoudre nombre de problèmes courants en développement. Cela permet d'éviter de faire des [erreurs classiques](http://sahandsaba.com/nine-anti-patterns-every-programmer-should-be-aware-of-with-examples.html), aussi appelées [anti-pattern](https://fr.wikipedia.org/wiki/Antipattern).
 
 Comme ce cours est dispensé en utilisant le langage python, on utilisera beaucoup le typage dynamique de celui-ci pour ces exemples (appelé [duck typing](http://sametmax.com/quest-ce-que-le-duck-typing-et-a-quoi-ca-sert/), mais les design pattern fonctionnent quelques soient le langage utilisé (ils ont d'ailleurs [initialement été écrits](https://fr.wikipedia.org/wiki/Design_Patterns) pour le C++).
 
@@ -183,7 +183,7 @@ Le pattern memento nécessite de pouvoir changer la valeur de nos objets. On va 
 
 On sait maintenant comment faire : 
 
-1. faite un test vérifiant que `set_position` existe et fonctionne,
+1. faites un test vérifiant que `set_position` existe et fonctionne,
 2. regardez le planter,
 3. ajouter une méthode `set_position` à `Choice`,
 4. regardez le test réussir.
@@ -226,7 +226,7 @@ Nous pouvons maintenant créer une classe `Undo` (dans le fichier `undo.py`) qui
 - restaurer la dernière valeur sauvée avec la méthode `restore()`
 - connaître le nombre d'items sauvegardés avec une méthode `nb_undos()`
 
-Bien sur vous créerez un fichier de tests `test_undo.py` qui testera les 3 fonctionnalités ci-dessus.
+Bien sur vous créerez un fichier de tests `test_undo.py` qui testera les 3 fonctionnalités ci-dessus. Une façon d'utiliser les différents objets est décrite ci-après :
 
 {{< highlight python >}}
 import choice 
@@ -257,7 +257,7 @@ Pour ne pas toujours avoir à sauver le dé avant un roll, on pourra utiliser un
 {{< highlight python >}}
 
 from undo import Undo
-
+from choiceUndo import ChoiceUndo
 
 undo = Undo()
 

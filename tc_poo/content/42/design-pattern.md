@@ -152,16 +152,16 @@ def a_dice():
 
 def two_dice():
     N = 1000
-    d6 = []
+    two_d6_choices = []
     
     for i range(1, 7):
         for j in range(1, 7):
-            d6.append(i + j)
+            two_d6_choices.append(i + j)
 
-
+    two_d6 = Choice(two_d6_choices)
     results = []
     for number in range(N):
-        results.append(d6.roll().get_position())
+        results.append(two_d6.roll().get_position())
 
     count = Counter(results)
     print(count)
@@ -170,10 +170,7 @@ def two_dice():
 
 {{< /highlight >}}
 
-### Méthodes
-
-
-Les méthodes de classes sont des façons pratiques de créer des objets, elles prennent la classe comme premier paramètre (comme les méthodes d'objet prennent l'objet en paramètre). Utilisez le quand vous créez des objets avec, car elles permettent d'utiliser l'héritage sans problème.
+### On place le tout dans le fichier de la classe
 
 #### choice.py
 
@@ -318,16 +315,10 @@ def two_dices():
 
 #### memento.py
 
-{{< highlight python>}}
-class Memento:
-    def __init__(self, object_to_save):
-        self._stored_state = object_to_save.get_position()
-        self._object_to_restore = object_to_save
-    
-    def restore(self):
-        self._object_to_restore.set_position(self._stored_state)
-{{< /highlight >}}
+On stocke un état et un objet pour pouvoir le restaurer plus tard : 
 
+* l'objet et son état sont stockés à l'initialisation
+* une méthode `restore()` permet de remettre l'objet à l'état qu'il avait à l'initialisation du Memento.
 
 #### test_memento.py
 
@@ -429,6 +420,7 @@ def test_save_restore_several():
 
 {{< highlight python>}}
 import choice
+from undo import Undo
 
 dice = choice.dice()
 

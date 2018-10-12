@@ -1,0 +1,15 @@
+<style>
+    .table table {
+     border-collapse: collapse;
+     width: 100%;
+   }
+   table td {
+     border-top: 1px solid #ccc;
+     border-bottom: 1px solid #ccc;
+     padding: 0.6rem;
+   }
+    
+</style>
+<div class='table'>
+  {{ .Inner | markdownify }}
+</div>
