@@ -404,6 +404,11 @@ Tiens si on en profitait pour voir toutes les méthodes spéciales que l'on pour
 
 http://www.diveintopython3.net/special-method-names.html#acts-like-number
 
+ou 
+
+https://micropyramid.com/blog/python-special-class-methods-or-magic-methods/
+
+
 Pourquoi on n'utiliserait pas `__mul__` ? 
 
 
@@ -1409,7 +1414,7 @@ Tout est prêt pour unifier les `__mul__` et ainsi faire disparaitre les derniè
 
 #### money.py 
 
-Les deux `__mul__` ne changent que par la classe produite. Donc commençons par expliciter la construction : 
+Les deux `__mul__` ne changent que par la classe produite. Donc commençons par expliciter la construction en remplaçant le factory par l'utilisation explicite des constructeurs : 
 
 {{< highlight python >}}
 def dollar(amount):
@@ -1434,12 +1439,12 @@ class Money:
 
 class Franc(Money):
     def __mul__(self, multiplier):
-        return franc(self.amount * multiplier, self.currency)
+        return Franc(self.amount * multiplier, self.currency)
 
 
 class Dollar(Money):
     def __mul__(self, multiplier):
-        return dollar(self.amount * multiplier, self.currency)
+        return Dollar(self.amount * multiplier, self.currency)
 
 {{< /highlight >}}
 
@@ -1472,17 +1477,17 @@ class Money:
 
 class Franc(Money):
     def __mul__(self, multiplier):
-        return franc(self.amount * multiplier, self.currency)
+        return Franc(self.amount * multiplier, self.currency)
 
 
 class Dollar(Money):
     def __mul__(self, multiplier):
-        return dollar(self.amount * multiplier, self.currency)
+        return Dollar(self.amount * multiplier, self.currency)
 
 {{< /highlight >}}
 
 
-En supprimant la methode `__mul__` des Francs, les tests passent.
+En supprimant la methode `__mul__` des Francs, et en rendant un `Money` dans le factory `franc`, les tests passent.
 
 {{< highlight python >}}
 def dollar(amount):
@@ -1490,7 +1495,7 @@ def dollar(amount):
 
 
 def franc(amount):
-    return Franc(amount, "CHF")
+    return Money(amount, "CHF")
 
 
 class Money:
@@ -1513,7 +1518,7 @@ class Franc(Money):
 
 class Dollar(Money):
     def __mul__(self, multiplier):
-        return dollar(self.amount * multiplier, self.currency)
+        return Dollar(self.amount * multiplier, self.currency)
 
 {{< /highlight >}}
 
@@ -1862,8 +1867,9 @@ On va considérer que toute somme de deux monnaies est une nouvelle classe somme
 
 Donc : 
 
-* on ajoute que la somme de 2 $ devrait donner des $ dans la todo list
-* on fait un test pour montrer que la somme de deux monnaies est un objet contenant une partie gauche (la partie à gauche du `+`) et une partie droite (la partie à droite du `+`).
+* on ajoute que la somme de deux monnaies $ devrait donner des $ dans la todo list 
+* on supprime du coup le test `test_sum` qui vérifie que $5 + $5 = $10 ce qui n'est plus vrai.
+* on ajoute un test pour montrer que la somme de deux monnaies est un objet contenant une partie gauche (la partie à gauche du `+`) et une partie droite (la partie à droite du `+`).
 
 
 Une fois ceci fait, on implémente le tout en *obvious implementation*.
@@ -1871,7 +1877,7 @@ Une fois ceci fait, on implémente le tout en *obvious implementation*.
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* **$5 + $5 = $10**
+* **$5 + $5 = quelque chose qui correspond à $10**
 * $5 + $5 devrait rendre une Money
 
 
@@ -1917,7 +1923,7 @@ En faisant cette implémentation, on va rajouter un todo pour noter que l'on doi
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* **$5 + $5 = $10**
+* **$5 + $5 = quelque chose qui correspond à $10**
 * $5 + $5 devrait rendre une Money
 * Bank.reduce(Money)
 
@@ -1978,7 +1984,7 @@ Pour faire cela, on commence par faire un test où l'argument de reduce pour la 
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* ~~$5 + $5 = $10~~
+* ~~$5 + $5 = quelque chose qui correspond à $10~~
 * $5 + $5 devrait rendre une Money
 * ~~Bank.reduce(Money)~~
 * Sum.reduce avec conversion
@@ -2016,7 +2022,7 @@ On va maintenant s'attaquer à la conversion. Commençons simple avec les objets
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* ~~$5 + $5 = $10~~
+* ~~$5 + $5 = quelque chose qui correspond à $10~~
 * $5 + $5 devrait rendre une Money
 * ~~Bank.reduce(Money)~~
 * Sum.reduce avec conversion
@@ -2033,10 +2039,12 @@ Il faut donc ajouter une méthode `add_rate` à la banque dont les paramètres p
 
 Une fois le test créé, implémentez le tout. En commençant par un fake, puis petit à petit on ajoute la bonne implémentation. Cela peut être long car il vous faudra déterminer comment fonctionne le taux de change. 
 
+
+
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* ~~$5 + $5 = $10~~
+* ~~$5 + $5 = quelque chose qui correspond à $10~~
 * $5 + $5 devrait rendre une Money
 * ~~Bank.reduce(Money)~~
 * Sum.reduce avec conversion
@@ -2105,7 +2113,7 @@ Pour l'instant notre conversion pour les sommes ne considère que les mêmes dev
 #### tbd
 
 * $5 + 2.5CHF = $10 si le taux de change est 1:.5
-* ~~$5 + $5 = $10~~
+* ~~$5 + $5 = quelque chose qui correspond à $10~~
 * $5 + $5 devrait rendre une Money
 * ~~Bank.reduce(Money)~~
 * ~~Sum.reduce avec conversion~~
@@ -2194,8 +2202,8 @@ Il ne reste plus qu'à tester la multiplication
 def test_sum_of_sum():
     bank = Bank()
     bank.add_rate("CHF", "USD", 2)
-    expression = money.dollar(1) + money.franc(2) + money.dollar(1)
-    assert money.franc(3) == bank.reduce(expression, "CHF")
+    expression = (money.franc(2) + money.dollar(1)) * 4
+    assert money.franc(10) == bank.reduce(expression, "CHF")
 
 {{< /highlight >}}
 {{< /spoiler >}}
